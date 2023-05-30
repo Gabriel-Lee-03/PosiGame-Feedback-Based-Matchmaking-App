@@ -2,7 +2,13 @@ image: node:latest
 
 build:
   stage: build
-  script:
-  - npm start
+  # ports:
+  # - port: 3000
+  #   onOpen: open-preview
+
+  tasks:
+    - init: npm install
+      command: npm start
+
 
 
