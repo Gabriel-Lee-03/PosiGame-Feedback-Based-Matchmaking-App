@@ -3,4 +3,4 @@ image: node:latest
 deploy:
   stage: deploy
   script: 
-    - dpl --provider=heroku --app=drp-22 --api-key=023f0f08-860b-4f9a-b815-0e186a346c33
+    - dpl --provider=heroku --app=drp-22 --api-key=9eafb28e-9370-4431-a117-ca29bf070006
