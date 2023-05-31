@@ -1,3 +1,1 @@
-web: 
-  cd client
-  npm start
+web: sh -c 'npm start'
