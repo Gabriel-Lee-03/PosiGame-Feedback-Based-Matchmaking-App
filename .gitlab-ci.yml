@@ -1,8 +1,6 @@
 image: node:latest
 
-build:
-  stage: build
-  script:
-    - npm install
-    - cd client
-    - npm start
+deploy:
+  stage: deploy
+  script: 
+    - dpl --provider=heroku --app=drp-22 --api-key=HEROKU_SECRET_API
