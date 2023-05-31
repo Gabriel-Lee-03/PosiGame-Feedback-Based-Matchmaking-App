@@ -1,8 +1,6 @@
 image: node:latest
 
-build:
-  stage: build
-  script:
-  - npm start
-
-
+deploy:
+  stage: deploy
+  script: 
+    - dpl --provider=heroku --app=drp-22 --api-key=9eafb28e-9370-4431-a117-ca29bf070006
