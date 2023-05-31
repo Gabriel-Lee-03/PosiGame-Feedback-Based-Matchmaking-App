@@ -1,7 +1,24 @@
 {
-  "name": "gamer-matchmaking",
-  "version": "0.1.0",
+  "name": "drp-22",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "dependencies": {
-    "react": "^18.2.0"
-  }
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.doc.ic.ac.uk:lst20/drp-22.git"
+  },
+  
+  "engines": {
+    "node": "18.16.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
