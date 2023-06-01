@@ -22,7 +22,7 @@ async function handleSubmit(e, setText, setData) {
   e.preventDefault();
   try {
     console.log("value to post: " + e.target.name.value);
-    const response = await axios.post(apiUrl, e.target.name.value);
+    const response = await axios.post(apiUrl, {name: e.target.name.value});
     setText('');
     //setData(response);
   } catch (error) {

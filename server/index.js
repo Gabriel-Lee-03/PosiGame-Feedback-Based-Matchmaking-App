@@ -9,12 +9,14 @@ const path = require('node:path');
 
 const util = require('util');
 
+const bodyParser = require('body-parser');
+
 let storedName = [{name: `Amy Winehouse`, id: 0}, {name: `Bob Dylan`, id: 1}];
 let id = 2;
 
 // Have Node serve the files for our built React app
 app.use(express.json());
-
+app.use(bodyParser.urlencoded())
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
@@ -31,10 +33,10 @@ app.get("/api", (req, res) => {
 app.post("/api", async (req, res) => {
   try {
     console.log(`post ok`);
-    const name = req;
+    const name = req.body.name;
     console.log(`server req: ` + name);
     console.log(util.inspect(name));
-    storedName = [...storedName, {name: `James`, id:id}];
+    storedName = [...storedName, {name: name, id:id}];
     id +=1;
     res.send(storedName);
   } catch (error) {
