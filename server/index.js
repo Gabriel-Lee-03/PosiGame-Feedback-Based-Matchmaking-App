@@ -17,7 +17,18 @@ app.listen(PORT, () => {
 
 // Handle GET requests to /api route
 app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
+  const storedName = [{name: `Amy Winehouse`, id: 0}, {name: `Bob Dylan`, id: 1}];
+  res.json( storedName );
+});
+
+// handle post request to /api route
+router.post("/", async (req, res) => {
+  try {
+      const task = await new Task(req.body).save();
+      res.send(task);
+  } catch (error) {
+      res.send(error);
+  }
 });
 
 // All other GET requests not handled before will return our React app
