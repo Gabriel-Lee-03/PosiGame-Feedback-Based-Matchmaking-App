@@ -4,7 +4,6 @@ test:
   stage: test
   script:
     - cd client
-    - npm run build
     - npm test
 
 deploy:
