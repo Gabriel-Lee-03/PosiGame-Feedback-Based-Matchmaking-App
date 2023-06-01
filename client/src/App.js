@@ -16,9 +16,11 @@ function componentDidMount(setState) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      return axios.post(apiUrl, e.target.name.value);
-      //console.log(e.target.name.value)
-    }catch (error) {
+      axios.post(apiUrl, e.target.name.value)
+      .then(res =>
+        {console.log(res);}
+      ).catch;
+    } catch (error) {
       console.log(error);
     }
   }
@@ -37,7 +39,7 @@ function App() {
     <div className="App">
       <img src={logo} className="App-logo" alt="logo" />
       <p>{!data ? "Loading..." : `data loaded`}</p>
-      <form onSubmit={handleSubmit}>
+      <form action={handleSubmit}>
         <label for="name">First name: </label>
         <input 
           onChange={(e) => setCurrentName(e.target.value)}

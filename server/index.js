@@ -1,5 +1,4 @@
 // server/index.js
-
 const express = require("express");
 
 const PORT = process.env.PORT || 3001;
@@ -8,7 +7,11 @@ const app = express();
 
 const path = require('node:path');
 
+const storedName = [{name: `Amy Winehouse`, id: 0}, {name: `Bob Dylan`, id: 1}];
+
 // Have Node serve the files for our built React app
+app.use(express.json());
+
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
@@ -17,17 +20,25 @@ app.listen(PORT, () => {
 
 // Handle GET requests to /api route
 app.get("/api", (req, res) => {
-  const storedName = [{name: `Amy Winehouse`, id: 0}, {name: `Bob Dylan`, id: 1}];
   res.json( storedName );
 });
 
+// const requestData = req.body;
+  
+//   // Do something with the request data
+//   console.log(requestData);
+
+//   // Send a response back to the client
+//   res.send('Request received successfully!');
+// })
+
 // handle post request to /api route
-router.post("/", async (req, res) => {
+app.post("/api", async (req, res) => {
   try {
-      const task = await new Task(req.body).save();
-      res.send(task);
+    console.log(`server req: ` + req.body);
+    res.send([...storedName, {name: `James`, id:3}]);    
   } catch (error) {
-      res.send(error);
+    res.send(error);
   }
 });
 
