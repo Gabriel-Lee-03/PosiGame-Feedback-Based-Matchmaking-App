@@ -37,6 +37,7 @@ function Screen1({ onSubmit }) {
   );
 }
 
+
 // Screen 2 component
 function Screen2({ onAddPlayer }) {
   // Sample player data
