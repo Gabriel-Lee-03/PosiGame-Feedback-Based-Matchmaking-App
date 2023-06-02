@@ -33,7 +33,7 @@ app.post("/api", async (req, res) => {
     const player = req.body.player;
     console.log(util.inspect(player));
     storedPlayers = [...storedPlayers, player];
-    res.send(storedName.sort(function(a, b){return b.friendliness - a.friendliness}));
+    res.send(storedName);
   } catch (error) {
     res.send(error);
   }
@@ -50,7 +50,7 @@ app.put("/api/rate/id", async (req, res) => {
     const updatedTarget = {...target, friendliness: (target.friendliness + weight), goodTeammate: (target.friendliness + weight ) < 2};
     console.log(util.inspect(updatedTarget));
     storedPlayers.splice(idx, 1, updatedTarget);
-    res.send( storedPlayers );
+    res.send(storedPlayers.sort(function(a, b){return b.friendliness - a.friendliness}));
   } catch (error) {
       res.send(error);
   }

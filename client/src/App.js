@@ -64,7 +64,7 @@ function Screen2({ onAddPlayer }) {
       const response = await axios.put(ratingUrl, {gameId: gameId, increase: true});
       const data = await response.data;
       console.log("inc resp " + response);
-      //setPlayers(data);
+      setPlayers(data);
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -76,7 +76,7 @@ function Screen2({ onAddPlayer }) {
       const response = await axios.put(ratingUrl, {gameId: gameId, increase: false});
       const data = await response.data;
       console.log("dec resp " + response);
-      //setPlayers(data);
+      setPlayers(data);
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
