@@ -59,9 +59,9 @@ function Screen2({ onAddPlayer }) {
 
   const [players, setPlayers] = useState([]);
 
-  async function increaseRating(gameId) {
+  async function increaseRating(player) {
     try {
-      const response = await axios.put(ratingUrl, {gameId: gameId, increase: true});
+      const response = await axios.put(ratingUrl, {player: player, increase: true});
       const data = await response.data;
       console.log("inc resp " + response);
       setPlayers(data);
@@ -71,9 +71,9 @@ function Screen2({ onAddPlayer }) {
     }
   }
 
-  async function decreaseRating(gameId) {
+  async function decreaseRating(player) {
     try {
-      const response = await axios.put(ratingUrl, {gameId: gameId, increase: false});
+      const response = await axios.put(ratingUrl, {player: player, increase: false});
       const data = await response.data;
       console.log("dec resp " + response);
       setPlayers(data);
@@ -122,10 +122,10 @@ function Screen2({ onAddPlayer }) {
                 <td>{player.name}</td>
                 <td>{player.friendliness}</td>
                 <td>
-                  <button className="thumbs-up-button" onClick={() => increaseRating(player.gameId)}>
+                  <button className="thumbs-up-button" onClick={() => increaseRating(player)}>
                     {"👍"}
                   </button>
-                  <button className="thumbs-down-button" onClick={() => decreaseRating(player.gameId)}>
+                  <button className="thumbs-down-button" onClick={() => decreaseRating(player)}>
                     {"👎"}
                   </button>
                 </td>
