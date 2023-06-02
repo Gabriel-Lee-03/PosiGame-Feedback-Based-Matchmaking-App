@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import axios from "axios";
 
 // Screen 1 component
 function Screen1({ onSubmit }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState("");
   const [name, setName] = useState("");
+  const apiUrl = "/api"
+
+  const defaultRating = 5;
+  const defaultIsGood = true;
 
   // Handle form submission
-  function handleSubmit() {
-    // Call the onSubmit callback with the entered values
-    onSubmit(gameId, name);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const player = { gameId: gameId, name: name, friendliness: defaultRating, goodTeammate: defaultIsGood };
+      const response = await axios.post(apiUrl, {player: player});
+      setGameId("");
+      setName("");
+      onSubmit(gameId, name);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    }
   }
 
   return (
@@ -32,7 +46,7 @@ function Screen1({ onSubmit }) {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={e => handleSubmit(e)}>Submit</button>
     </div>
   );
 }
@@ -40,17 +54,53 @@ function Screen1({ onSubmit }) {
 
 // Screen 2 component
 function Screen2({ onAddPlayer }) {
-  // Sample player data
-  const players = [
-    { gameId: "123", name: "Tom", friendliness: 5, goodTeammate: true },
-    // Add more players here
-  ];
+  const ratingUrl = "/api/rate/id";
+  const apiUrl = "/api"
 
-  // Handle add player button click
+  const [players, setPlayers] = useState([]);
+
+  async function increaseRating(gameId) {
+    try {
+      const response = await axios.put(ratingUrl, {gameId: gameId, increase: true});
+      const data = await response.data;
+      console.log("inc resp " + response);
+      setPlayers(data);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    }
+  }
+
+  async function decreaseRating(gameId) {
+    try {
+      const response = await axios.put(ratingUrl, {gameId: gameId, increase: false});
+      const data = await response.data;
+      console.log("dec resp " + response);
+      setPlayers(data);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    }
+  }
+
+   // Handle add player button click
   function handleAddPlayer() {
-    // Call the onAddPlayer callback
+  // Call the onAddPlayer callback
     onAddPlayer();
   }
+
+  useEffect(() => {
+    try {
+      axios.get(apiUrl)
+      .then(res => {
+        const data = res.data;
+        setPlayers(data);
+        console.log(`component mounted`);
+      });
+    }catch(error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <div className="screen2">
@@ -65,21 +115,23 @@ function Screen2({ onAddPlayer }) {
           </tr>
         </thead>
         <tbody>
-          {players.map((player, index) => (
-            <tr key={index}>
-              <td>{player.gameId}</td>
-              <td>{player.name}</td>
-              <td>{player.friendliness}</td>
-              <td>
-                <button className="thumbs-up-button">
-                  {player.goodTeammate ? "👍" : "👎"}
-                </button>
-                <button className="thumbs-down-button">
-                    {player.goodTeammate ? "👎" : "👍"}
-                </button>
-              </td>
-            </tr>
-          ))}
+          {
+            players.map((player) => (
+              <tr key={player.gameId}>
+                <td>{player.gameId}</td>
+                <td>{player.name}</td>
+                <td>{player.friendliness}</td>
+                <td>
+                  <button className="thumbs-up-button" onClick={() => increaseRating(player.gameId)}>
+                    {"👍"}
+                  </button>
+                  <button className="thumbs-down-button" onClick={() => decreaseRating(player.gameId)}>
+                    {"👎"}
+                  </button>
+                </td>
+              </tr>
+            ))
+          }
         </tbody>
       </table>
       <button onClick={handleAddPlayer}>Add Player</button>
