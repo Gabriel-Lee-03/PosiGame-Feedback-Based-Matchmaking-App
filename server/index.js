@@ -7,9 +7,10 @@ const util = require('util');
 const bodyParser = require('body-parser');
 
 let storedPlayers = [
-  {gameId: `135`, name: `Amy_Winehouse`, friendliness: 5, goodTeammate: true},
-  {gameId: `246`, name: `Bob_Dylan`, friendliness: 5, goodTeammate: true}
-
+  {gameId: `135`, name: `Amy Winehouse`, friendliness: 5, goodTeammate: true},
+  {gameId: `246`, name: `Bob Dylan`, friendliness: 5, goodTeammate: true},
+  {gameId: `131`, name: `Tom Jones`, friendliness: 6, goodTeammate: true},
+  {gameId: `124`, name: `Mary Littlelamb`, friendliness: 3.5, goodTeammate: true}
 ];
 
 // Have Node serve the files for our built React app
