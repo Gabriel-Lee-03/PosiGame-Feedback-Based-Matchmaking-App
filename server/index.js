@@ -7,20 +7,8 @@ const util = require('util');
 const bodyParser = require('body-parser');
 
 let storedPlayers = [
-  {gameId: `135`, name: `Amy_Winehouse`, friendliness: 147, goodTeammate: true},
-  {gameId: `246`, name: `Bob_Dylan`, friendliness: 454, goodTeammate: true},
-  {gameId: `2346`, name: `jhgvd`, friendliness: -412, goodTeammate: true},
-  {gameId: `2466`, name: `gfd`, friendliness: 55, goodTeammate: true},
-  {gameId: `092`, name: `kjhgf`, friendliness: 76, goodTeammate: true},
-  {gameId: `223`, name: `jhgf`, friendliness: 44, goodTeammate: true},
-  {gameId: `345`, name: `tyrret`, friendliness: 2, goodTeammate: true},
-  {gameId: `15`, name: `uyt`, friendliness: 17, goodTeammate: true},
-  {gameId: `6`, name: `iuyt`, friendliness: 23, goodTeammate: true},
-  {gameId: `655`, name: `uyt`, friendliness: 236, goodTeammate: true},
-  {gameId: `765`, name: `oiuyt`, friendliness: 21, goodTeammate: true},
-  {gameId: `23`, name: `iuyt`, friendliness: -76, goodTeammate: true},
-  {gameId: `54`, name: `iuytre`, friendliness: -44, goodTeammate: true},
-  {gameId: `76565`, name: `erg`, friendliness: -2, goodTeammate: true},
+  {gameId: `135`, name: `Amy_Winehouse`, friendliness: 5, goodTeammate: true},
+  {gameId: `246`, name: `Bob_Dylan`, friendliness: 5, goodTeammate: true}
 
 ];
 
