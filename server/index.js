@@ -33,8 +33,7 @@ app.post("/api", async (req, res) => {
     const player = req.body.player;
     console.log(util.inspect(player));
     storedPlayers = [...storedPlayers, player];
-    id +=1;
-    res.send(storedName);
+    res.send(storedName.sort(function(a, b){return b.friendliness - a.friendliness}));
   } catch (error) {
     res.send(error);
   }

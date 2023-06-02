@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 
@@ -7,6 +7,7 @@ function Screen1({ onSubmit }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState("");
   const [name, setName] = useState("");
+  const apiUrl = "/api"
 
   const defaultRating = 5;
   const defaultIsGood = true;
@@ -54,6 +55,7 @@ function Screen1({ onSubmit }) {
 // Screen 2 component
 function Screen2({ onAddPlayer }) {
   const ratingUrl = "/api/rate/id";
+  const apiUrl = "/api"
 
   const [players, setPlayers] = useState([]);
 
@@ -81,30 +83,24 @@ function Screen2({ onAddPlayer }) {
     }
   }
 
-  function componentDidMount() {
-    var executed = false;
-    if (!executed) {
-      try {
-        axios.get(apiUrl)
-        .then(res => {
-          const data = res.data;
-          setPlayers(data);
-          console.log(`component mounted`);
-        });
-        executed = true;
-        }catch(error) {
-          console.log(error);
-        }
-    }
-  }
-
-  componentDidMount();
-
    // Handle add player button click
   function handleAddPlayer() {
   // Call the onAddPlayer callback
     onAddPlayer();
   }
+
+  useEffect(() => {
+    try {
+      axios.get(apiUrl)
+      .then(res => {
+        const data = res.data;
+        setPlayers(data);
+        console.log(`component mounted`);
+      });
+    }catch(error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <div className="screen2">
