@@ -104,7 +104,7 @@ function Screen2({ onAddPlayer }) {
 
   return (
     <div className="screen2">
-      <h1>Lobby</h1>
+      <h1>Lobby123</h1>
       <table className="lobby-table">
         <thead>
           <tr>
