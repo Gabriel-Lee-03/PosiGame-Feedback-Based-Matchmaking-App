@@ -1,18 +1,15 @@
 // server/index.js
 const express = require("express");
-
 const PORT = process.env.PORT || 3001;
-
 const app = express();
-
 const path = require('node:path');
-
 const util = require('util');
-
 const bodyParser = require('body-parser');
 
-let storedName = [{name: `Amy Winehouse`, id: 0}, {name: `Bob Dylan`, id: 1}];
-let id = 2;
+let storedPlayers = [
+  {gameId: `135`, name: `Amy_Winehouse`, friendliness: 5, goodTeammate: true},
+  {gameId: `246`, name: `Bob_Dylan`, friendliness: 5, goodTeammate: true}
+];
 
 // Have Node serve the files for our built React app
 app.use(express.json());
@@ -25,7 +22,7 @@ app.listen(PORT, () => {
 
 // Handle GET requests to /api route
 app.get("/api", (req, res) => {
-  res.json( storedName );
+  res.json( storedPlayers );
 });
 
 
@@ -33,10 +30,9 @@ app.get("/api", (req, res) => {
 app.post("/api", async (req, res) => {
   try {
     console.log(`post ok`);
-    const name = req.body.name;
-    console.log(`server req: ` + name);
-    console.log(util.inspect(name));
-    storedName = [...storedName, {name: name, id:id}];
+    const player = req.body.player;
+    console.log(util.inspect(player));
+    storedPlayers = [...storedPlayers, player];
     id +=1;
     res.send(storedName);
   } catch (error) {
@@ -44,7 +40,22 @@ app.post("/api", async (req, res) => {
   }
 });
 
+const SCORE_WEIGHT = 0.5;
 
+app.put("/api/rate/id", async (req, res) => {
+  try {
+    const gameId = req.body.gameId;
+    const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1) ;
+    const target = storedPlayers.find(player => player.gameId === gameId);
+    const idx = storedPlayers.indexOf(target);
+    const updatedTarget = {...target, friendliness: (target.friendliness + weight), goodTeammate: (target.friendliness + weight ) < 2};
+    console.log(util.inspect(updatedTarget));
+    storedPlayers.splice(idx, 1, updatedTarget);
+    res.send( storedPlayers );
+  } catch (error) {
+      res.send(error);
+  }
+});
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {

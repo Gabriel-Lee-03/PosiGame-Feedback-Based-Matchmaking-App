@@ -1,62 +1,231 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 
 const apiUrl = "/api";
 
-function componentDidMount(setState) {
-  try {
-    axios.get(apiUrl)
-    .then(res => {
-      const data = res.data;
-      setState(data);
-    });
-  }catch(error) {
-    console.log(error);
+// function componentDidMount(setState) {
+//   try {
+//     axios.get(apiUrl)
+//     .then(res => {
+//       const data = res.data;
+//       setState(data);
+//     });
+//   }catch(error) {
+//     console.log(error);
+//   }
+// }
+
+// async function handleSubmit(e, setText, setData) {
+//   console.log(`ok`);
+//   e.preventDefault();
+//   try {
+//     console.log("value to post: " + e.target.name.value);
+//     const response = await axios.post(apiUrl, {player: e.target.name.value});
+//     setText('');
+//   } catch (error) {
+//     // Request was not successful
+//     console.error('An error occurred:', error);
+//   }
+// }
+
+// function Appis() {
+//   const defaultNames = [{name: `Ann Frank`, id: 0}, {name: `Frank Sinatra`, id: 1}];
+//   const [data, setData] = useState(defaultNames);
+//   const [input, setCurrentName] = useState(``);
+
+//   componentDidMount(setData);
+
+//   return (
+//     <div className="App">
+//       <img src={logo} className="App-logo" alt="logo" />
+//       <p>{!data ? `Loading...` : `data loaded`}</p>
+//       <form onSubmit={(e) => {handleSubmit(e, setCurrentName, setData)}}>
+//         <label for="name">First name: </label>
+//         <input 
+//           onChange={(e) => setCurrentName(e.target.value)}
+//           type="text" id="name" name="name" value={input}>
+//         </input><br></br>
+//         <button type="submit">Submit</button>
+//       </form>
+//       <div>
+//         <p>Users of our website include:</p>
+//         {
+//           data.map((name) =>
+//             {return(<p key={name.id}>{name.name}</p>)})
+//         }
+//       </div>
+//     </div>
+//   );
+// }
+//////////////////////////////////////////////////
+// Screen 1 component
+function Screen1({ onSubmit }) {
+  // State for Game ID and Name inputs
+  const [gameId, setGameId] = useState("");
+  const [name, setName] = useState("");
+
+  const defaultRating = 5;
+  const defaultIsGood = true;
+
+  // Handle form submission
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const player = { gameId: gameId, name: name, friendliness: defaultRating, goodTeammate: defaultIsGood };
+      const response = await axios.post(apiUrl, {player: player});
+      setGameId("");
+      setName("");
+      onSubmit(gameId, name);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    }
   }
+
+  return (
+    <div className="screen1">
+      <h1>Player</h1>
+      <div className="input-row">
+        <label>Game ID: </label>
+        <input
+          type="text"
+          value={gameId}
+          onChange={(e) => setGameId(e.target.value)}
+        />
+      </div>
+      <div className="input-row">
+        <label>Name: </label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <button onClick={e => handleSubmit(e)}>Submit</button>
+    </div>
+  );
 }
 
-async function handleSubmit(e, setText, setData) {
-  console.log(`ok`);
-  e.preventDefault();
-  try {
-    console.log("value to post: " + e.target.name.value);
-    const response = await axios.post(apiUrl, {name: e.target.name.value});
-    setText('');
-    //setData(response);
-  } catch (error) {
-    // Request was not successful
-    console.error('An error occurred:', error);
+
+// Screen 2 component
+function Screen2({ onAddPlayer }) {
+  const ratingUrl = "/api/rate/id";
+
+  const [players, setPlayers] = useState([]);
+
+  async function increaseRating(gameId) {
+    try {
+      const response = await axios.put(ratingUrl, {gameId: gameId, increase: true});
+      const data = await response.data;
+      console.log("inc resp " + response);
+      //setPlayers(data);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    }
   }
+
+  async function decreaseRating(gameId) {
+    try {
+      const response = await axios.put(ratingUrl, {gameId: gameId, increase: false});
+      const data = await response.data;
+      console.log("dec resp " + response);
+      //setPlayers(data);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    }
+  }
+
+  function componentDidMount() {
+    var executed = false;
+    if (!executed) {
+      try {
+        axios.get(apiUrl)
+        .then(res => {
+          const data = res.data;
+          setPlayers(data);
+          console.log(`component mounted`);
+        });
+        executed = true;
+        }catch(error) {
+          console.log(error);
+        }
+    }
+  }
+
+  componentDidMount();
+
+   // Handle add player button click
+  function handleAddPlayer() {
+  // Call the onAddPlayer callback
+    onAddPlayer();
+  }
+
+  return (
+    <div className="screen2">
+      <h1>Lobby</h1>
+      <table className="lobby-table">
+        <thead>
+          <tr>
+            <th>Game ID</th>
+            <th>Name</th>
+            <th>Friendliness</th>
+            <th>Good teammate?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            players.map((player) => (
+              <tr key={player.gameId}>
+                <td>{player.gameId}</td>
+                <td>{player.name}</td>
+                <td>{player.friendliness}</td>
+                <td>
+                  <button className="thumbs-up-button" onClick={() => increaseRating(player.gameId)}>
+                    {"👍"}
+                  </button>
+                  <button className="thumbs-down-button" onClick={() => decreaseRating(player.gameId)}>
+                    {"👎"}
+                  </button>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <button onClick={handleAddPlayer}>Add Player</button>
+    </div>
+  );
 }
 
 function App() {
-  const defaultNames = [{name: `Ann Frank`, id: 0}, {name: `Frank Sinatra`, id: 1}];
-  const [data, setData] = React.useState(defaultNames);
-  const [input, setCurrentName] = React.useState(``);
+  // State for managing the current screen
+  const [currentScreen, setCurrentScreen] = useState("screen2");
 
-  componentDidMount(setData);
+  // Handle screen change from Screen 1 to Screen 2
+  function handleScreenChange(gameId, name) {
+    // Perform any necessary validation or data processing here
+
+    // Set the current screen to Screen 2
+    setCurrentScreen("screen2");
+  }
+
+  // Handle screen change from Screen 2 to Screen 1
+  function handleAddPlayer() {
+    // Set the current screen to Screen 1
+    setCurrentScreen("screen1");
+  }
 
   return (
-    <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>{!data ? `Loading...` : `data loaded`}</p>
-      <form onSubmit={(e) => {handleSubmit(e, setCurrentName, setData)}}>
-        <label for="name">First name: </label>
-        <input 
-          onChange={(e) => setCurrentName(e.target.value)}
-          type="text" id="name" name="name" value={input}>
-        </input><br></br>
-        <button type="submit">Submit</button>
-      </form>
-      <div>
-        <p>Users of our website include:</p>
-        {
-          data.map((name) =>
-            {return(<p key={name.id}>{name.name}</p>)})
-        }
-      </div>
+    <div className="app">
+      {/* Render Screen 1 if the current screen is Screen 1 */}
+      {currentScreen === "screen1" && <Screen1 onSubmit={handleScreenChange} />}
+
+      {/* Render Screen 2 if the current screen is Screen 2 */}
+      {currentScreen === "screen2" && <Screen2 onAddPlayer={handleAddPlayer} />}
     </div>
   );
 }

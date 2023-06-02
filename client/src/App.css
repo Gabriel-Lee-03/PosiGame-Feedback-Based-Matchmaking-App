@@ -1,38 +1,65 @@
-.App {
+.screen1 {
   text-align: center;
+  margin: 50px;
+  border: 2px solid #4b4a4a;
+  border-radius: 4px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.input-row {
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Styles for Screen 2 */
+.screen2 {
+  text-align: center;
+  margin: 50px;
+  border: 2px solid #4b4a4a;
+  border-radius: 4px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.lobby-table {
+  margin-bottom: 20px;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.App-link {
-  color: #61dafb;
+.lobby-table th,
+.lobby-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.lobby-table th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+.thumbs-up-button,
+.thumbs-down-button {
+  padding: 0;
+  background-color: transparent;
+  border: 2px solid #4b4a4a;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.thumbs-up-button:hover,
+.thumbs-down-button:hover {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+/* Shared styles */
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
