@@ -4,16 +4,16 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const path = require('node:path');
 const util = require('util');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const TestPlayer = require("./models/player");
-const connectToMongoDB =  require("./db");
+const connectToMongoDB = require("./db");
 
 
 connectToMongoDB();
 
 // Have Node serve the files for our built React app
 app.use(express.json());
-app.use(bodyParser.urlencoded())
+// app.use(bodyParser.urlencoded())
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
