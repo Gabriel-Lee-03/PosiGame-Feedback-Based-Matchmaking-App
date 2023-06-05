@@ -10,12 +10,12 @@ const dbName = "players";
 
 // DEVELOPMENT
 // start mongod on seperate terminal
-const uri = "mongodb://localhost:27017/players";
+// const uri = "mongodb://localhost:27017/players";
 
 // DEPLOYMENT
-// const uri = "mongodb+srv://"+USER+":"+MONGO_API_KEY+
-//             "@cluster0.nyxdbux.mongodb.net/" + dbName +
-//             "?retryWrites=true&w=majority";
+const uri = "mongodb+srv://"+USER+":"+MONGO_API_KEY+
+            "@cluster0.nyxdbux.mongodb.net/" + dbName +
+            "?retryWrites=true&w=majority";
 
 // Set `strictQuery: false` to globally opt into filtering by properties that aren't in the schema
 // Included because it removes preparatory warnings for Mongoose 7.
