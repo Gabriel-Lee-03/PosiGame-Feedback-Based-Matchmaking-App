@@ -1,21 +1,19 @@
 // server/index.js
 const express = require("express");
-const PORT = process.env.PORT || 3001;
 const app = express();
 const path = require('node:path');
 const util = require('util');
-const bodyParser = require('body-parser');
+const TestPlayer = require("./models/player");
+const connectToMongoDB = require("./db");
+const dotenv = require('dotenv');
+dotenv.config();
+const PORT = process.env.PORT || 3001;
 
-let storedPlayers = [
-  {gameId: `135`, name: `Amy Winehouse`, friendliness: 5, goodTeammate: true},
-  {gameId: `246`, name: `Bob Dylan`, friendliness: 5, goodTeammate: true},
-  {gameId: `131`, name: `Tom Jones`, friendliness: 6, goodTeammate: true},
-  {gameId: `124`, name: `Mary Littlelamb`, friendliness: 3.5, goodTeammate: true}
-];
+
+connectToMongoDB();
 
 // Have Node serve the files for our built React app
 app.use(express.json());
-app.use(bodyParser.urlencoded())
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
@@ -23,19 +21,22 @@ app.listen(PORT, () => {
 });
 
 // Handle GET requests to /api route
-app.get("/api", (req, res) => {
-  res.json( storedPlayers.sort(function(a, b){return b.friendliness - a.friendliness}));
+app.get("/api", async(req, res) => {
+  try {
+    const all_players = await TestPlayer.find();
+    res.send(all_players);
+  }catch (error) {
+    res.send(error);
+  }
 });
-
 
 // handle post request to /api route
 app.post("/api", async (req, res) => {
   try {
-    console.log(`post ok`);
     const player = req.body.player;
-    console.log(util.inspect(player));
-    storedPlayers = [...storedPlayers, player];
-    res.send(storedName);
+    // insert into db
+    await new TestPlayer(player).save();   
+    res.send(player);
   } catch (error) {
     res.send(error);
   }
@@ -45,14 +46,18 @@ const SCORE_WEIGHT = 0.5;
 
 app.put("/api/rate/id", async (req, res) => {
   try {
-    const gameId = req.body.gameId;
-    const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1) ;
-    const target = storedPlayers.find(player => player.gameId === gameId);
-    const idx = storedPlayers.indexOf(target);
-    const updatedTarget = {...target, friendliness: (target.friendliness + weight), goodTeammate: (target.friendliness + weight ) < 2};
-    console.log(util.inspect(updatedTarget));
-    storedPlayers.splice(idx, 1, updatedTarget);
-    res.send(storedPlayers.sort(function(a, b){return b.friendliness - a.friendliness}));
+    console.log(`call put`);
+    const player = req.body.player;
+    const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1);
+    const newFriendliness = player.friendliness + weight;
+    const newGoodness = newFriendliness < 2;
+    await TestPlayer.findOneAndUpdate(
+      { gameId: player.gameId },
+      {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
+    ); 
+    const all_players = await TestPlayer.find();
+    // console.log(util.inspect(all_players));
+    res.send(all_players);
   } catch (error) {
       res.send(error);
   }
