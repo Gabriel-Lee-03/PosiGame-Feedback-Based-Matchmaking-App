@@ -1,6 +1,4 @@
 // server/index.js
-export {ahead};
-
 const express = require("express");
 const app = express();
 const path = require('node:path');
@@ -10,6 +8,7 @@ const connectToMongoDB = require("./db");
 const dotenv = require('dotenv');
 dotenv.config();
 const PORT = process.env.PORT || 3001;
+
 
 connectToMongoDB();
 
@@ -35,9 +34,8 @@ app.get("/api", async(req, res) => {
 app.post("/api", async (req, res) => {
   try {
     const player = req.body.player;
-    console.log(util.inspect(player));
     // insert into db
-    await newPlayer.save();    
+    await new TestPlayer(player).save();   
     res.send(player);
   } catch (error) {
     res.send(error);
@@ -54,15 +52,14 @@ app.put("/api/rate/id", async (req, res) => {
     const newFriendliness = player.friendliness + weight;
     const newGoodness = newFriendliness < 2;
     console.log("Before UPDATE");
-    const prev = await TestPlayer.findOneAndUpdate(
-        { gameId: player.gameId },
-        {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
-    );
-    console.log("After UPDATE");  
-    console.log(util.inspect(prev));
+    await TestPlayer.findOneAndUpdate(
+      { gameId: player.gameId },
+      {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
+    ); 
+    console.log("After UPDATE");
     const all_players = await TestPlayer.find();
-    console.log(util.inspect(all_players));
-    res.send(all_players.sort(function(a,b){return b.friendliness - a.friendliness}));
+    // console.log(util.inspect(all_players));
+    res.send(all_players);
   } catch (error) {
       res.send(error);
   }

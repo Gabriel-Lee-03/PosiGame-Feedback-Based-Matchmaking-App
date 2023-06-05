@@ -63,7 +63,7 @@ function Screen2({ onAddPlayer }) {
     try {
       const response = await axios.put(ratingUrl, {player: player, increase: true});
       const data = await response.data;
-      console.log("inc resp " + response);
+      console.log("inc resp " + data);
       setPlayers(data);
     } catch (error) {
       // Request was not successful
@@ -75,7 +75,7 @@ function Screen2({ onAddPlayer }) {
     try {
       const response = await axios.put(ratingUrl, {player: player, increase: false});
       const data = await response.data;
-      console.log("dec resp " + response);
+      console.log("dec resp " + data);
       setPlayers(data);
     } catch (error) {
       // Request was not successful

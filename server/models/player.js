@@ -3,11 +3,9 @@ const { Schema, model } = mongoose;
 
 const playerSchema = new Schema(
   {
-    _id: {  
-      name: {
-        type: String,
-        required: true,
-      }
+    name: {
+      type: String,
+      required: true,
     },
     gameId: {
       type: String,
