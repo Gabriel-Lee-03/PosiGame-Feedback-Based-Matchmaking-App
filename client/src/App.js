@@ -117,7 +117,7 @@ function Screen2({ onAddPlayer }) {
         <tbody>
           {
             players.map((player) => (
-              <tr key={player.gameId}>
+              <tr key={player._id}>
                 <td>{player.gameId}</td>
                 <td>{player.name}</td>
                 <td>{player.friendliness}</td>
@@ -145,8 +145,7 @@ function App() {
 
   // Handle screen change from Screen 1 to Screen 2
   function handleScreenChange(gameId, name) {
-    // Perform any necessary validation or data processing here
-
+    // wait for server response
     // Set the current screen to Screen 2
     setCurrentScreen("screen2");
   }
