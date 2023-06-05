@@ -45,7 +45,7 @@ function mergeLobbys(lobbyA, lobbyB) {
 
 // Handle GET requests to /api/name route
 app.get("/api/:name", async(req, res) => {
-  const name = req.params;
+  const name = req.params.name;
   console.log(util.inspect(name));
   try {
     const playerList = await Players.find({name: name});
@@ -64,15 +64,22 @@ app.get("/api/:name", async(req, res) => {
 app.post("/api", async (req, res) => {
   try {
     const loginInfo = req.body.loginInfo;
+    console.log("login info" +  util.inspect(loginInfo));
     // TODO: check if Game ID is unique
-    const playerList = await Players.find({name: name});
+    const playerList = await Players.find({name: loginInfo.name});
     let player = {};
     if (playerList.length == 0) {
-      player = {gameId: loginInfo.gameId, name: loginInfo.name, friendliness: defaultRating, goodTeammate: defaultIsGood};
+      console.log("register new player");
+      player = {gameId: loginInfo.gameId,
+        name: loginInfo.name,
+        friendliness: defaultRating,
+        goodTeammate: defaultIsGood};
       await new Players(player).save();
     } else {
+      console.log("get existing player");
       player = playerList.head();
     }
+    console.log("post ok");
     res.send(player);
   } catch (error) {
     res.send(error);
@@ -93,7 +100,6 @@ app.put("/api/rate/id", async (req, res) => {
       {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
     ); 
     const all_players = await Players.find();
-    // console.log(util.inspect(all_players));
     res.send(all_players);
   } catch (error) {
       res.send(error);

@@ -3,14 +3,11 @@ import "./App.css";
 import axios from "axios";
 
 // Screen 1 component
-function LogIn({ onSubmit, setName }) {
+function LogIn({ onSubmit }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState("");
   const [name, setName] = useState("");
   const apiUrl = "/api"
-  
-  //const defaultRating = 5;
-  //const defaultIsGood = true;
 
   // Handle form submission
   async function handleSubmit(e) {
@@ -21,7 +18,7 @@ function LogIn({ onSubmit, setName }) {
       const player = await axios.post(apiUrl, {loginInfo: info});
       setGameId("");
       setName("");
-      onSubmit(gameId, name);
+      onSubmit(name);
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -145,14 +142,14 @@ function Lobby({ onAddPlayer, nameVal }) {
 function App() {
   // State for managing the current screen
   const [currentScreen, setCurrentScreen] = useState("LogIn");
-  const [name, setName] = useState("");
-
+  const [userName, setUserName] = useState("");
 
   // Handle screen change from LogIn to Lobby
-  function handleScreenChange(gameId, name) {
+  function handleScreenChange(name) {
     // wait for server response
     // Set the current screen to Lobby
     setCurrentScreen("Lobby");
+    setUserName(name);
   }
 
   // Handle screen change from Lobby to LogIn
@@ -164,10 +161,10 @@ function App() {
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
-      {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} setName={setName} />}
+      {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} />}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={name} />}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName} />}
     </div>
   );
 }
