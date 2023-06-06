@@ -111,7 +111,7 @@ function Lobby({ onAddPlayer, nameVal }) {
             <th>Game ID</th>
             <th>Name</th>
             <th>Friendliness</th>
-            <th>Good teammate?</th>
+            {/* <th>Good teammate?</th> */}
           </tr>
         </thead>
         <tbody>
@@ -121,14 +121,14 @@ function Lobby({ onAddPlayer, nameVal }) {
                 <td>{player.gameId}</td>
                 <td>{player.name}</td>
                 <td>{player.friendliness}</td>
-                <td>
+                {/* <td>
                   <button className="thumbs-up-button" onClick={() => increaseRating(player)}>
                     {"👍"}
                   </button>
                   <button className="thumbs-down-button" onClick={() => decreaseRating(player)}>
                     {"👎"}
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))
           }
