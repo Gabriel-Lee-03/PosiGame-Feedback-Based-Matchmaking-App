@@ -3,12 +3,15 @@ const express = require("express");
 const app = express();
 const path = require('node:path');
 const util = require('util');
-const TestPlayer = require("./models/player");
+const Players = require("./models/player");
 const connectToMongoDB = require("./db");
 const dotenv = require('dotenv');
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 
+const defaultRating = 5;
+const defaultIsGood = true;
+const maxLobbySize = 4;
 
 connectToMongoDB();
 
@@ -20,11 +23,38 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-// Handle GET requests to /api route
-app.get("/api", async(req, res) => {
+// // Handle GET requests to /api route
+// app.get("/api", async(req, res) => {
+//   try {
+//     // const all_players = await Players.find();
+//     // res.send(all_players);
+//   }catch (error) {
+//     res.send(error);
+//   }
+// });
+
+function createLobby(players) {
+  return {max: maxLobbySize, players: players};
+}
+
+function mergeLobbys(lobbyA, lobbyB) {
+  const errMsg = "Merge lobby failed, size exceeds " + maxLobbySize;
+  console.assert(lobbyA.players.length + lobbyB.players.length <= maxLobbySize, errMsg);
+  return {max: maxLobbySize, players: lobbyA.players.concat(lobbyB.players)}
+}
+
+// Handle GET requests to /api/name route
+app.get("/api/:name", async(req, res) => {
+  const name = req.params;
+  console.log(util.inspect(name));
   try {
-    const all_players = await TestPlayer.find();
-    res.send(all_players);
+    const playerList = await Players.find({name: name});
+    console.log(util.inspect(playerList));
+    // throws 403 forbidden error if user does not exist
+    if (playerList.length === 0) {
+      res.send(403,"You do not have rights to visit this page");
+    }
+    res.send(createLobby(playerList));   
   }catch (error) {
     res.send(error);
   }
@@ -33,9 +63,16 @@ app.get("/api", async(req, res) => {
 // handle post request to /api route
 app.post("/api", async (req, res) => {
   try {
-    const player = req.body.player;
-    // insert into db
-    await new TestPlayer(player).save();   
+    const loginInfo = req.body.loginInfo;
+    // TODO: check if Game ID is unique
+    const playerList = await Players.find({name: name});
+    let player = {};
+    if (playerList.length == 0) {
+      player = {gameId: loginInfo.gameId, name: loginInfo.name, friendliness: defaultRating, goodTeammate: defaultIsGood};
+      await new Players(player).save();
+    } else {
+      player = playerList.head();
+    }
     res.send(player);
   } catch (error) {
     res.send(error);
@@ -51,11 +88,11 @@ app.put("/api/rate/id", async (req, res) => {
     const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1);
     const newFriendliness = player.friendliness + weight;
     const newGoodness = newFriendliness < 2;
-    await TestPlayer.findOneAndUpdate(
+    await Players.findOneAndUpdate(
       { gameId: player.gameId },
       {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
     ); 
-    const all_players = await TestPlayer.find();
+    const all_players = await Players.find();
     // console.log(util.inspect(all_players));
     res.send(all_players);
   } catch (error) {

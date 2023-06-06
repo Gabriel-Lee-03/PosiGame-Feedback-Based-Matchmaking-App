@@ -3,21 +3,22 @@ import "./App.css";
 import axios from "axios";
 
 // Screen 1 component
-function Screen1({ onSubmit }) {
+function LogIn({ onSubmit, setName }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState("");
   const [name, setName] = useState("");
   const apiUrl = "/api"
-
-  const defaultRating = 5;
-  const defaultIsGood = true;
+  
+  //const defaultRating = 5;
+  //const defaultIsGood = true;
 
   // Handle form submission
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const player = { gameId: gameId, name: name, friendliness: defaultRating, goodTeammate: defaultIsGood };
-      const response = await axios.post(apiUrl, {player: player});
+      //const player = { gameId: gameId, name: name, friendliness: defaultRating, goodTeammate: defaultIsGood };
+      const info = { gameId: gameId, name: name };
+      const player = await axios.post(apiUrl, {loginInfo: info});
       setGameId("");
       setName("");
       onSubmit(gameId, name);
@@ -53,9 +54,11 @@ function Screen1({ onSubmit }) {
 
 
 // Screen 2 component
-function Screen2({ onAddPlayer }) {
+function Lobby({ onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
-  const apiUrl = "/api"
+  const apiUrl = "/api/" + nameVal;
+
+  console.log(nameVal);
 
   const [players, setPlayers] = useState([]);
 
@@ -93,8 +96,8 @@ function Screen2({ onAddPlayer }) {
     try {
       axios.get(apiUrl)
       .then(res => {
-        const data = res.data;
-        setPlayers(data);
+        const players = res.data.players;
+        setPlayers(players);
         console.log(`component mounted`);
       });
     }catch(error) {
@@ -103,7 +106,7 @@ function Screen2({ onAddPlayer }) {
   }, []);
 
   return (
-    <div className="screen2">
+    <div className="Lobby">
       <h1>Lobby123</h1>
       <table className="lobby-table">
         <thead>
@@ -141,28 +144,30 @@ function Screen2({ onAddPlayer }) {
 
 function App() {
   // State for managing the current screen
-  const [currentScreen, setCurrentScreen] = useState("screen2");
+  const [currentScreen, setCurrentScreen] = useState("LogIn");
+  const [name, setName] = useState("");
 
-  // Handle screen change from Screen 1 to Screen 2
+
+  // Handle screen change from LogIn to Lobby
   function handleScreenChange(gameId, name) {
     // wait for server response
-    // Set the current screen to Screen 2
-    setCurrentScreen("screen2");
+    // Set the current screen to Lobby
+    setCurrentScreen("Lobby");
   }
 
-  // Handle screen change from Screen 2 to Screen 1
+  // Handle screen change from Lobby to LogIn
   function handleAddPlayer() {
-    // Set the current screen to Screen 1
-    setCurrentScreen("screen1");
+    // Set the current screen to LogIn
+    setCurrentScreen("LogIn");
   }
 
   return (
     <div className="app">
-      {/* Render Screen 1 if the current screen is Screen 1 */}
-      {currentScreen === "screen1" && <Screen1 onSubmit={handleScreenChange} />}
+      {/* Render LogIn if the current screen is LogIn */}
+      {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} setName={setName} />}
 
-      {/* Render Screen 2 if the current screen is Screen 2 */}
-      {currentScreen === "screen2" && <Screen2 onAddPlayer={handleAddPlayer} />}
+      {/* Render Lobby if the current screen is Lobby */}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={name} />}
     </div>
   );
 }
