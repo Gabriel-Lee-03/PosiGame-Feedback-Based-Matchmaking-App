@@ -3,15 +3,18 @@ const express = require("express");
 const app = express();
 const path = require('node:path');
 const util = require('util');
+
 const Players = require("./models/player");
 const connectToMongoDB = require("./db");
 const {router, createLobby} = require("./lobbys");
+const {addToSearchQueue} = require("./search");
+
 const dotenv = require('dotenv');
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 
-// requests sent to this url
-const lobbyUrl = "/api/lobby";
+// // requests sent to this url
+// const lobbyUrl = "/api/lobby";
 
 // constant variables
 const defaultRating = 5;
@@ -21,7 +24,7 @@ connectToMongoDB();
 
 // Have Node serve the files for our built React app
 app.use(express.json());
-app.use(lobbyUrl, router);
+// app.use(lobbyUrl, router);
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
@@ -39,8 +42,7 @@ app.get("/api/queue/:name", async(req, res) => {
     if (playerList.length === 0) {
       res.send(403,"You do not have rights to visit this page");
     }
-    console.log(util.inspect(createLobby(playerList)));
-    res.send(createLobby(playerList));   
+    res.send(playerList);   
   }catch (error) {
     res.send(error);
   }
@@ -69,6 +71,18 @@ app.post("/api", async (req, res) => {
   } catch (error) {
     res.send(error);
   }
+});
+
+// Handle POST requests to lobbyUrl route
+app.post("/api/lobby/search/:name", async(req, res) => {
+  console.log("at search post");
+  const name = req.params.name;
+  const players = req.body.players;
+  const thisLobby = createLobby(players);
+  const newLobby = await addToSearchQueue(thisLobby);
+  console.log(newLobby);
+  // const newLobby = {...thisLobby, players: dummyLobbys}
+  res.send(newLobby.players);
 });
 
 const SCORE_WEIGHT = 0.5;
