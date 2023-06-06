@@ -51,7 +51,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 
 
 // Screen 2 component
-function Lobby({ onAddPlayer, nameVal }) {
+function Lobby({ onSearch, onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
   const apiUrl = "/api/" + nameVal;
 
@@ -81,6 +81,10 @@ function Lobby({ onAddPlayer, nameVal }) {
       // Request was not successful
       console.error('An error occurred:', error);
     }
+  }
+
+  function handleSearch() {
+      onSearch();
   }
 
    // Handle add player button click
@@ -134,7 +138,7 @@ function Lobby({ onAddPlayer, nameVal }) {
           }
         </tbody>
       </table>
-      <button onClick={handleAddPlayer}>Back</button>
+      <button onSearch={handleSearch}>Search</button> <button onClick={handleAddPlayer}>Back</button>
     </div>
   );
 }
@@ -144,6 +148,7 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState("LogIn");
   const [userName, setUserName] = useState("");
   const [userGameID, setUserGameID] = useState("");
+  const [showButton, setShowButton] = useState(true);
 
   // Handle screen change from LogIn to Lobby
   function handleScreenChange(name, gameId) {
@@ -151,7 +156,7 @@ function App() {
     // Set the current screen to Lobby
     setCurrentScreen("Lobby");
     setUserName(name);
-    setUserGameID(gameId)
+    setUserGameID(gameId);
   }
 
   // Handle screen change from Lobby to LogIn
@@ -160,13 +165,17 @@ function App() {
     setCurrentScreen("LogIn");
   }
 
+  function handleSearch() {
+    setShowButton(!showButton);
+  }
+
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName}/>}
+      {currentScreen === "Lobby" && <Lobby onSearch={handleSearch} onAddPlayer={handleAddPlayer} nameVal={userName}/>}
     </div>
   );
 }
