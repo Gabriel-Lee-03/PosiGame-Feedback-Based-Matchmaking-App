@@ -5,55 +5,41 @@ const path = require('node:path');
 const util = require('util');
 const Players = require("./models/player");
 const connectToMongoDB = require("./db");
+const {router, createLobby} = require("./lobbys");
 const dotenv = require('dotenv');
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 
+// requests sent to this url
+const lobbyUrl = "/api/lobby";
+
+// constant variables
 const defaultRating = 5;
 const defaultIsGood = true;
-const maxLobbySize = 4;
 
 connectToMongoDB();
 
 // Have Node serve the files for our built React app
 app.use(express.json());
+app.use(lobbyUrl, router);
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-// // Handle GET requests to /api route
-// app.get("/api", async(req, res) => {
-//   try {
-//     // const all_players = await Players.find();
-//     // res.send(all_players);
-//   }catch (error) {
-//     res.send(error);
-//   }
-// });
-
-function createLobby(players) {
-  return {max: maxLobbySize, players: players};
-}
-
-function mergeLobbys(lobbyA, lobbyB) {
-  const errMsg = "Merge lobby failed, size exceeds " + maxLobbySize;
-  console.assert(lobbyA.players.length + lobbyB.players.length <= maxLobbySize, errMsg);
-  return {max: maxLobbySize, players: lobbyA.players.concat(lobbyB.players)}
-}
-
 // Handle GET requests to /api/name route
-app.get("/api/:name", async(req, res) => {
+app.get("/api/queue/:name", async(req, res) => {
   const name = req.params.name;
   console.log(util.inspect(name));
   try {
     const playerList = await Players.find({name: name});
-    console.log(util.inspect(playerList));
+    console.log("player list: " + util.inspect(playerList));
     // throws 403 forbidden error if user does not exist
     if (playerList.length === 0) {
       res.send(403,"You do not have rights to visit this page");
     }
+    console.log(util.inspect(createLobby(playerList)));
     res.send(createLobby(playerList));   
   }catch (error) {
     res.send(error);
@@ -64,8 +50,7 @@ app.get("/api/:name", async(req, res) => {
 app.post("/api", async (req, res) => {
   try {
     const loginInfo = req.body.loginInfo;
-    console.log("login info" +  util.inspect(loginInfo));
-    // TODO: check if Game ID is unique
+    console.log("login info: " +  util.inspect(loginInfo));
     const playerList = await Players.find({name: loginInfo.name});
     let player = {};
     if (playerList.length == 0) {
@@ -77,7 +62,7 @@ app.post("/api", async (req, res) => {
       await new Players(player).save();
     } else {
       console.log("get existing player");
-      player = playerList.head();
+      player = playerList[0];
     }
     console.log("post ok");
     res.send(player);

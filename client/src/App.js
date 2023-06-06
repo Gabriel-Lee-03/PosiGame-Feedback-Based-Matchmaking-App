@@ -13,12 +13,12 @@ function LogIn({ onSubmit }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      //const player = { gameId: gameId, name: name, friendliness: defaultRating, goodTeammate: defaultIsGood };
       const info = { gameId: gameId, name: name };
-      const player = await axios.post(apiUrl, {loginInfo: info});
+      await axios.post(apiUrl, {loginInfo: info});
       setGameId("");
       setName("");
       onSubmit(name);
+      console.log("login to name " + name);
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -53,34 +53,33 @@ function LogIn({ onSubmit }) {
 // Screen 2 component
 function Lobby({ onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
-  const apiUrl = "/api/" + nameVal;
+  const apiUrl = "/api/queue/" + nameVal;
+  const lobbyUrl = "/api/lobby/";
 
-  console.log(nameVal);
-
-  const [players, setPlayers] = useState([]);
+  const [lobby, setLobby] = useState({});
 
   async function increaseRating(player) {
-    try {
-      const response = await axios.put(ratingUrl, {player: player, increase: true});
-      const data = await response.data;
-      console.log("inc resp " + data);
-      setPlayers(data);
-    } catch (error) {
-      // Request was not successful
-      console.error('An error occurred:', error);
-    }
+    // try {
+    //   const response = await axios.put(ratingUrl, {player: player, increase: true});
+    //   const data = await response.data;
+    //   console.log("inc resp " + data);
+    //   setPlayers(data);
+    // } catch (error) {
+    //   // Request was not successful
+    //   console.error('An error occurred:', error);
+    // }
   }
 
   async function decreaseRating(player) {
-    try {
-      const response = await axios.put(ratingUrl, {player: player, increase: false});
-      const data = await response.data;
-      console.log("dec resp " + data);
-      setPlayers(data);
-    } catch (error) {
-      // Request was not successful
-      console.error('An error occurred:', error);
-    }
+    // try {
+    //   const response = await axios.put(ratingUrl, {player: player, increase: false});
+    //   const data = await response.data;
+    //   console.log("dec resp " + data);
+    //   setPlayers(data);
+    // } catch (error) {
+    //   // Request was not successful
+    //   console.error('An error occurred:', error);
+    // }
   }
 
    // Handle add player button click
@@ -89,12 +88,19 @@ function Lobby({ onAddPlayer, nameVal }) {
     onAddPlayer();
   }
 
+  async function handleSearchPlayer() {
+    const response = await axios.get(lobbyUrl, {lobby: lobby});
+    const newLobby = response.data.lobby;
+    setLobby(newLobby);    
+  }
+
   useEffect(() => {
     try {
       axios.get(apiUrl)
       .then(res => {
-        const players = res.data.players;
-        setPlayers(players);
+        console.log("api url: " + apiUrl);
+        const lobby = res.data.lobby;
+        setLobby(lobby);
         console.log(`component mounted`);
       });
     }catch(error) {
@@ -116,7 +122,7 @@ function Lobby({ onAddPlayer, nameVal }) {
         </thead>
         <tbody>
           {
-            players.map((player) => (
+            lobby.players.map((player) => (
               <tr key={player._id}>
                 <td>{player.gameId}</td>
                 <td>{player.name}</td>
@@ -135,6 +141,7 @@ function Lobby({ onAddPlayer, nameVal }) {
         </tbody>
       </table>
       <button onClick={handleAddPlayer}>Add Player</button>
+      <button onClick={handleSearchPlayer}>Search Players</button>
     </div>
   );
 }
