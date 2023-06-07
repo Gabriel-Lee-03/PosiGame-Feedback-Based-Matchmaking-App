@@ -65,10 +65,45 @@ button {
   cursor: pointer;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown__button {
+  padding: 10px;
+  background-color: #f8c10c;
+  border: 1px solid #ccc;
   cursor: pointer;
+}
+
+.dropdown__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown__list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown__list li:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown__list li.selected {
+  background-color: #f0f0f0;
+}
+
+.dropdown.open .dropdown__list {
+  display: block;
 }

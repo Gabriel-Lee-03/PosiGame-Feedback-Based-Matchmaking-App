@@ -49,6 +49,32 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   );
 }
 
+const DropdownMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('Rate');
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
+
+  const handleButtonClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className={`dropdown ${isOpen ? 'open' : ''}`}>
+      <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
+      <ul className="dropdown__list">
+        <li onClick={() => handleOptionClick('1 - discriminatory')}>1 - discriminatory</li>
+        <li onClick={() => handleOptionClick('2 - rude and unkind')}>2 - rude and unkind</li>
+        <li onClick={() => handleOptionClick('3 - normal interactions')}>3 - normal interactions</li>
+        <li onClick={() => handleOptionClick('4 - kind and fun')}>4 - kind and fun</li>
+        <li onClick={() => handleOptionClick('5 - positive environment')}>5 - positive environment</li>
+      </ul>
+    </div>
+  );
+};
 
 // Screen 2 component
 function Lobby({ onSearch, onAddPlayer, nameVal }) {
@@ -58,30 +84,6 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
   console.log(nameVal);
 
   const [players, setPlayers] = useState([]);
-
-  async function increaseRating(player) {
-    try {
-      const response = await axios.put(ratingUrl, {player: player, increase: true});
-      const data = await response.data;
-      console.log("inc resp " + data);
-      setPlayers(data);
-    } catch (error) {
-      // Request was not successful
-      console.error('An error occurred:', error);
-    }
-  }
-
-  async function decreaseRating(player) {
-    try {
-      const response = await axios.put(ratingUrl, {player: player, increase: false});
-      const data = await response.data;
-      console.log("dec resp " + data);
-      setPlayers(data);
-    } catch (error) {
-      // Request was not successful
-      console.error('An error occurred:', error);
-    }
-  }
 
   function handleSearch() {
       onSearch();
@@ -114,8 +116,7 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
           <tr>
             <th>Username</th>
             <th>Game ID</th>
-            <th>Friendliness</th>
-            {/* <th>Good teammate?</th> */}
+            <th>Rating</th>
           </tr>
         </thead>
         <tbody>
@@ -124,15 +125,9 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
               <tr key={player._id}>
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
-                <td>{player.friendliness}</td>
-                {/* <td>
-                  <button className="thumbs-up-button" onClick={() => increaseRating(player)}>
-                    {"👍"}
-                  </button>
-                  <button className="thumbs-down-button" onClick={() => decreaseRating(player)}>
-                    {"👎"}
-                  </button>
-                </td> */}
+                <td>
+                  <DropdownMenu/>
+                </td>
               </tr>
             ))
           }
