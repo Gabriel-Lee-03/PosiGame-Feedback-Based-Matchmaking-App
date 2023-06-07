@@ -49,7 +49,8 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   );
 }
 
-const DropdownMenu = () => {
+// Rating button
+const DropdownMenu = (selectedUser) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('Rate');
 
@@ -62,6 +63,13 @@ const DropdownMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleConfirmClick = () => {
+    // Send the selectedOption value to the backend
+    // Here, you can use an API call or any other method to send the data to your backend server
+    console.log("Selected user:", selectedUser.name);
+    console.log("Selected option:", selectedOption);
+  };
+
   return (
     <div className={`dropdown ${isOpen ? 'open' : ''}`}>
       <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
@@ -72,6 +80,7 @@ const DropdownMenu = () => {
         <li onClick={() => handleOptionClick('4 - kind and fun')}>4 - kind and fun</li>
         <li onClick={() => handleOptionClick('5 - positive environment')}>5 - positive environment</li>
       </ul>
+      <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
     </div>
   );
 };
@@ -126,7 +135,7 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
                 <td>
-                  <DropdownMenu/>
+                  <DropdownMenu selectedUser={player}/>
                 </td>
               </tr>
             ))
