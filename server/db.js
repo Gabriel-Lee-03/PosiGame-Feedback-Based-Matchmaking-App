@@ -12,7 +12,7 @@ const dbName = "players";
 // start mongod on seperate terminal
 // const uri = "mongodb://localhost:27017/players";
 
-// DEPLOYMENT
+// // DEPLOYMENT
 const uri = "mongodb+srv://"+USER+":"+MONGO_API_KEY+
             "@cluster0.nyxdbux.mongodb.net/" + dbName +
             "?retryWrites=true&w=majority";

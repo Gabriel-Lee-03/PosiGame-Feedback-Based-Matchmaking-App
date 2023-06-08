@@ -53,10 +53,12 @@ const Rating = (selectedUser) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('Rate');
   const [showRating, setShowRating] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
+    setShowConfirm(true);
   };
 
   const handleButtonClick = () => {
@@ -79,15 +81,15 @@ const Rating = (selectedUser) => {
       <>
         <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
         <ul className="dropdown__list">
-          <li onClick={() => handleOptionClick('1 - discriminatory')}>1 - discriminatory</li>
-          <li onClick={() => handleOptionClick('2 - rude and unkind')}>2 - rude and unkind</li>
-          <li onClick={() => handleOptionClick('3 - normal interactions')}>3 - normal interactions</li>
-          <li onClick={() => handleOptionClick('4 - kind and fun')}>4 - kind and fun</li>
-          <li onClick={() => handleOptionClick('5 - positive environment')}>5 - positive environment</li>
+          <li onClick={() => handleOptionClick(1)}>1 - discriminatory</li>
+          <li onClick={() => handleOptionClick(2)}>2 - rude and unkind</li>
+          <li onClick={() => handleOptionClick(3)}>3 - normal interactions</li>
+          <li onClick={() => handleOptionClick(4)}>4 - kind and fun</li>
+          <li onClick={() => handleOptionClick(5)}>5 - positive environment</li>
         </ul>
-        {!showRating && (
+        {showConfirm ? (//!showRating && (
           <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
-        )}
+        ) : <div className="no_confirm"></div>}
       </>
       )}
       </div>
@@ -96,11 +98,12 @@ const Rating = (selectedUser) => {
 
 // Screen 2 component
 function Lobby({ onAddPlayer, nameVal }) {
-  const ratingUrl = "/api/rate/id";
+  const ratingUrl = "/api/rate";
   const apiUrl = "/api/queue/" + nameVal;
   const lobbyUrl = "/api/lobby/search/" + nameVal;
 
   const [players, setPlayers] = useState([]);
+  const [showSearch, setShowSearch] = useState(true);
 
   async function increaseRating(player) {
     // try {
@@ -132,10 +135,11 @@ function Lobby({ onAddPlayer, nameVal }) {
   }
 
   async function handleSearch() {
-    onSearch();
+    setShowSearch(false);
     console.log(players);
     try {
       const response = await axios.post(lobbyUrl, {players: players});
+      setShowSearch(true);
       const newPlayers = response.data;
       setPlayers(newPlayers);
     } catch (error) {
@@ -176,7 +180,7 @@ function Lobby({ onAddPlayer, nameVal }) {
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
                 <td>
-                  <Rating selectedUser={player}/>
+                { player.name != nameVal ? (<Rating selectedUser={nameVal}/>) : '' }
                 </td>
               </tr>
             ))

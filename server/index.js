@@ -34,10 +34,10 @@ app.listen(PORT, () => {
 // Handle GET requests to /api/name route
 app.get("/api/queue/:name", async(req, res) => {
   const name = req.params.name;
-  console.log(util.inspect(name));
+  // console.log(util.inspect(name));
   try {
     const playerList = await Players.find({name: name});
-    console.log("player list: " + util.inspect(playerList));
+    // console.log("player list: " + util.inspect(playerList));
     // throws 403 forbidden error if user does not exist
     if (playerList.length === 0) {
       res.send(403,"You do not have rights to visit this page");
@@ -78,7 +78,13 @@ app.post("/api/lobby/search/:name", async(req, res) => {
   console.log("at search post");
   const name = req.params.name;
   const players = req.body.players;
-  const thisLobby = createLobby(players);
+  let updatedPlayers = [];
+  for (i = 0; i < players.length; i++) {
+    let updatedPlayer = await Players.findOne({name: players[i].name})
+    console.log("player from db: " + util.inspect(updatedPlayer));
+    updatedPlayers.push(updatedPlayer);
+  }
+  const thisLobby = createLobby(updatedPlayers);
   const newLobby = await addToSearchQueue(thisLobby);
   console.log(newLobby);
   // const newLobby = {...thisLobby, players: dummyLobbys}
@@ -87,19 +93,29 @@ app.post("/api/lobby/search/:name", async(req, res) => {
 
 const SCORE_WEIGHT = 0.5;
 
-app.put("/api/rate/id", async (req, res) => {
+//handles PUT request to route with confirmed rating 
+app.put("/api/rate", async (req, res) => {
   try {
     console.log(`call put`);
     const player = req.body.player;
-    const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1);
-    const newFriendliness = player.friendliness + weight;
-    const newGoodness = newFriendliness < 2;
+    const rating = req.body.rating;
+    const playerDB = await Players.findOne({name: player.name});
+    const totalScore = playerDB.totalScore;
+    const ratingCount = playerDB.ratingCount;
+    const newTotalScore = totalScore + rating;
+    const newRatingCount = ratingCount ++;
     await Players.findOneAndUpdate(
-      { gameId: player.gameId },
-      {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
-    ); 
-    const all_players = await Players.find();
-    res.send(all_players);
+      { name: player.name },
+      {...player, friendliness: newTotalScore / newRatingCount, ratingCount: newRatingCount, totalScore: newTotalScore}
+    );
+    // const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1);
+    // const newFriendliness = player.friendliness + weight;
+    // const newGoodness = newFriendliness < 2;
+    // await Players.findOneAndUpdate(
+    //   { gameId: player.gameId },
+    //   {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
+    // ); 
+    res.send("ok");
   } catch (error) {
       res.send(error);
   }

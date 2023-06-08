@@ -15,14 +15,18 @@ const playerSchema = new Schema(
       type: Number,
       required: true,
     },
-    goodTeammate: {
-      type: Boolean,
+    ratingCount: {
+      type: Number,
+      default: true,
+    },
+    totalScore: {
+      type: Number,
       default: true,
     },
   }, 
   { 
-    collection : 'test_players' 
+    collection : 'players' 
   }
 );
 
-module.exports =  model("TestPlayer", playerSchema);
+module.exports =  model("Player", playerSchema);

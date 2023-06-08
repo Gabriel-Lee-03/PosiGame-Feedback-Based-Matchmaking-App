@@ -1,21 +1,23 @@
-const {mergeLobbys, testLobby} = require("./lobbys");
+const {mergeLobbys, testLobby1, testLobby2, testLobby3} = require("./lobbys");
 const util = require('util');
 
 const maxRatingDifference = 5
 
 let isRunningSearch = false;
-const testLobbyObj = {lobby: testLobby, resolve: []};
-let searchingQueue = [testLobbyObj];
+const testLobbyObj1 = {lobby: testLobby1, resolve: []};
+const testLobbyObj2 = {lobby: testLobby2, resolve: []};
+const testLobbyObj3 = {lobby: testLobby3, resolve: []};
+let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 function search() {
     
     isRunningSearch = true;
     while (searchingQueue.length > 0) {
-        console.log("searchQueue:" + util.inspect(searchingQueue));
+        // console.log("searchQueue:" + util.inspect(searchingQueue));
         let objA = searchingQueue.shift();
         let lobbyA = objA.lobby;
-        console.log("lobbyObj:" + util.inspect(objA));
-        console.log("lobbyA:" + util.inspect(objA.lobby));
+        // console.log("lobbyObj:" + util.inspect(objA));
+        // console.log("lobbyA:" + util.inspect(objA.lobby));
         let resolveA = objA.resolve;
         if (lobbyA.spaceLeft === 0) {
             resolveA.forEach(res => res(lobbyA));

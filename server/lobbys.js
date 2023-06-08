@@ -30,7 +30,9 @@ const testPlayer3 = { gameId: "testID_3",
                       friendliness: defaultRating,
                       goodTeammate: defaultIsGood};
 
-const testLobby = createLobby([testPlayer1, testPlayer2, testPlayer3]);
+const testLobby1 = createLobby([testPlayer1]);
+const testLobby2 = createLobby([testPlayer2]);
+const testLobby3 = createLobby([testPlayer3]);
 
 // const dummyLobbys = [
 //   createLobby({ gameId: "dummyId_1",
@@ -83,4 +85,4 @@ function mergeLobbys(lobbyA, lobbyB) {
           averageRating: ratingSum / newPlayersList.length};
 }
 
-module.exports = {router, matchingWorker, createLobby, mergeLobbys, testLobby}
+module.exports = {router, matchingWorker, createLobby, mergeLobbys, testLobby1, testLobby2, testLobby3}
