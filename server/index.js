@@ -18,7 +18,8 @@ const PORT = process.env.PORT || 3001;
 
 // constant variables
 const defaultRating = 5;
-const defaultIsGood = true;
+const defaultRatingCount = 1;
+const defaultTotalScore = 5;
 
 connectToMongoDB();
 
@@ -60,7 +61,8 @@ app.post("/api", async (req, res) => {
       player = {gameId: loginInfo.gameId,
         name: loginInfo.name,
         friendliness: defaultRating,
-        goodTeammate: defaultIsGood};
+        ratingCount: defaultRatingCount,
+        totalScore: defaultTotalScore};
       await new Players(player).save();
     } else {
       console.log("get existing player");
@@ -86,8 +88,6 @@ app.post("/api/lobby/search/:name", async(req, res) => {
   }
   const thisLobby = createLobby(updatedPlayers);
   const newLobby = await addToSearchQueue(thisLobby);
-  console.log(newLobby);
-  // const newLobby = {...thisLobby, players: dummyLobbys}
   res.send(newLobby.players);
 });
 
@@ -98,23 +98,22 @@ app.put("/api/rate", async (req, res) => {
   try {
     console.log(`call put`);
     const player = req.body.player;
+    console.log("ratedPlayer: " + util.inspect(player));
     const rating = req.body.rating;
+    console.log("rating: " + util.inspect(rating));
     const playerDB = await Players.findOne({name: player.name});
+    console.log("playerDB: " + util.inspect(playerDB));
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
     const newTotalScore = totalScore + rating;
-    const newRatingCount = ratingCount ++;
+    const newRatingCount = ratingCount + 1;
+    console.log("newScore: " + newTotalScore);
+    console.log("newCount: " + newRatingCount);
     await Players.findOneAndUpdate(
       { name: player.name },
-      {...player, friendliness: newTotalScore / newRatingCount, ratingCount: newRatingCount, totalScore: newTotalScore}
+      {...playerDB, friendliness: newTotalScore / newRatingCount, ratingCount: newRatingCount, totalScore: newTotalScore}
     );
-    // const weight = req.body.increase? SCORE_WEIGHT : (SCORE_WEIGHT * -1);
-    // const newFriendliness = player.friendliness + weight;
-    // const newGoodness = newFriendliness < 2;
-    // await Players.findOneAndUpdate(
-    //   { gameId: player.gameId },
-    //   {...player, friendliness: newFriendliness,  goodTeammate: newGoodness}
-    // ); 
+
     res.send("ok");
   } catch (error) {
       res.send(error);
