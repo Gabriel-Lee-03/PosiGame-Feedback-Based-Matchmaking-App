@@ -18,17 +18,20 @@ function createLobby(players) {
 const testPlayer1 = { gameId: "testID_1",
                       name: "testPlayer1",
                       friendliness: defaultRating,
-                      goodTeammate: defaultIsGood};
+                      ratingCount: 1,
+                      totalScore: 5};
 
 const testPlayer2 = { gameId: "testID_2",
                       name: "testPlayer2",
                       friendliness: defaultRating,
-                      goodTeammate: defaultIsGood};
+                      ratingCount: 2,
+                      totalScore: 10};
 
 const testPlayer3 = { gameId: "testID_3",
                       name: "testPlayer3",
                       friendliness: defaultRating,
-                      goodTeammate: defaultIsGood};
+                      ratingCount: 4,
+                      totalScore: 20};
 
 const testLobby1 = createLobby([testPlayer1]);
 const testLobby2 = createLobby([testPlayer2]);
