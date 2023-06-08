@@ -167,6 +167,7 @@ function Lobby({ onAddPlayer, nameVal }) {
           <tr>
             <th>Username</th>
             <th>Game ID</th>
+            <th>Friendliness</th>
             <th>Rating</th>
           </tr>
         </thead>
@@ -176,6 +177,7 @@ function Lobby({ onAddPlayer, nameVal }) {
               <tr key={player._id}>
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
+                <td>{player.friendliness}</td>
                 <td>
                 { player.name != nameVal ? (<Rating ratedPlayer = {player} currentUser = {nameVal}/>) : '' }
                 </td>
