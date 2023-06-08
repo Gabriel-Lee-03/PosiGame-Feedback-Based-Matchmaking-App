@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 
-// Screen 1 component
+// Player screen
 function LogIn({ onSubmit, nameVal, savedGameID }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState(savedGameID);
@@ -48,9 +48,54 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   );
 }
 
+// Rating dropdown and confirm button
+const Rating = (selectedUser) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('Rate');
+  const [showRating, setShowRating] = useState(false);
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
+
+  const handleButtonClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleConfirmClick = () => {
+    setShowRating(true);
+    // Send the selectedOption value to the backend
+    // Here, you can use an API call or any other method to send the data to your backend server
+    console.log("Selected user:", selectedUser.name);
+    console.log("Selected option:", selectedOption);
+  };
+
+  return (
+    <div className={`dropdown ${isOpen ? 'open' : ''}`}>
+      {showRating ? (
+        <p className="rating__text">{selectedOption}</p>
+      ) : (
+      <>
+        <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
+        <ul className="dropdown__list">
+          <li onClick={() => handleOptionClick('1 - discriminatory')}>1 - discriminatory</li>
+          <li onClick={() => handleOptionClick('2 - rude and unkind')}>2 - rude and unkind</li>
+          <li onClick={() => handleOptionClick('3 - normal interactions')}>3 - normal interactions</li>
+          <li onClick={() => handleOptionClick('4 - kind and fun')}>4 - kind and fun</li>
+          <li onClick={() => handleOptionClick('5 - positive environment')}>5 - positive environment</li>
+        </ul>
+        {!showRating && (
+          <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
+        )}
+      </>
+      )}
+      </div>
+  );
+};
 
 // Screen 2 component
-function Lobby({ onSearch, onAddPlayer, nameVal }) {
+function Lobby({ onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
   const apiUrl = "/api/queue/" + nameVal;
   const lobbyUrl = "/api/lobby/search/" + nameVal;
@@ -121,7 +166,7 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
           <tr>
             <th>Username</th>
             <th>Game ID</th>
-            <th>Friendliness</th>
+            <th>Rating</th>
           </tr>
         </thead>
         <tbody>
@@ -130,13 +175,15 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
               <tr key={player._id}>
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
-                <td>{player.friendliness}</td>
+                <td>
+                  <Rating selectedUser={player}/>
+                </td>
               </tr>
             ))
           }
         </tbody>
       </table>
-      <button onClick={handleSearchPlayer}>Search</button>
+      {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
       <button onClick={handleAddPlayer}>Back</button>
     </div>
   );
@@ -147,7 +194,6 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState("LogIn");
   const [userName, setUserName] = useState("");
   const [userGameID, setUserGameID] = useState("");
-  const [showButton, setShowButton] = useState(true);
 
   // Handle screen change from LogIn to Lobby
   function handleScreenChange(name, gameId) {
@@ -164,17 +210,13 @@ function App() {
     setCurrentScreen("LogIn");
   }
 
-  function handleSearch() {
-    setShowButton(!showButton);
-  }
-
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onSearch={handleSearch} onAddPlayer={handleAddPlayer} nameVal={userName}/>}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName}/>}
     </div>
   );
 }
