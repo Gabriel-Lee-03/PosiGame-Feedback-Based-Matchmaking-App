@@ -49,7 +49,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 }
 
 // Rating dropdown and confirm button
-const Rating = (ratedPlayer, currentUser) => {
+const Rating = (ratedPlayer) => {
   const ratingUrl = "/api/rate";
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState('Rate');
@@ -165,7 +165,7 @@ function Lobby({ onAddPlayer, nameVal }) {
                 <td>{player.gameId}</td>
                 <td>{player.friendliness}</td>
                 <td>
-                { player.name != nameVal ? (<Rating ratedPlayer = {player} currentUser = {nameVal}/>) : '' }
+                { player.name != nameVal ? (<Rating ratedPlayer={player}/>) : '' }
                 </td>
               </tr>
             ))

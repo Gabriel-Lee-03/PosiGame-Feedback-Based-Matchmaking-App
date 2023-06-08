@@ -82,7 +82,7 @@ app.post("/api/lobby/search/:name", async(req, res) => {
   const players = req.body.players;
   let updatedPlayers = [];
   for (i = 0; i < players.length; i++) {
-    let updatedPlayer = await Players.findOne({name: players[i].name})
+    let updatedPlayer = await Players.find({name: players[i].name})
     console.log("player from db: " + util.inspect(updatedPlayer));
     updatedPlayers.push(updatedPlayer);
   }
