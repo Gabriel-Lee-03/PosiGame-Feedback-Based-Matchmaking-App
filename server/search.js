@@ -7,7 +7,7 @@ let isRunningSearch = false;
 const testLobbyObj1 = {lobby: testLobby1, resolve: []};
 const testLobbyObj2 = {lobby: testLobby2, resolve: []};
 const testLobbyObj3 = {lobby: testLobby3, resolve: []};
-let searchingQueue = [];
+let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 function search() {
     
