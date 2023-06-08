@@ -13,12 +13,11 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      //const player = { gameId: gameId, name: name, friendliness: defaultRating, goodTeammate: defaultIsGood };
       const info = { gameId: gameId, name: name };
-      const player = await axios.post(apiUrl, {loginInfo: info});
+      await axios.post(apiUrl, {loginInfo: info});
       setGameId("");
       setName("");
-      onSubmit(name, gameId);
+      onSubmit(name);
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -53,52 +52,60 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 // Screen 2 component
 function Lobby({ onSearch, onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
-  const apiUrl = "/api/" + nameVal;
-
-  console.log(nameVal);
+  const apiUrl = "/api/queue/" + nameVal;
+  const lobbyUrl = "/api/lobby/search/" + nameVal;
 
   const [players, setPlayers] = useState([]);
 
   async function increaseRating(player) {
-    try {
-      const response = await axios.put(ratingUrl, {player: player, increase: true});
-      const data = await response.data;
-      console.log("inc resp " + data);
-      setPlayers(data);
-    } catch (error) {
-      // Request was not successful
-      console.error('An error occurred:', error);
-    }
+    // try {
+    //   const response = await axios.put(ratingUrl, {player: player, increase: true});
+    //   const data = await response.data;
+    //   console.log("inc resp " + data);
+    //   setPlayers(data);
+    // } catch (error) {
+    //   // Request was not successful
+    //   console.error('An error occurred:', error);
+    // }
   }
 
   async function decreaseRating(player) {
-    try {
-      const response = await axios.put(ratingUrl, {player: player, increase: false});
-      const data = await response.data;
-      console.log("dec resp " + data);
-      setPlayers(data);
-    } catch (error) {
-      // Request was not successful
-      console.error('An error occurred:', error);
-    }
-  }
-
-  function handleSearch() {
-      onSearch();
+    // try {
+    //   const response = await axios.put(ratingUrl, {player: player, increase: false});
+    //   const data = await response.data;
+    //   console.log("dec resp " + data);
+    //   setPlayers(data);
+    // } catch (error) {
+    //   // Request was not successful
+    //   console.error('An error occurred:', error);
+    // }
   }
 
    // Handle add player button click
   function handleAddPlayer() {
-  // Call the onAddPlayer callback
     onAddPlayer();
+  }
+
+  async function handleSearch() {
+    onSearch();
+    console.log(players);
+    try {
+      const response = await axios.post(lobbyUrl, {players: players});
+      const newPlayers = response.data;
+      setPlayers(newPlayers);
+    } catch (error) {
+      // Request was not successful
+      console.error('An error occurred:', error);
+    } 
   }
 
   useEffect(() => {
     try {
       axios.get(apiUrl)
       .then(res => {
-        const players = res.data.players;
+        const players = res.data;
         setPlayers(players);
+        console.log(players);
         console.log(`component mounted`);
       });
     }catch(error) {
@@ -115,7 +122,6 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
             <th>Username</th>
             <th>Game ID</th>
             <th>Friendliness</th>
-            {/* <th>Good teammate?</th> */}
           </tr>
         </thead>
         <tbody>
@@ -125,20 +131,13 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
                 <td>{player.friendliness}</td>
-                {/* <td>
-                  <button className="thumbs-up-button" onClick={() => increaseRating(player)}>
-                    {"👍"}
-                  </button>
-                  <button className="thumbs-down-button" onClick={() => decreaseRating(player)}>
-                    {"👎"}
-                  </button>
-                </td> */}
               </tr>
             ))
           }
         </tbody>
       </table>
-      <button onSearch={handleSearch}>Search</button> <button onClick={handleAddPlayer}>Back</button>
+      <button onClick={handleSearchPlayer}>Search</button>
+      <button onClick={handleAddPlayer}>Back</button>
     </div>
   );
 }
