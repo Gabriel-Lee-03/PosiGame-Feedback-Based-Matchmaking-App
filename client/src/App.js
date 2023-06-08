@@ -110,7 +110,7 @@ function Lobby({ onAddPlayer, nameVal }) {
 
   async function handleSearch() {
     setShowSearch(false);
-    console.log(players);
+    // console.log(players);
     try {
       const response = await axios.post(lobbyUrl, {players: players});
       setShowSearch(true);

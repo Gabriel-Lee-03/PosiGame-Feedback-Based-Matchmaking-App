@@ -18,7 +18,20 @@ let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 async function search() { 
     isRunningSearch = true;
-    await updatePlayers();
+    // const player1 = await Players.findOne({name: testPlayer1});
+    // console.log("testplayer1: " + util.inspect(player1));
+    // const player2 = await Players.findOne({name: testPlayer2});
+    // const player3 = await Players.findOne({name: testPlayer3});
+    // const testLobby1 = createLobby([player1]);
+    // const testLobby2 = createLobby([player2]);
+    // const testLobby3 = createLobby([player3]);
+    // const testLobbyObj1 = {lobby: testLobby1, resolve: []};
+    // const testLobbyObj2 = {lobby: testLobby2, resolve: []};
+    // const testLobbyObj3 = {lobby: testLobby3, resolve: []};
+    // searchingQueue.push(testLobbyObj1);
+    // searchingQueue.push(testLobbyObj2);
+    // searchingQueue.push(testLobbyObj3);
+    // await updatePlayers();
     while (searchingQueue.length > 0) {
         // console.log("searchQueue:" + util.inspect(searchingQueue));
         let objA = searchingQueue.shift();
