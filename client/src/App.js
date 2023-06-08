@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 
-// Screen 1 component
+// Player screen
 function LogIn({ onSubmit, nameVal, savedGameID }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState(savedGameID);
@@ -49,8 +49,8 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   );
 }
 
-// Rating button
-const DropdownMenu = (selectedUser) => {
+// Rating dropdown and confirm button
+const Rating = (selectedUser) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('Rate');
   const [showRating, setShowRating] = useState(false);
@@ -96,22 +96,23 @@ const DropdownMenu = (selectedUser) => {
 };
 
 // Screen 2 component
-function Lobby({ onSearch, onAddPlayer, nameVal }) {
+function Lobby({ onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
   const apiUrl = "/api/" + nameVal;
 
   console.log(nameVal);
 
   const [players, setPlayers] = useState([]);
-
-  function handleSearch() {
-      onSearch();
-  }
+  const [showSearch, setShowSearch] = useState(true);
 
    // Handle add player button click
   function handleAddPlayer() {
   // Call the onAddPlayer callback
     onAddPlayer();
+  }
+
+  function handleSearch() {
+    setShowSearch(!showSearch);
   }
 
   useEffect(() => {
@@ -145,14 +146,15 @@ function Lobby({ onSearch, onAddPlayer, nameVal }) {
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
                 <td>
-                  <DropdownMenu selectedUser={player}/>
+                  <Rating selectedUser={player}/>
                 </td>
               </tr>
             ))
           }
         </tbody>
       </table>
-      <button onSearch={handleSearch}>Search</button> <button onClick={handleAddPlayer}>Back</button>
+      {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
+      <button onClick={handleAddPlayer}>Back</button>
     </div>
   );
 }
@@ -162,7 +164,6 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState("LogIn");
   const [userName, setUserName] = useState("");
   const [userGameID, setUserGameID] = useState("");
-  const [showButton, setShowButton] = useState(true);
 
   // Handle screen change from LogIn to Lobby
   function handleScreenChange(name, gameId) {
@@ -179,17 +180,13 @@ function App() {
     setCurrentScreen("LogIn");
   }
 
-  function handleSearch() {
-    setShowButton(!showButton);
-  }
-
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onSearch={handleSearch} onAddPlayer={handleAddPlayer} nameVal={userName}/>}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName}/>}
     </div>
   );
 }

@@ -112,3 +112,8 @@ button {
   color: #f8c10c;
   font-weight: bold;
 }
+
+.searching__text {
+  color: #007bff;
+  font-weight: bold;
+}
