@@ -3,7 +3,6 @@ const router = express.Router();
 const util = require('util');
 
 const defaultRating = 5;
-const defaultIsGood = true;
 const maxLobbySize = 2;
 
 function createLobby(players) {
