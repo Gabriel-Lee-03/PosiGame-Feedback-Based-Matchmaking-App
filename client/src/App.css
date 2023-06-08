@@ -107,3 +107,8 @@ button {
 .dropdown.open .dropdown__list {
   display: block;
 }
+
+.rating__text {
+  color: #f8c10c;
+  font-weight: bold;
+}

@@ -53,6 +53,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 const DropdownMenu = (selectedUser) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('Rate');
+  const [showRating, setShowRating] = useState(false);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -64,6 +65,7 @@ const DropdownMenu = (selectedUser) => {
   };
 
   const handleConfirmClick = () => {
+    setShowRating(true);
     // Send the selectedOption value to the backend
     // Here, you can use an API call or any other method to send the data to your backend server
     console.log("Selected user:", selectedUser.name);
@@ -72,16 +74,24 @@ const DropdownMenu = (selectedUser) => {
 
   return (
     <div className={`dropdown ${isOpen ? 'open' : ''}`}>
-      <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
-      <ul className="dropdown__list">
-        <li onClick={() => handleOptionClick('1 - discriminatory')}>1 - discriminatory</li>
-        <li onClick={() => handleOptionClick('2 - rude and unkind')}>2 - rude and unkind</li>
-        <li onClick={() => handleOptionClick('3 - normal interactions')}>3 - normal interactions</li>
-        <li onClick={() => handleOptionClick('4 - kind and fun')}>4 - kind and fun</li>
-        <li onClick={() => handleOptionClick('5 - positive environment')}>5 - positive environment</li>
-      </ul>
-      <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
-    </div>
+      {showRating ? (
+        <p className="rating__text">{selectedOption}</p>
+      ) : (
+      <>
+        <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
+        <ul className="dropdown__list">
+          <li onClick={() => handleOptionClick('1 - discriminatory')}>1 - discriminatory</li>
+          <li onClick={() => handleOptionClick('2 - rude and unkind')}>2 - rude and unkind</li>
+          <li onClick={() => handleOptionClick('3 - normal interactions')}>3 - normal interactions</li>
+          <li onClick={() => handleOptionClick('4 - kind and fun')}>4 - kind and fun</li>
+          <li onClick={() => handleOptionClick('5 - positive environment')}>5 - positive environment</li>
+        </ul>
+        {!showRating && (
+          <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
+        )}
+      </>
+      )}
+      </div>
   );
 };
 
