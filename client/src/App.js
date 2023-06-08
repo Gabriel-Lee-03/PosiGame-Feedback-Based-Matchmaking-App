@@ -3,10 +3,10 @@ import "./App.css";
 import axios from "axios";
 
 // Screen 1 component
-function LogIn({ onSubmit }) {
+function LogIn({ onSubmit, nameVal, savedGameID }) {
   // State for Game ID and Name inputs
-  const [gameId, setGameId] = useState("");
-  const [name, setName] = useState("");
+  const [gameId, setGameId] = useState(savedGameID);
+  const [name, setName] = useState(nameVal);
   const apiUrl = "/api"
 
   // Handle form submission
@@ -18,7 +18,7 @@ function LogIn({ onSubmit }) {
       const player = await axios.post(apiUrl, {loginInfo: info});
       setGameId("");
       setName("");
-      onSubmit(name);
+      onSubmit(name, gameId);
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -26,22 +26,22 @@ function LogIn({ onSubmit }) {
   }
 
   return (
-    <div className="screen1">
+    <div className="Player">
       <h1>Player</h1>
+      <div className="input-row">
+        <label>Username: </label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
       <div className="input-row">
         <label>Game ID: </label>
         <input
           type="text"
           value={gameId}
           onChange={(e) => setGameId(e.target.value)}
-        />
-      </div>
-      <div className="input-row">
-        <label>Name: </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <button onClick={e => handleSubmit(e)}>Submit</button>
@@ -51,7 +51,7 @@ function LogIn({ onSubmit }) {
 
 
 // Screen 2 component
-function Lobby({ onAddPlayer, nameVal }) {
+function Lobby({ onSearch, onAddPlayer, nameVal }) {
   const ratingUrl = "/api/rate/id";
   const apiUrl = "/api/" + nameVal;
 
@@ -83,6 +83,10 @@ function Lobby({ onAddPlayer, nameVal }) {
     }
   }
 
+  function handleSearch() {
+      onSearch();
+  }
+
    // Handle add player button click
   function handleAddPlayer() {
   // Call the onAddPlayer callback
@@ -104,37 +108,37 @@ function Lobby({ onAddPlayer, nameVal }) {
 
   return (
     <div className="Lobby">
-      <h1>Lobby123</h1>
+      <h1>Lobby</h1>
       <table className="lobby-table">
         <thead>
           <tr>
+            <th>Username</th>
             <th>Game ID</th>
-            <th>Name</th>
             <th>Friendliness</th>
-            <th>Good teammate?</th>
+            {/* <th>Good teammate?</th> */}
           </tr>
         </thead>
         <tbody>
           {
             players.map((player) => (
               <tr key={player._id}>
-                <td>{player.gameId}</td>
                 <td>{player.name}</td>
+                <td>{player.gameId}</td>
                 <td>{player.friendliness}</td>
-                <td>
+                {/* <td>
                   <button className="thumbs-up-button" onClick={() => increaseRating(player)}>
                     {"👍"}
                   </button>
                   <button className="thumbs-down-button" onClick={() => decreaseRating(player)}>
                     {"👎"}
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))
           }
         </tbody>
       </table>
-      <button onClick={handleAddPlayer}>Add Player</button>
+      <button onSearch={handleSearch}>Search</button> <button onClick={handleAddPlayer}>Back</button>
     </div>
   );
 }
@@ -143,13 +147,16 @@ function App() {
   // State for managing the current screen
   const [currentScreen, setCurrentScreen] = useState("LogIn");
   const [userName, setUserName] = useState("");
+  const [userGameID, setUserGameID] = useState("");
+  const [showButton, setShowButton] = useState(true);
 
   // Handle screen change from LogIn to Lobby
-  function handleScreenChange(name) {
+  function handleScreenChange(name, gameId) {
     // wait for server response
     // Set the current screen to Lobby
     setCurrentScreen("Lobby");
     setUserName(name);
+    setUserGameID(gameId);
   }
 
   // Handle screen change from Lobby to LogIn
@@ -158,13 +165,17 @@ function App() {
     setCurrentScreen("LogIn");
   }
 
+  function handleSearch() {
+    setShowButton(!showButton);
+  }
+
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
-      {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} />}
+      {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName} />}
+      {currentScreen === "Lobby" && <Lobby onSearch={handleSearch} onAddPlayer={handleAddPlayer} nameVal={userName}/>}
     </div>
   );
 }
