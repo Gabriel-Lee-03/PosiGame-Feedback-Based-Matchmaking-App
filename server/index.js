@@ -97,9 +97,9 @@ const SCORE_WEIGHT = 0.5;
 app.put("/api/rate", async (req, res) => {
   try {
     console.log(`call put`);
-    const player = req.body.player;
+    const player = req.body.ratingInfo.player;
     console.log("ratedPlayer: " + util.inspect(player));
-    const rating = req.body.rating;
+    const rating = req.body.ratingInfo.rating;
     console.log("rating: " + util.inspect(rating));
     const playerDB = await Players.findOne({name: player.name});
     console.log("playerDB: " + util.inspect(playerDB));

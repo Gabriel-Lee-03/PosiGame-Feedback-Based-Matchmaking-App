@@ -69,7 +69,8 @@ const Rating = (ratedPlayer) => {
    const handleConfirmClick = async () => {
     setShowRating(true);
     const selectedRatingNum = selectedRating.charCodeAt(0) - '0'.charCodeAt(0);
-    await axios.put(ratingUrl, {player: ratedPlayer, rating: selectedRatingNum})
+    const ratingInfo = {player: ratedPlayer, rating: selectedRatingNum};
+    await axios.put(ratingUrl,{ratingInfo: ratingInfo})
   };
 
   return (
