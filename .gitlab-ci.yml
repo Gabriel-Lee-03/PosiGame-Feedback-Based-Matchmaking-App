@@ -9,4 +9,4 @@ test:
 deploy:
   stage: deploy
   script: 
-    - dpl --provider=heroku --app=drp-22 --api-key=9eafb28e-9370-4431-a117-ca29bf070006
+    - dpl --provider=heroku --app=drp-22 --api-key=8407fa78-ecd8-40af-962c-419fad96473b
