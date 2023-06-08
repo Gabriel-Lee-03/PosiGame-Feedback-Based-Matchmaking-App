@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 
-// Player screen
+// Player Login screen
 function LogIn({ onSubmit, nameVal, savedGameID }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState(savedGameID);
@@ -49,14 +49,15 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 }
 
 // Rating dropdown and confirm button
-const Rating = (selectedUser) => {
+const Rating = (ratedPlayer, currentUser) => {
+  const ratingUrl = "/api/rate";
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('Rate');
+  const [selectedRating, setSelectedRating] = useState('Rate');
   const [showRating, setShowRating] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
+    setSelectedRating(option);
     setIsOpen(false);
     setShowConfirm(true);
   };
@@ -65,29 +66,26 @@ const Rating = (selectedUser) => {
     setIsOpen(!isOpen);
   };
 
-  const handleConfirmClick = () => {
+   const handleConfirmClick = async () => {
     setShowRating(true);
-    // Send the selectedOption value to the backend
-    // Here, you can use an API call or any other method to send the data to your backend server
-    console.log("Selected user:", selectedUser.name);
-    console.log("Selected option:", selectedOption);
+    await axios.post(ratingUrl, {player: ratedPlayer, rating: selectedRating})
   };
 
   return (
     <div className={`dropdown ${isOpen ? 'open' : ''}`}>
       {showRating ? (
-        <p className="rating__text">{selectedOption}</p>
+        <p className="rating__text">{selectedRating}</p>
       ) : (
       <>
-        <button className="dropdown__button" onClick={handleButtonClick}>{selectedOption}</button>
+        <button className="dropdown__button" onClick={handleButtonClick}>{selectedRating}</button>
         <ul className="dropdown__list">
-          <li onClick={() => handleOptionClick(1)}>1 - discriminatory</li>
-          <li onClick={() => handleOptionClick(2)}>2 - rude and unkind</li>
-          <li onClick={() => handleOptionClick(3)}>3 - normal interactions</li>
-          <li onClick={() => handleOptionClick(4)}>4 - kind and fun</li>
-          <li onClick={() => handleOptionClick(5)}>5 - positive environment</li>
+          <li onClick={() => handleOptionClick("1 - discriminatory")}>1 - discriminatory</li>
+          <li onClick={() => handleOptionClick("2 - rude and unkind")}>2 - rude and unkind</li>
+          <li onClick={() => handleOptionClick("3 - normal interactions")}>3 - normal interactions</li>
+          <li onClick={() => handleOptionClick("4 - kind and fun")}>4 - kind and fun</li>
+          <li onClick={() => handleOptionClick("5 - positive environment")}>5 - positive environment</li>
         </ul>
-        {showConfirm ? (//!showRating && (
+        {showConfirm ? (
           <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
         ) : <div className="no_confirm"></div>}
       </>
@@ -96,9 +94,8 @@ const Rating = (selectedUser) => {
   );
 };
 
-// Screen 2 component
+// Lobby screen component
 function Lobby({ onAddPlayer, nameVal }) {
-  const ratingUrl = "/api/rate";
   const apiUrl = "/api/queue/" + nameVal;
   const lobbyUrl = "/api/lobby/search/" + nameVal;
 
@@ -180,7 +177,7 @@ function Lobby({ onAddPlayer, nameVal }) {
                 <td>{player.name}</td>
                 <td>{player.gameId}</td>
                 <td>
-                { player.name != nameVal ? (<Rating selectedUser={nameVal}/>) : '' }
+                { player.name != nameVal ? (<Rating ratedPlayer = {player} currentUser = {nameVal}/>) : '' }
                 </td>
               </tr>
             ))
