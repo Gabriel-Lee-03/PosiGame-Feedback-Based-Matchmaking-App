@@ -134,6 +134,8 @@ button {
 }
 
 .question__popup {
+  text-align: left;
+  font-weight: normal;
   position: absolute;
   top: calc(100% + 5px);
   left: 50%;

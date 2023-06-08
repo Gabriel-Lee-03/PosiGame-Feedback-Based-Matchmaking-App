@@ -102,30 +102,6 @@ function Lobby({ onAddPlayer, nameVal }) {
   const [players, setPlayers] = useState([]);
   const [showSearch, setShowSearch] = useState(true);
 
-  async function increaseRating(player) {
-    // try {
-    //   const response = await axios.put(ratingUrl, {player: player, increase: true});
-    //   const data = await response.data;
-    //   console.log("inc resp " + data);
-    //   setPlayers(data);
-    // } catch (error) {
-    //   // Request was not successful
-    //   console.error('An error occurred:', error);
-    // }
-  }
-
-  async function decreaseRating(player) {
-    // try {
-    //   const response = await axios.put(ratingUrl, {player: player, increase: false});
-    //   const data = await response.data;
-    //   console.log("dec resp " + data);
-    //   setPlayers(data);
-    // } catch (error) {
-    //   // Request was not successful
-    //   console.error('An error occurred:', error);
-    // }
-  }
-
    // Handle add player button click
   function handleAddPlayer() {
     onAddPlayer();
@@ -171,11 +147,11 @@ function Lobby({ onAddPlayer, nameVal }) {
             <th>Rating {
               <div className="question__container">
               <button className="question__button">?</button>
-              <div className="question__popup">Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment. 
-
-After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. 
-
-When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour. </div>
+              <div className="question__popup">
+                <p>Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment.</p> 
+                <p>After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. </p>
+                <p>When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour.</p>
+              </div>
               </div> }
             </th>
           </tr>
