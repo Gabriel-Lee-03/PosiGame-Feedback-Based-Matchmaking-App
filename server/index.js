@@ -97,23 +97,22 @@ const SCORE_WEIGHT = 0.5;
 app.put("/api/rate", async (req, res) => {
   try {
     console.log(`call put`);
-    const player = req.body.ratingInfo.player;
+    const player = req.body.player;
     console.log("ratedPlayer: " + util.inspect(player));
-    const rating = req.body.ratingInfo.rating;
+    const rating = req.body.rating;
     console.log("rating: " + util.inspect(rating));
     const playerDB = await Players.findOne({name: player.name});
     console.log("playerDB: " + util.inspect(playerDB));
-    const playersDB = await Players.find({name: player.name});
-    console.log("playersDB: " + util.inspect(playersDB));
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
     console.log("newScore: " + newTotalScore);
     console.log("newCount: " + newRatingCount);
+    console.log("playerName: " + util.inspect(player.name));
     await Players.findOneAndUpdate(
       { name: player.name },
-      {...playerDB, friendliness: newTotalScore / newRatingCount, ratingCount: newRatingCount, totalScore: newTotalScore}
+      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore }
     );
 
     res.send("ok");
