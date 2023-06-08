@@ -81,7 +81,7 @@ app.post("/api/lobby/search/:name", async(req, res) => {
   const name = req.params.name;
   const players = req.body.players;
   let updatedPlayers = [];
-  for (i = 0; i < players.length; i++) {
+  for (let i = 0; i < players.length; i++) {
     let updatedPlayer = await Players.findOne({name: players[i].name})
     console.log("player from db: " + util.inspect(updatedPlayer));
     updatedPlayers.push(updatedPlayer);
@@ -103,6 +103,8 @@ app.put("/api/rate", async (req, res) => {
     console.log("rating: " + util.inspect(rating));
     const playerDB = await Players.findOne({name: player.name});
     console.log("playerDB: " + util.inspect(playerDB));
+    const playersDB = await Players.find({name: player.name});
+    console.log("playersDB: " + util.inspect(playersDB));
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
     const newTotalScore = totalScore + rating;

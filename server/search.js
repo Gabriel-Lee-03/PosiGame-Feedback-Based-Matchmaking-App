@@ -18,6 +18,7 @@ let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 async function search() { 
     isRunningSearch = true;
+    console.log("current queue: " + util.inspect(searchingQueue));
     // const player1 = await Players.findOne({name: testPlayer1});
     // console.log("testplayer1: " + util.inspect(player1));
     // const player2 = await Players.findOne({name: testPlayer2});
@@ -42,10 +43,10 @@ async function search() {
             continue;
         }
         if (searchingQueue.length === 0) {
-            searchingQueue.push({lobbyA, resolveA});
+            searchingQueue.push({lobby: lobbyA, resolve: resolveA});
             break;
         }
-        for (i = 0; i < searchingQueue.length; i++) {
+        for (let i = 0; i < searchingQueue.length; i++) {
             let objB = searchingQueue[i];
             let lobbyB = objB.lobby;
             let resolveB = objB.resolve;
@@ -65,7 +66,7 @@ async function search() {
 
 function addToSearchQueue(lobby) {
     return new Promise(resolve => {
-        searchingQueue.push({lobby, resolve: [resolve]});
+        searchingQueue.push({lobby: lobby, resolve: [resolve]});
         if (!isRunningSearch) {
             search();
         }
@@ -73,12 +74,12 @@ function addToSearchQueue(lobby) {
 }
 
 async function updatePlayers() {
-    for (i = 0; i < searchingQueue.length; i++) {
+    for (let i = 0; i < searchingQueue.length; i++) {
         console.log(i);
         console.log("queue length: " + util.inspect(searchingQueue.length));
         let obj = searchingQueue[i];
         let lobby = obj.lobby;
-        for (j = 0; j < lobby.players.length; j++) {
+        for (let j = 0; j < lobby.players.length; j++) {
             let player = lobby.players[j];
             let updatedPlayer = await Players.findOne({name: player.name});
             lobby.players.splice(j, 1, updatedPlayer);
