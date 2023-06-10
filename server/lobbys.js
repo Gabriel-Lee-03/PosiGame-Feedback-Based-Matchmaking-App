@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 const util = require('util');
 
 const defaultRating = 5;
@@ -46,4 +45,4 @@ function mergeLobbys(lobbyA, lobbyB) {
           averageRating: ratingSum / newPlayersList.length};
 }
 
-module.exports = {router, createLobby, mergeLobbys, testPlayer1, testPlayer2, testPlayer3}
+module.exports = {createLobby, mergeLobbys, testPlayer1, testPlayer2, testPlayer3}

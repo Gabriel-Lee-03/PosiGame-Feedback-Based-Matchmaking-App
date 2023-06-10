@@ -7,14 +7,14 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState(savedGameID);
   const [name, setName] = useState(nameVal);
-  const apiUrl = "/api"
+  const loginUrl = "/api/login"
 
   // Handle form submission
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const info = { gameId: gameId, name: name };
-      await axios.post(apiUrl, {loginInfo: info});
+      await axios.post(loginUrl, {loginInfo: info});
       setGameId("");
       setName("");
       onSubmit(name);
@@ -50,7 +50,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 
 // Rating dropdown and confirm button
 const Rating = (ratedPlayer) => {
-  const ratingUrl = "/api/rate";
+  const ratingUrl = "/api/lobby/rate";
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState('Rate');
   const [showRating, setShowRating] = useState(false);
@@ -98,8 +98,8 @@ const Rating = (ratedPlayer) => {
 
 // Lobby screen component
 function Lobby({ onAddPlayer, nameVal }) {
-  const apiUrl = "/api/queue/" + nameVal;
-  const lobbyUrl = "/api/lobby/search/" + nameVal;
+  const queueUrl = "/api/lobby/queue/" + nameVal;
+  const lobbyUrl = "/api/lobby/search";
 
   const [players, setPlayers] = useState([]);
   const [showSearch, setShowSearch] = useState(true);
@@ -125,7 +125,7 @@ function Lobby({ onAddPlayer, nameVal }) {
 
   useEffect(() => {
     try {
-      axios.get(apiUrl)
+      axios.get(queueUrl)
       .then(res => {
         const players = res.data;
         setPlayers(players);
@@ -148,12 +148,12 @@ function Lobby({ onAddPlayer, nameVal }) {
             <th>Friendliness</th>
             <th>Rating {
               <div className="question__container">
-              <button className="question__button">?</button>
-              <div className="question__popup">
-                <p>Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment.</p> 
-                <p>After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. </p>
-                <p>When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour.</p>
-              </div>
+                <button className="question__button">?</button>
+                <div className="question__popup">
+                  <p>Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment.</p> 
+                  <p>After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. </p>
+                  <p>When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour.</p>
+                </div>
               </div> }
             </th>
           </tr>
