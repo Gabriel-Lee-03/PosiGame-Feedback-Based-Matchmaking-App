@@ -40,6 +40,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
+      <p>If you are a new user, please enter your game id</p>
       <div className="input-row">
         <label>Game ID: </label>
         <input
