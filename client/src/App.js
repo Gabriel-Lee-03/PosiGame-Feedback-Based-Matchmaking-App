@@ -5,18 +5,18 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 
 // Player Login screen
-function LogIn({ onSubmit, nameVal, savedGameID }) {
+function LogIn({ onSubmit, nameVal}) {
   // State for Game ID and Name inputs
-  const [gameId, setGameId] = useState(savedGameID);
+  const [gameId, setGameId] = useState("");
   const [name, setName] = useState(nameVal);
-  const apiUrl = "/api"
+  const loginUrl = "/api/login"
 
   // Handle form submission
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const info = { gameId: gameId, name: name };
-      await axios.post(apiUrl, {loginInfo: info});
+      await axios.post(loginUrl, {loginInfo: info});
       setGameId("");
       setName("");
       onSubmit(name);
@@ -28,7 +28,8 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 
   return (
     <div className="Player">
-      <h1>Player</h1>
+      <h1>Player Login</h1>
+      <p>{errorMessage}</p>
       <div className="input-row">
         <label>Username: </label>
         <input
@@ -37,6 +38,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
+      <p>If you are a new user, please enter your Game ID (in-game name)</p>
       <div className="input-row">
         <label>Game ID: </label>
         <input
