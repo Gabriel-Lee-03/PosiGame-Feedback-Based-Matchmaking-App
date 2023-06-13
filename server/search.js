@@ -2,7 +2,7 @@ const {createLobby, mergeLobbys, testPlayer1, testPlayer2, testPlayer3} = requir
 const util = require('util');
 const Players = require("./models/player");
 
-const maxRatingDifference = 5
+const maxRatingDifference = 1
 
 let isRunningSearch = false;
 const testLobby1 = createLobby([testPlayer1]);

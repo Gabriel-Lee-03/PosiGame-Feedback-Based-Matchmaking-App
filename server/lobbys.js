@@ -2,7 +2,7 @@ const express = require("express");
 const util = require('util');
 
 const defaultRating = 5;
-const maxLobbySize = 2;
+const maxLobbySize = 4;
 
 function createLobby(players) {
   const ratingSum = players.reduce((acc, obj) => acc + obj.friendliness, 0);
