@@ -56,7 +56,7 @@ router.put("/rate", async (req, res) => {
     console.log("old feedback log: " + util.inspect(feedbackLog));
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
-    const newFeedbackLog = feedbackLog.push({date, feedback});
+    const newFeedbackLog = feedbackLog.push({date: date, feedback: feedback});
     console.log("new feedback log: " + util.inspect(newFeedbackLog));
     await Players.findOneAndUpdate(
       { name: player.name },
