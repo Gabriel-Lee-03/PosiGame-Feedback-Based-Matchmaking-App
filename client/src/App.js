@@ -14,7 +14,9 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   async function handleSubmit(e) {
     try {
       const info = { gameId: gameId, name: name };
+      console.log("Game Id: " + util.inspect(gameId));
       let found = await axios.post(loginUrl, {loginInfo: info});
+      console.log("Found value: " + util.inspect(found));
       if (found) {
         setGameId("");
         setName("");
