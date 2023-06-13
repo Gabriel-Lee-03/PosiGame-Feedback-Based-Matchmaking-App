@@ -24,7 +24,7 @@ const playerSchema = new Schema(
       default: true
     },
     feedbackLog: [{
-      date: { type: Date, required: true },
+      date: { type: String, required: true },
       feedback: { type: String, required: true }
     }]
   }, 

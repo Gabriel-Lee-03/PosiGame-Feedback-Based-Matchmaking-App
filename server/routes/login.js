@@ -29,6 +29,13 @@ router.post("/", async (req, res) => {
       await new Players(player).save();
       found = true;
     } else if (playerList.length !== 0) {
+      const testSchema = { gameId: "testSchema",
+      name: "testSchema",
+      friendliness: defaultRating,
+      ratingCount: 1,
+      totalScore: 5,
+      feedbackLog: [{date: "13/6", feedback: "meh"}]};
+      await new Players(testSchema).save();
       console.log("get existing player");
       player = playerList[0];
       found = true;
