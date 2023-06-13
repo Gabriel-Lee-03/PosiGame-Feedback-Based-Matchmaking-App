@@ -43,7 +43,7 @@ router.post("/search", async(req, res) => {
 router.put("/rate", async (req, res) => {
   try {
     console.log(`call put`);
-    const player = req.body.player;
+    const player = req.body.player.ratedPlayer;
     const date = req.body.date;
     const feedback = req.body.feedback;
     const rating = feedback.charCodeAt(0) - '0'.charCodeAt(0);
