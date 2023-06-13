@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
+import ProfileDrawer from "./ProfileDawer";
 
 // Player Login screen
 function LogIn({ onSubmit, nameVal, savedGameID }) {
@@ -138,36 +139,39 @@ function Lobby({ onAddPlayer, nameVal }) {
   }, []);
 
   return (
-    <div className="Lobby">
-      <h1>Lobby</h1>
-      <table className="lobby-table">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Game ID</th>
-            <th>Friendliness</th>
-            <th>Rating
-              {/* info box */}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            players.map((player) => (
-              <tr key={player._id}>
-                <td>{player.name}</td>
-                <td>{player.gameId}</td>
-                <td>{player.friendliness}</td>
-                <td>
-                { player.name != nameVal ? (<Rating ratedPlayer={player}/>) : '' }
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-      {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
-      <button onClick={handleAddPlayer}>Back</button>
+    <div className="lobby-page">
+      <ProfileDrawer></ProfileDrawer>
+      <div className="Lobby">
+        <h1>Lobby</h1>
+        <table className="lobby-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Game ID</th>
+              <th>Friendliness</th>
+              <th>Rating
+                {/* info box */}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              players.map((player) => (
+                <tr key={player._id}>
+                  <td>{player.name}</td>
+                  <td>{player.gameId}</td>
+                  <td>{player.friendliness}</td>
+                  <td>
+                  { player.name !== nameVal ? (<Rating ratedPlayer={player}/>) : '' }
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
+        <button onClick={handleAddPlayer}>Back</button>
+      </div>
     </div>
   );
 }

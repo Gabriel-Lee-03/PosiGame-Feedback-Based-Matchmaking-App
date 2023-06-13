@@ -154,3 +154,7 @@ button {
 .question__container:hover .question__popup {
   display: block;
 }
+
+.profile-icon {
+  transform: scale(1.5);
+}
