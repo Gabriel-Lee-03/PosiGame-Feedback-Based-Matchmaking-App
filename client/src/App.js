@@ -58,8 +58,8 @@ function LogIn({ onSubmit, nameVal}) {
 }
 
 // Rating dropdown and confirm button
-const Rating = (ratedPlayer, currentUser) => {
-  const ratingUrl = "/api/rate";
+const Rating = (ratedPlayer) => {	
+  const ratingUrl = "/api/lobby/rate";
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState('Rate');
   const [showRating, setShowRating] = useState(false);
@@ -77,8 +77,9 @@ const Rating = (ratedPlayer, currentUser) => {
 
    const handleConfirmClick = async () => {
     setShowRating(true);
-    await axios.put(ratingUrl, {player: ratedPlayer, rating: selectedRating})
-  };
+    const selectedRatingNum = selectedRating.charCodeAt(0) - '0'.charCodeAt(0);	
+    const ratingInfo = {player: ratedPlayer, rating: selectedRatingNum};	
+    await axios.put(ratingUrl,ratingInfo);};
 
   return (
     <div className={`dropdown ${isOpen ? 'open' : ''}`}>
@@ -125,7 +126,7 @@ function RatingExplained({ onBack }) {
       <div className="qa-container">
         <div className="qa-item">
           <button className="qa-question" onClick={() => toggleAnswerVisibility(0)}>
-            What should I rate?    {answersVisible[0] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            What should I rate? {answersVisible[0] ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
           {answersVisible[0] && (
             <div className="qa-answer">
@@ -191,8 +192,8 @@ function RatingExplained({ onBack }) {
 
 // Lobby screen component
 function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
-  const apiUrl = "/api/queue/" + nameVal;
-  const lobbyUrl = "/api/lobby/search/" + nameVal;
+  const queueUrl = "/api/lobby/queue/" + nameVal;	
+  const lobbyUrl = "/api/lobby/search";
 
   const [players, setPlayers] = useState([]);
   const [showSearch, setShowSearch] = useState(true);
@@ -204,7 +205,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   async function handleSearch() {
     setShowSearch(false);
-    console.log(players);
+    // console.log(players);
     try {
       const response = await axios.post(lobbyUrl, {players: players});
       setShowSearch(true);
@@ -218,7 +219,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   useEffect(() => {
     try {
-      axios.get(apiUrl)
+      axios.get(queueUrl)
       .then(res => {
         const players = res.data;
         setPlayers(players);
@@ -254,7 +255,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
                 <td>{player.gameId}</td>
                 <td>{player.friendliness}</td>
                 <td>
-                { player.name != nameVal ? (<Rating ratedPlayer = {player} currentUser = {nameVal}/>) : '' }
+                { player.name != nameVal ? (<Rating ratedPlayer = {player}/>) : '' }
                 </td>
               </tr>
             ))

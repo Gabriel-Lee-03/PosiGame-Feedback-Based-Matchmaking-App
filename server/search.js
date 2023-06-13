@@ -5,9 +5,6 @@ const Players = require("./models/player");
 const maxRatingDifference = 1
 
 let isRunningSearch = false;
-// const player1 = await Players.findOne({name: testPlayer1});
-// const player2 = await Players.findOne({name: testPlayer2});
-// const player3 = await Players.findOne({name: testPlayer3});
 const testLobby1 = createLobby([testPlayer1]);
 const testLobby2 = createLobby([testPlayer2]);
 const testLobby3 = createLobby([testPlayer3]);
@@ -20,7 +17,6 @@ async function search() {
     isRunningSearch = true;
     
     while (searchingQueue.length > 0) {
-        // console.log("searchQueue:" + util.inspect(searchingQueue));
         let objA = searchingQueue.shift();
         let lobbyA = objA.lobby;
         let resolveA = objA.resolve;
@@ -29,10 +25,10 @@ async function search() {
             continue;
         }
         if (searchingQueue.length === 0) {
-            searchingQueue.push({lobbyA, resolveA});
+            searchingQueue.push({lobby: lobbyA, resolve: resolveA});
             break;
         }
-        for (i = 0; i < searchingQueue.length; i++) {
+        for (let i = 0; i < searchingQueue.length; i++) {
             let objB = searchingQueue[i];
             let lobbyB = objB.lobby;
             let resolveB = objB.resolve;
@@ -58,24 +54,6 @@ function addToSearchQueue(lobby) {
             search();
         }
     });
-}
-
-async function updatePlayers() {
-    for (i = 0; i < searchingQueue.length; i++) {
-        console.log(i);
-        console.log("queue length: " + util.inspect(searchingQueue.length));
-        let obj = searchingQueue[i];
-        let lobby = obj.lobby;
-        for (j = 0; j < lobby.players.length; j++) {
-            let player = lobby.players[j];
-            let updatedPlayer = await Players.findOne({name: player.name});
-            lobby.players.splice(j, 1, updatedPlayer);
-        }
-        // console.log("obj:" + util.inspect(obj));
-        // console.log("old lobby: " + util.inspect(searchingQueue[i].lobby.players[0]));
-        // console.log("new lobby: " + util.inspect(lobby.players[0]));
-        // searchingQueue[i].lobby = lobby;
-    }
 }
 
 module.exports = {addToSearchQueue}

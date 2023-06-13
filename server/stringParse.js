@@ -8,8 +8,7 @@ function ahead(s1, s2) {
   return s1.length <= s2.length;    
 }
 
-// binary search of s on sorted list,
-// returns index of id, -1 if id does not exist
+// binary search of s on sorted list, returns index of id, -1 if id does not exist
 function isRegistered(s, list) {
   let head = 0;
   let end = list.length - 1;
