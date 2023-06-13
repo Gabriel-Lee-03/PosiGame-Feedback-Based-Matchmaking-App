@@ -3,9 +3,9 @@ import "./App.css";
 import axios from "axios";
 
 // Player Login screen
-function LogIn({ onSubmit, nameVal, savedGameID }) {
+function LogIn({ onSubmit, nameVal }) {
   // State for Game ID and Name inputs
-  const [gameId, setGameId] = useState(savedGameID);
+  const [gameId, setGameId] = useState("");
   const [name, setName] = useState(nameVal);
   const [errorMessage, setMessage] = useState("");
   const loginUrl = "/api/login"
