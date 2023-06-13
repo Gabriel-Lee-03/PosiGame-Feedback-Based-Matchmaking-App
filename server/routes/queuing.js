@@ -44,18 +44,20 @@ router.put("/rate", async (req, res) => {
   try {
     console.log(`call put`);
     const player = req.body.player;
-    console.log("ratedPlayer: " + util.inspect(player));
-    const rating = req.body.rating;
-    console.log("rating: " + util.inspect(rating));
+    const date = req.body.date;
+    const feedback = req.body.feedback;
+    const rating = feedback.charCodeAt(0) - '0'.charCodeAt(0);
+    console.log("rating info: " + util.inspect(req.body));
     const playerDB = await Players.findOne({name: player.name});
-    console.log("playerDB: " + util.inspect(playerDB));
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
+    const feedbackLog = playerDB.feedbackLog;
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
+    const newFeedbackLog = feedbackLog.push({date, feedback});
     await Players.findOneAndUpdate(
       { name: player.name },
-      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore }
+      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore, feedbackLog: newFeedbackLog }
     );
 
     res.send("ok");
