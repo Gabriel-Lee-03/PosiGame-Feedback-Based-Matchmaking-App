@@ -34,6 +34,7 @@ router.post("/", async (req, res) => {
       found = true;
     }
     console.log("post ok");
+    console.log("found value: " +  util.inspect(found));
     res.send(found);
   } catch (error) {
     res.send(error);
