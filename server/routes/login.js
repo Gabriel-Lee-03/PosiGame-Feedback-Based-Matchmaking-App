@@ -35,7 +35,8 @@ router.post("/", async (req, res) => {
       ratingCount: 1,
       totalScore: 5,
       feedbackLog: [{date: "13/6", feedback: "meh"}]};
-      await new Players(testSchema).save();
+      const dbsave = await new Players(testSchema).save();
+      console.log("db save: " + util.inspect(dbsave));
       console.log("get existing player");
       player = playerList[0];
       found = true;
