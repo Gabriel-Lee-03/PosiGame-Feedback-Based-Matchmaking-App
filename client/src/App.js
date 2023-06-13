@@ -9,6 +9,7 @@ function LogIn({ onSubmit, nameVal}) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState("");
   const [name, setName] = useState(nameVal);
+  const [errorMessage, setMessage] = useState("");
   const loginUrl = "/api/login"
 
   // Handle form submission
@@ -16,10 +17,14 @@ function LogIn({ onSubmit, nameVal}) {
     e.preventDefault();
     try {
       const info = { gameId: gameId, name: name };
-      await axios.post(loginUrl, {loginInfo: info});
-      setGameId("");
-      setName("");
-      onSubmit(name);
+      var res = await axios.post(loginUrl, {loginInfo: info});
+      if (res.data.isFound) {
+        setGameId("");
+        setName("");
+        onSubmit(name);
+      } else {
+        setMessage("Not registered user");
+      }
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
