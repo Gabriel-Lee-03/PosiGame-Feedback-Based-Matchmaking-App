@@ -2,7 +2,7 @@ const {createLobby, mergeLobbys, testPlayer1, testPlayer2, testPlayer3} = requir
 const util = require('util');
 const Players = require("./models/player");
 
-const maxRatingDifference = 5
+const maxRatingDifference = 1
 
 let isRunningSearch = false;
 // const player1 = await Players.findOne({name: testPlayer1});
@@ -18,7 +18,7 @@ let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 async function search() { 
     isRunningSearch = true;
-    await updatePlayers();
+    
     while (searchingQueue.length > 0) {
         // console.log("searchQueue:" + util.inspect(searchingQueue));
         let objA = searchingQueue.shift();
@@ -51,8 +51,9 @@ async function search() {
 }
 
 function addToSearchQueue(lobby) {
-    return new Promise(resolve => {
-        searchingQueue.push({lobby, resolve: [resolve]});
+    console.log("current queue (before adding): " + util.inspect(searchingQueue));
+    return new Promise((resolve, reject) => {
+        searchingQueue.push({lobby: lobby, resolve: [resolve]});
         if (!isRunningSearch) {
             search();
         }
