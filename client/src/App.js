@@ -7,6 +7,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   // State for Game ID and Name inputs
   const [gameId, setGameId] = useState(savedGameID);
   const [name, setName] = useState(nameVal);
+  const [errorMessage, setMessage] = useState("");
   const loginUrl = "/api/login"
 
   // Handle form submission
@@ -19,7 +20,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
         setName("");
         onSubmit(name);
       } else {
-
+        setMessage("Not registered user");
       }
     } catch (error) {
       // Request was not successful
@@ -30,6 +31,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   return (
     <div className="Player">
       <h1>Player</h1>
+      <p>{errorMessage}</p>
       <div className="input-row">
         <label>Username: </label>
         <input
