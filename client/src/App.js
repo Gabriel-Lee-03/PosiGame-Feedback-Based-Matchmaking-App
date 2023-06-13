@@ -117,24 +117,65 @@ function RatingExplained({ onBack }) {
       <h1>What is Rating?</h1>
       <div className="qa-container">
         <div className="qa-item">
-          <button
-            className="qa-question"
-            onClick={() => toggleAnswerVisibility(0)}
-          >
-            Question 1 {answersVisible[0] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(0)}>
+            What should I rate?    {answersVisible[0] ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
-          {answersVisible[0] && <div className="qa-answer">Answer 1</div>}
+          {answersVisible[0] && (
+            <div className="qa-answer">
+              After playing a game with your team, you may rate your teammates from various categories that best describe your experience during the game.
+            </div>
+          )}
         </div>
         <div className="qa-item">
-          <button
-            className="qa-question"
-            onClick={() => toggleAnswerVisibility(1)}
-          >
-            Question 2 {answersVisible[1] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(1)}>
+            How does teammate matching work? {answersVisible[1] ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
-          {answersVisible[1] && <div className="qa-answer">Answer 2</div>}
+          {answersVisible[1] && (
+            <div className="qa-answer">
+              You will be matched with players who share a similar friendliness to those already in your lobby.
+            </div>
+          )}
         </div>
-        {/* Add more QA items as needed */}
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(2)}>
+            How is friendliness determined? {answersVisible[2] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[2] && (
+            <div className="qa-answer">
+              Friendliness is calculated by averaging the rating scores given by your teammates over the past 30 days.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(3)}>
+            How can I increase my friendliness? {answersVisible[3] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[3] && (
+            <div className="qa-answer">
+              Be nice and kind to your teammates! Communicate well, and try your best to provide help and support. When things don’t go well, be encouraging and motivate each other. You will be more likely to receive higher ratings and be matched with friendlier players.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(4)}>
+            What happens if I am rated poorly? {answersVisible[4] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[4] && (
+            <div className="qa-answer">
+              It’s likely that your teammates feel that you could do better. Avoid negativity, rudeness, or discriminatory behavior, as they harm the gaming environment and your teammates' experience. Until you improve your behavior, you will be matched with similar players.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(5)}>
+            How should I improve? {answersVisible[5] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[5] && (
+            <div className="qa-answer">
+              Click on your user icon to view the feedback and reasons behind the ratings you received. Try to improve the behavior that your teammates don’t like!
+            </div>
+          )}
+        </div>
       </div>
       <button onClick={handleBack}>Back</button>
     </div>
