@@ -13,7 +13,7 @@
     "nodemon": "^2.0.22"
   },
   "scripts": {
-    "start": "node --optimize_for_size --max_old_space_size=460 server/index.js",
+    "start": "node --optimize_for_size --max_old_space_size=2560 server/index.js",
     "build": "cd client && npm install && npm run build",
     "test": "jest"
   },
