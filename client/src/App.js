@@ -15,7 +15,7 @@ function LogIn({ onSubmit, nameVal }) {
     try {
       const info = { gameId: gameId, name: name };
       console.log("Game Id: " + gameId);
-      let found = await axios.post(loginUrl, {loginInfo: info});
+      var found = await axios.post(loginUrl, {loginInfo: info});
       console.log("Found value: " + found);
       if (found) {
         setGameId("");
