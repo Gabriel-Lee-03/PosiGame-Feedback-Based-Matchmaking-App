@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+
 
 // Player Login screen
 function LogIn({ onSubmit, nameVal, savedGameID }) {
@@ -94,8 +96,53 @@ const Rating = (ratedPlayer, currentUser) => {
   );
 };
 
+function RatingExplained({ onBack }) {
+
+  const [answersVisible, setAnswersVisible] = useState([]);
+
+  const toggleAnswerVisibility = (index) => {
+    setAnswersVisible((prevVisible) => {
+      const newVisible = [...prevVisible];
+      newVisible[index] = !newVisible[index];
+      return newVisible;
+    });
+  };
+  
+  async function handleBack() {
+    onBack();
+  }
+
+  return (
+    <div>
+      <h1>What is Rating?</h1>
+      <div className="qa-container">
+        <div className="qa-item">
+          <button
+            className="qa-question"
+            onClick={() => toggleAnswerVisibility(0)}
+          >
+            Question 1 {answersVisible[0] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[0] && <div className="qa-answer">Answer 1</div>}
+        </div>
+        <div className="qa-item">
+          <button
+            className="qa-question"
+            onClick={() => toggleAnswerVisibility(1)}
+          >
+            Question 2 {answersVisible[1] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[1] && <div className="qa-answer">Answer 2</div>}
+        </div>
+        {/* Add more QA items as needed */}
+      </div>
+      <button onClick={handleBack}>Back</button>
+    </div>
+  );
+}
+
 // Lobby screen component
-function Lobby({ onAddPlayer, nameVal }) {
+function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
   const apiUrl = "/api/queue/" + nameVal;
   const lobbyUrl = "/api/lobby/search/" + nameVal;
 
@@ -146,12 +193,7 @@ function Lobby({ onAddPlayer, nameVal }) {
             <th>Friendliness</th>
             <th>Rating {
               <div className="question__container">
-              <button className="question__button">?</button>
-              <div className="question__popup">
-                <p>Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment.</p> 
-                <p>After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. </p>
-                <p>When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour.</p>
-              </div>
+              <button className="question__button" onClick={onRatingExplained}>?</button>
               </div> }
             </th>
           </tr>
@@ -198,13 +240,24 @@ function App() {
     setCurrentScreen("LogIn");
   }
 
+  function handleBack() {
+    setCurrentScreen("Lobby");
+  }
+
+  function handleRatingExplained() {
+    setCurrentScreen("RatingExplained");
+  }
+
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName}/>}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName} onRatingExplained={handleRatingExplained}/>}
+
+      {/* Render RatingExplained if the current screen is RatingExplained */}
+      {currentScreen === "RatingExplained" && <RatingExplained onBack={handleBack}/>}
     </div>
   );
 }
