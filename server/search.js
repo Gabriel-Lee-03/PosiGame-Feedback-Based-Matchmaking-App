@@ -15,7 +15,7 @@ let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 async function search() { 
     isRunningSearch = true;
-    console.log("current queue: " + util.inspect(searchingQueue));
+    
     while (searchingQueue.length > 0) {
         let objA = searchingQueue.shift();
         let lobbyA = objA.lobby;
@@ -47,6 +47,7 @@ async function search() {
 }
 
 function addToSearchQueue(lobby) {
+    console.log("current queue (before adding): " + util.inspect(searchingQueue));
     return new Promise((resolve, reject) => {
         searchingQueue.push({lobby: lobby, resolve: [resolve]});
         if (!isRunningSearch) {
