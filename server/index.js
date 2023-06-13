@@ -14,10 +14,6 @@ const PORT = process.env.PORT || 3001;
 const login = require("./routes/login");
 const queue = require("./routes/queuing");
 
-// constant variables
-const defaultRating = 5;
-const defaultRatingCount = 1;
-const defaultTotalScore = 5;
 
 connectToMongoDB();
 

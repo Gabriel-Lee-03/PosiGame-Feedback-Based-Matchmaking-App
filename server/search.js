@@ -47,7 +47,7 @@ async function search() {
 }
 
 function addToSearchQueue(lobby) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         searchingQueue.push({lobby: lobby, resolve: [resolve]});
         if (!isRunningSearch) {
             search();

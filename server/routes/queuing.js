@@ -10,15 +10,14 @@ const Players = require("../models/player");
 // Handle GET requests to /queue/name route
 router.get("/queue/:name", async(req, res) => {
   const name = req.params.name;
-  // console.log(util.inspect(name));
   try {
     const playerList = await Players.find({name: name});
-    // console.log("player list: " + util.inspect(playerList));
     // throws 403 forbidden error if user does not exist
     if (playerList.length === 0) {
-      res.send(403,"You do not have rights to visit this page");
+      res.status(403).send("You do not have rights to visit this page");
+    } else {
+      res.send(playerList);
     }
-    res.send(playerList);   
   }catch (error) {
     res.send(error);
   }
@@ -54,9 +53,6 @@ router.put("/rate", async (req, res) => {
     const ratingCount = playerDB.ratingCount;
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
-    console.log("newScore: " + newTotalScore);
-    console.log("newCount: " + newRatingCount);
-    console.log("playerName: " + util.inspect(player.name));
     await Players.findOneAndUpdate(
       { name: player.name },
       { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore }
