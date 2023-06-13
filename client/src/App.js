@@ -11,13 +11,16 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 
   // Handle form submission
   async function handleSubmit(e) {
-    e.preventDefault();
     try {
       const info = { gameId: gameId, name: name };
-      await axios.post(loginUrl, {loginInfo: info});
-      setGameId("");
-      setName("");
-      onSubmit(name);
+      let found = await axios.post(loginUrl, {loginInfo: info});
+      if (found) {
+        setGameId("");
+        setName("");
+        onSubmit(name);
+      } else {
+
+      }
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
