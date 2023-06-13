@@ -28,14 +28,15 @@ router.post("/", async (req, res) => {
       };
       await new Players(player).save();
       found = true;
-    } else if (playerList.length !== 0){
+    } else if (playerList.length !== 0) {
       console.log("get existing player");
       player = playerList[0];
       found = true;
     }
     console.log("post ok");
     console.log("found value: " +  util.inspect(found));
-    res.send(found);
+    console.log("found type: " + util.inspect(typeof(found)));
+    res.send({isFound: found});
   } catch (error) {
     res.send(error);
   }
