@@ -21,13 +21,6 @@ export default function RatingDrawer({ratedPlayer}) {
     setShowConfirm(true);
     console.log("act: " + updatedValue);
     console.log("score: " + score);
-    // const index = INDEX_BEHAVIOR_DICTIONARY.indexOf(option);
-    // console.log("index selected: " + index + "for option: " + option.act);
-    // const newSelected = !selected[index];
-    // const newSelectionState = selected.splice(index, 1, newSelected);
-    // console.log("newSelectionState: " + newSelectionState);
-    // setSelected(newSelectionState);
-    // setResp({act:option.act, score:option.score});
   };
 
   const handleConfirmClick = async () => {
@@ -154,34 +147,3 @@ export default function RatingDrawer({ratedPlayer}) {
     </div>
   );
 }
-
-
-{/* <div className="rating-choice">
-{
-  SCORE_1_BEHAVIORS.map(choice => (
-    <ToggleButton
-    key={ratedPlayer.name}
-    variant="filled"
-    className="rate_selection"
-    selected={selected[INDEX_BEHAVIOR_DICTIONARY.indexOf(choice)]}
-    onClick={() => handleOptionClick(choice)}>{choice.act}</ToggleButton>
-  ))
-}
-</div> */}
-
-{/* <ToggleButton
-variant="filled"
-className="rate_selection"
-selected={selectedThreat}
-onChange={() => handleOptionClick(false, setSelectThreat)}>{choice.act}
-</ToggleButton> */}
-
-  // // setState for buttons
-  // const [selectedThreat, setSelectThreat] = useState(false);
-  // const [selectedSexist, setSelectSexist] = useState(false);
-  // const [selectedRacist, setSelectRacist] = useState(false);
-  // const [selectedDisc, setSelectDisc] = useState(false);
-  // const [selectedLeave, setSelectLeave] = useState(false);
-  // const [selectedIntLos, setSelectIntLos] = useState(false);
-  // const [selectedRude, setSelectRude] = useState(false);
-  // const [selectedInapp, setSelectInapp] = useState(false);
