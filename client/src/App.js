@@ -239,8 +239,8 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
           <tr>
             <th>Username</th>
             <th>Game ID</th>
-            <th>Friendliness</th>
-            <th>Rating {
+            <th>Friendliness Rating</th>
+            <th>Rate Teammates {
               <div className="question__container">
               <button className="question__button" onClick={onRatingExplained}>?</button>
               </div> }
@@ -262,7 +262,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
           }
         </tbody>
       </table>
-      {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
+      {showSearch ? (<button onClick={handleSearch}>Search for Teammates</button>) : <p className="searching__text">Searching ...</p>}
       <button onClick={handleAddPlayer}>Back</button>
     </div>
   );

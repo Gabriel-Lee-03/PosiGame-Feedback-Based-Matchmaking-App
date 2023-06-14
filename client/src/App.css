@@ -35,22 +35,6 @@
   font-weight: bold;
 }
 
-.thumbs-up-button,
-.thumbs-down-button {
-  padding: 0;
-  background-color: transparent;
-  border: 2px solid #4b4a4a;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.thumbs-up-button:hover,
-.thumbs-down-button:hover {
-  color: #007bff;
-  border-color: #007bff;
-}
-
 /* Shared styles */
 h1 {
   font-size: 24px;
@@ -59,6 +43,7 @@ h1 {
 
 button {
   padding: 10px 20px;
+  margin: 10px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -134,7 +119,7 @@ button {
 }
 
 .qa-container {
-  padding: 20px;
+  padding: 0 20px 20px;
   margin-top: 20px;
 }
 
@@ -151,17 +136,23 @@ button {
   color: #d334f3;
   border: none;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .qa-answer {
   padding: 10px;
   background-color: #ffffff;
   color: #007bff;
-  font-size: 12px;
+  font-size: 16px;
+}
+
+.container {
+  padding-left: 20px;
 }
 
 .title {
-  padding: 20px;
+  padding: 10px 10px 0;
+  margin-bottom: 10px;
 }
 
 .back_button {
