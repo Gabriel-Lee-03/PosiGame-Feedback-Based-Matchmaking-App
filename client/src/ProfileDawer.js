@@ -3,6 +3,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton, Drawer, Box, Typography } from "@mui/material";
 import FeedbackBox  from "./FeedbackBox";
 import "./App.css";
+import axios from "axios";
 
 const dummyStrings = [{id: 0, date:"23-6-2023", feedback:"1. to remove a local branch from your machine"},
                       {id: 1, date:"23-6-2023", feedback:"2. to remove a local branch from your machine"}, 
@@ -21,7 +22,7 @@ export default function ProfileDrawer({player}) {
   async function getLogs() {
     const logUrl = "/api/lobby/feedback/" + player.name;
     const response = await axios.get(logUrl);
-    log = response.map((item, index) => ({...item, id: index + 1}));
+    const log = response.map((item, index) => ({...item, id: index + 1}));
     setFeedbackLog(log);
     toggleDrawer(true);
   }
