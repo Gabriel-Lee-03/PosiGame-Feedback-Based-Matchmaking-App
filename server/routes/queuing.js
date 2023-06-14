@@ -69,4 +69,15 @@ router.put("/rate", async (req, res) => {
   }
 });
 
+//handles GET request for user's feedback log
+router.get("/feedback/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+    const userDB = await Players.findOne({name: name});
+    res.send(userDB.feedbackLog);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 module.exports = router;
