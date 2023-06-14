@@ -16,6 +16,7 @@ router.get("/queue/:name", async(req, res) => {
     if (playerList.length === 0) {
       res.status(403).send("You do not have rights to visit this page");
     } else {
+      console.log(util.inspect(playerList));
       res.send(playerList);
     }
   }catch (error) {
@@ -43,22 +44,23 @@ router.post("/search", async(req, res) => {
 router.put("/rate", async (req, res) => {
   try {
     console.log(`call put`);
-    const player = req.body.player.ratedPlayer;
+    const player = req.body.player;
     console.log("ratedPlayer: " + util.inspect(player));
     const rating = req.body.rating;
-    console.log("rating: " + util.inspect(rating));
+    // console.log("rating: " + util.inspect(rating));
     const playerDB = await Players.findOne({name: player.name});
-    console.log("playerDB: " + util.inspect(playerDB));
+    // console.log("playerDB: " + util.inspect(playerDB));
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
-    await Players.findOneAndUpdate(
+    const updated = await Players.findOneAndUpdate(
       { name: player.name },
-      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore }
+      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore },
+      {new: true}
     );
-
-    res.send("ok");
+    console.log("updated player: " + util.inspect(updated));
+    res.send("put ok");
   } catch (error) {
       res.send(error);
   }

@@ -15,7 +15,7 @@ let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
 async function search() { 
     isRunningSearch = true;
-    console.log("current queue: " + util.inspect(searchingQueue));
+    // console.log("current queue: " + util.inspect(searchingQueue));
     while (searchingQueue.length > 0) {
         let objA = searchingQueue.shift();
         let lobbyA = objA.lobby;

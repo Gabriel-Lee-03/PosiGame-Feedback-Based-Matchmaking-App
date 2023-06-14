@@ -15,7 +15,6 @@ const dummyStrings = [{id: 0, date:"23-6-2023", feedback:"1. to remove a local b
 
 export default function ProfileDrawer({player}) {
   const [isDrawerOpen, toggleDrawer] = useState(false);
-  console.log(player);
   return(
     <div className="profile-drawer">
       <React.Fragment>

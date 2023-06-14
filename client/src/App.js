@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 import ProfileDrawer from "./ProfileDawer";
+import RatingDrawer from "./RatingDrawer";
 
 // Player Login screen
 function LogIn({ onSubmit, nameVal, savedGameID }) {
@@ -50,7 +51,8 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 }
 
 // Rating dropdown and confirm button
-const Rating = (ratedPlayer) => {
+const Rating = ({ratedPlayer}) => {
+  console.log(ratedPlayer);
   const ratingUrl = "/api/lobby/rate";
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState('Rate');
@@ -75,25 +77,26 @@ const Rating = (ratedPlayer) => {
   };
 
   return (
-    <div className={`dropdown ${isOpen ? 'open' : ''}`}>
-      {showRating ? (
-        <p className="rating__text">{selectedRating}</p>
-      ) : (
-      <>
-        <button className="dropdown__button" onClick={handleButtonClick}>{selectedRating}</button>
-        <ul className="dropdown__list">
-          <li onClick={() => handleOptionClick("1 - discriminatory")}>1 - discriminatory</li>
-          <li onClick={() => handleOptionClick("2 - rude and unkind")}>2 - rude and unkind</li>
-          <li onClick={() => handleOptionClick("3 - normal interactions")}>3 - normal interactions</li>
-          <li onClick={() => handleOptionClick("4 - kind and fun")}>4 - kind and fun</li>
-          <li onClick={() => handleOptionClick("5 - positive environment")}>5 - positive environment</li>
-        </ul>
-        {showConfirm ? (
-          <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
-        ) : <div className="no_confirm"></div>}
-      </>
-      )}
-      </div>
+    <RatingDrawer player={ratedPlayer}/>
+    // <div className={`dropdown ${isOpen ? 'open' : ''}`}>
+    //   {showRating ? (
+    //     <p className="rating__text">{selectedRating}</p>
+    //   ) : (
+    //   <>
+    //     <button className="dropdown__button" onClick={handleButtonClick}>{selectedRating}</button>
+    //     <ul className="dropdown__list">
+    //       <li onClick={() => handleOptionClick("1 - discriminatory")}>1 - discriminatory</li>
+    //       <li onClick={() => handleOptionClick("2 - rude and unkind")}>2 - rude and unkind</li>
+    //       <li onClick={() => handleOptionClick("3 - normal interactions")}>3 - normal interactions</li>
+    //       <li onClick={() => handleOptionClick("4 - kind and fun")}>4 - kind and fun</li>
+    //       <li onClick={() => handleOptionClick("5 - positive environment")}>5 - positive environment</li>
+    //     </ul>
+    //     {showConfirm ? (
+    //       <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
+    //     ) : <div className="no_confirm"></div>}
+    //   </>
+    //   )}
+    //   </div>
   );
 };
 
@@ -131,6 +134,7 @@ function Lobby({ onAddPlayer, nameVal }) {
       .then(res => {
         const players = res.data;
         setPlayers(players);
+        console.log("players > " + players);
         setProfile(players.at(0));
         console.log(`component mounted`);
       });
@@ -151,7 +155,7 @@ function Lobby({ onAddPlayer, nameVal }) {
               <th>Game ID</th>
               <th>Friendliness</th>
               <th>Rating
-                {/* info box */}
+                {/* info bx */}
               </th>
             </tr>
           </thead>
@@ -163,7 +167,7 @@ function Lobby({ onAddPlayer, nameVal }) {
                   <td>{player.gameId}</td>
                   <td>{player.friendliness}</td>
                   <td>
-                  { player.name !== nameVal ? (<Rating ratedPlayer={player}/>) : '' }
+                  { player.name !== nameVal ? (<RatingDrawer ratedPlayer={player}/>) : '' }
                   </td>
                 </tr>
               ))
