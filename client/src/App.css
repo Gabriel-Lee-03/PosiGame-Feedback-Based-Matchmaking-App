@@ -133,11 +133,8 @@ button {
   cursor: pointer;
 }
 
-.question__container:hover .question__popup {
-  display: block;
-}
-
 .qa-container {
+  padding: 20px;
   margin-top: 20px;
 }
 
@@ -160,5 +157,13 @@ button {
   padding: 10px;
   background-color: #ffffff;
   color: #007bff;
-  font-size: 10px;
+  font-size: 12px;
+}
+
+.title {
+  padding: 20px;
+}
+
+.back_button {
+  margin: 20px;
 }

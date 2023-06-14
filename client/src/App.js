@@ -122,7 +122,7 @@ function RatingExplained({ onBack }) {
 
   return (
     <div>
-      <h1>What is Rating?</h1>
+      <h1 className="title">What is Rating?</h1>
       <div className="qa-container">
         <div className="qa-item">
           <button className="qa-question" onClick={() => toggleAnswerVisibility(0)}>
@@ -185,7 +185,7 @@ function RatingExplained({ onBack }) {
           )}
         </div>
       </div>
-      <button onClick={handleBack}>Back</button>
+      <button className="back_button" onClick={handleBack}>Back</button>
     </div>
   );
 }
