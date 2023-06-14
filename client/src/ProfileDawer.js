@@ -15,11 +15,21 @@ const dummyStrings = [{id: 0, date:"23-6-2023", feedback:"1. to remove a local b
 
 export default function ProfileDrawer({player}) {
   const [isDrawerOpen, toggleDrawer] = useState(false);
+  const [feedbackLog, setFeedbackLog] = useState([]);
   console.log(player);
+
+  async function getLogs() {
+    const logUrl = "/api/lobby/feedback/" + player.name;
+    const response = await axios.get(logUrl);
+    log = response.map((item, index) => ({...item, id: index + 1}));
+    setFeedbackLog(log);
+    toggleDrawer(true);
+  }
+
   return(
     <div className="profile-drawer">
       <React.Fragment>
-      <IconButton onClick={()=>toggleDrawer(true)} size='large'>
+      <IconButton onClick={()=>getLogs()} size='large'>
         <AccountCircleIcon className="profile-icon"/>
       </IconButton>
       <Drawer
@@ -33,7 +43,7 @@ export default function ProfileDrawer({player}) {
                 <p className="username">username: {player.name}</p>
                 <p>game ID: {player.gameId}</p>
                 {
-                  dummyStrings.map((s) => (
+                  feedbackLog.map((s) => (
                     <FeedbackBox key={s.id} date={s.date} feedback={s.feedback}></FeedbackBox>
                   ))
                 }
