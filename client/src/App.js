@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
+import ProfileDrawer from "./ProfileDawer";
 
 // Player Login screen
 function LogIn({ onSubmit, nameVal}) {
@@ -56,7 +57,7 @@ function LogIn({ onSubmit, nameVal}) {
 }
 
 // Rating dropdown and confirm button
-const Rating = (ratedPlayer) => {
+const Rating = ({ratedPlayer}) => {
   const ratingUrl = "/api/lobby/rate";
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState('Rate');
@@ -109,6 +110,8 @@ function Lobby({ onAddPlayer, nameVal }) {
   const lobbyUrl = "/api/lobby/search";
 
   const [players, setPlayers] = useState([]);
+  //info of the logged in user
+  const [profile, setProfile] = useState({});
   const [showSearch, setShowSearch] = useState(true);
 
    // Handle add player button click
@@ -118,7 +121,6 @@ function Lobby({ onAddPlayer, nameVal }) {
 
   async function handleSearch() {
     setShowSearch(false);
-    // console.log(players);
     try {
       const response = await axios.post(lobbyUrl, {players: players});
       setShowSearch(true);
@@ -136,7 +138,7 @@ function Lobby({ onAddPlayer, nameVal }) {
       .then(res => {
         const players = res.data;
         setPlayers(players);
-        console.log(players);
+        setProfile(players.at(0));
         console.log(`component mounted`);
       });
     }catch(error) {
@@ -145,43 +147,39 @@ function Lobby({ onAddPlayer, nameVal }) {
   }, []);
 
   return (
-    <div className="Lobby">
-      <h1>Lobby</h1>
-      <table className="lobby-table">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Game ID</th>
-            <th>Friendliness</th>
-            <th>Rating {
-              <div className="question__container">
-                <button className="question__button">?</button>
-                <div className="question__popup">
-                  <p>Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment.</p> 
-                  <p>After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. </p>
-                  <p>When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour.</p>
-                </div>
-              </div> }
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            players.map((player) => (
-              <tr key={player._id}>
-                <td>{player.name}</td>
-                <td>{player.gameId}</td>
-                <td>{player.friendliness}</td>
-                <td>
-                { player.name != nameVal ? (<Rating ratedPlayer={player}/>) : '' }
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-      {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
-      <button onClick={handleAddPlayer}>Back</button>
+    <div className="lobby-page">
+      <ProfileDrawer player={profile}/>
+      <div className="Lobby">
+        <h1>Lobby</h1>
+        <table className="lobby-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Game ID</th>
+              <th>Friendliness</th>
+              <th>Rating
+                {/* info box */}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              players.map((player) => (
+                <tr key={player._id}>
+                  <td>{player.name}</td>
+                  <td>{player.gameId}</td>
+                  <td>{player.friendliness}</td>
+                  <td>
+                  { player.name !== nameVal ? (<Rating ratedPlayer={player}/>) : '' }
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
+        <button onClick={handleAddPlayer}>Back</button>
+      </div>
     </div>
   );
 }
@@ -219,12 +217,3 @@ function App() {
 }
 
 export default App;
-
-{/* <div className="question__container">
-  <button className="question__button">?</button>
-  <div className="question__popup">
-    <p>Ever been flamed in game? Teammates intentionally feeding and throwing games? Seen or heard discriminatory comments that made you or others uncomfortable? Most gamers have experienced some level of toxicity when playing online games. These ratings allow us to matchmake based on your friendliness, and to promote a healthier and more positive gaming environment.</p> 
-    <p>After you are matched with a team and have played together, you can help by rating your teammates based on how friendly or toxic they were. We will collect this information to calculate a friendliness rating for each player. </p>
-    <p>When searching for players, you will be matched with others who have a similar rating as the average rating amongst the players currently in your lobby. This means that the better you behave and the more positive you are, the more likely you will be matched with friendlier players. On the other hand, if your teammates feel that you are being rude, toxic, or otherwise detrimental to the gaming environment and your fellow gamers’ experience, you will be matched with others like that until you improve your behaviour.</p>
-  </div>
-</div> } */}

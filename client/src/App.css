@@ -154,3 +154,39 @@ button {
 .question__container:hover .question__popup {
   display: block;
 }
+
+.profile-icon {
+  transform: scale(1.5);
+}
+
+.drawer-content {
+  margin-bottom: 5em;
+  height: 100vh;
+  overflow: 'auto';
+}
+
+.feedback-box {
+  padding: 2px;
+  margin-top: 5px;
+  /* background-color: "blue";
+  border: "1px solid black"; */
+}
+
+.username {
+  font-size: 2.5em;
+}
+
+.gameId {
+  font-size: 1em;
+}
+
+/* icon */
+/* .icon {
+  position: absolute;
+  width: 73px;
+  height: 73px;
+  left: 17px;
+  top: 31px;
+  border-radius: 50%;
+  background: #D9D9D9;
+} */
