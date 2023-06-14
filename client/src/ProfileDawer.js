@@ -23,6 +23,8 @@ export default function ProfileDrawer({player}) {
     const logUrl = "/api/lobby/feedback/" + player.name;
     const response = await axios.get(logUrl);
     const log = response.map((item, index) => ({...item, id: index + 1}));
+    console.log("feedback log response: " + response);
+    console.log("feedback log: " + log);
     setFeedbackLog(log);
     toggleDrawer(true);
   }
