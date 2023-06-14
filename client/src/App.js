@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
+import ProfileDrawer from "./ProfileDawer";
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-
 
 // Player Login screen
 function LogIn({ onSubmit, nameVal}) {
@@ -58,7 +58,7 @@ function LogIn({ onSubmit, nameVal}) {
 }
 
 // Rating dropdown and confirm button
-const Rating = (ratedPlayer) => {	
+const Rating = ({ratedPlayer}) => {
   const ratingUrl = "/api/lobby/rate";
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState('Rate');
@@ -77,9 +77,10 @@ const Rating = (ratedPlayer) => {
 
    const handleConfirmClick = async () => {
     setShowRating(true);
-    const selectedRatingNum = selectedRating.charCodeAt(0) - '0'.charCodeAt(0);	
-    const ratingInfo = {player: ratedPlayer, rating: selectedRatingNum};	
-    await axios.put(ratingUrl,ratingInfo);};
+    // const selectedRatingNum = selectedRating.charCodeAt(0) - '0'.charCodeAt(0);
+    const ratingInfo = {player: ratedPlayer, date: "13/6", feedback: selectedRating};
+    await axios.put(ratingUrl,ratingInfo);
+  };
 
   return (
     <div className={`dropdown ${isOpen ? 'open' : ''}`}>
@@ -196,6 +197,8 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
   const lobbyUrl = "/api/lobby/search";
 
   const [players, setPlayers] = useState([]);
+  //info of the logged in user
+  const [profile, setProfile] = useState({});
   const [showSearch, setShowSearch] = useState(true);
 
    // Handle add player button click
@@ -205,7 +208,6 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   async function handleSearch() {
     setShowSearch(false);
-    // console.log(players);
     try {
       const response = await axios.post(lobbyUrl, {players: players});
       setShowSearch(true);
@@ -223,7 +225,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
       .then(res => {
         const players = res.data;
         setPlayers(players);
-        console.log(players);
+        setProfile(players.at(0));
         console.log(`component mounted`);
       });
     }catch(error) {
@@ -232,38 +234,41 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
   }, []);
 
   return (
-    <div className="Lobby">
-      <h1>Lobby</h1>
-      <table className="lobby-table">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Game ID</th>
-            <th>Friendliness Rating</th>
-            <th>Rate Teammates {
+    <div className="lobby-page">
+      <ProfileDrawer player={profile}/>
+      <div className="Lobby">
+        <h1>Lobby</h1>
+        <table className="lobby-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Game ID</th>
+              <th>Friendliness Rating</th>
+              <th>Rate Your Teammates {
               <div className="question__container">
               <button className="question__button" onClick={onRatingExplained}>?</button>
               </div> }
             </th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            players.map((player) => (
-              <tr key={player._id}>
-                <td>{player.name}</td>
-                <td>{player.gameId}</td>
-                <td>{player.friendliness}</td>
-                <td>
-                { player.name != nameVal ? (<Rating ratedPlayer = {player}/>) : '' }
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-      {showSearch ? (<button onClick={handleSearch}>Search for Teammates</button>) : <p className="searching__text">Searching ...</p>}
-      <button onClick={handleAddPlayer}>Back</button>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              players.map((player) => (
+                <tr key={player._id}>
+                  <td>{player.name}</td>
+                  <td>{player.gameId}</td>
+                  <td>{player.friendliness}</td>
+                  <td>
+                  { player.name !== nameVal ? (<Rating ratedPlayer={player}/>) : '' }
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        {showSearch ? (<button onClick={handleSearch}>Search for Teammates</button>) : <p className="searching__text">Searching ...</p>}
+        <button onClick={handleAddPlayer}>Back</button>
+      </div>
     </div>
   );
 }

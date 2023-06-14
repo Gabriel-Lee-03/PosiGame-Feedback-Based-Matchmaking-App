@@ -44,23 +44,39 @@ router.put("/rate", async (req, res) => {
   try {
     console.log(`call put`);
     const player = req.body.player;
-    console.log("ratedPlayer: " + util.inspect(player));
-    const rating = req.body.rating;
-    console.log("rating: " + util.inspect(rating));
+    const date = req.body.date;
+    const feedback = req.body.feedback;
+    const rating = feedback.charCodeAt(0) - '0'.charCodeAt(0);
+    console.log("rating info: " + util.inspect(req.body));
     const playerDB = await Players.findOne({name: player.name});
     console.log("playerDB: " + util.inspect(playerDB));
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
+    const feedbackLog = playerDB.feedbackLog;
+    console.log("old feedback log: " + util.inspect(feedbackLog));
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
+    feedbackLog.push({date: date, feedback: feedback});
+    console.log("new feedback log: " + util.inspect(feedbackLog));
     await Players.findOneAndUpdate(
       { name: player.name },
-      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore }
+      { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore, feedbackLog: feedbackLog }
     );
 
     res.send("ok");
   } catch (error) {
       res.send(error);
+  }
+});
+
+//handles GET request for user's feedback log
+router.get("/feedback/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+    const userDB = await Players.findOne({name: name});
+    res.send(userDB.feedbackLog);
+  } catch (error) {
+    res.send(error);
   }
 });
 
