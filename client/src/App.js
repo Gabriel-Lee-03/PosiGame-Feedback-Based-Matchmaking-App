@@ -50,56 +50,6 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   );
 }
 
-// Rating dropdown and confirm button
-const Rating = ({ratedPlayer}) => {
-  console.log(ratedPlayer);
-  const ratingUrl = "/api/lobby/rate";
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedRating, setSelectedRating] = useState('Rate');
-  const [showRating, setShowRating] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-
-  const handleOptionClick = (option) => {
-    setSelectedRating(option);
-    setIsOpen(false);
-    setShowConfirm(true);
-  };
-
-  const handleButtonClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-   const handleConfirmClick = async () => {
-    setShowRating(true);
-    const selectedRatingNum = selectedRating.charCodeAt(0) - '0'.charCodeAt(0);
-    const ratingInfo = {player: ratedPlayer, rating: selectedRatingNum};
-    await axios.put(ratingUrl,ratingInfo);
-  };
-
-  return (
-    <RatingDrawer player={ratedPlayer}/>
-    // <div className={`dropdown ${isOpen ? 'open' : ''}`}>
-    //   {showRating ? (
-    //     <p className="rating__text">{selectedRating}</p>
-    //   ) : (
-    //   <>
-    //     <button className="dropdown__button" onClick={handleButtonClick}>{selectedRating}</button>
-    //     <ul className="dropdown__list">
-    //       <li onClick={() => handleOptionClick("1 - discriminatory")}>1 - discriminatory</li>
-    //       <li onClick={() => handleOptionClick("2 - rude and unkind")}>2 - rude and unkind</li>
-    //       <li onClick={() => handleOptionClick("3 - normal interactions")}>3 - normal interactions</li>
-    //       <li onClick={() => handleOptionClick("4 - kind and fun")}>4 - kind and fun</li>
-    //       <li onClick={() => handleOptionClick("5 - positive environment")}>5 - positive environment</li>
-    //     </ul>
-    //     {showConfirm ? (
-    //       <button className="confirm__button" onClick={handleConfirmClick}>Confirm</button>
-    //     ) : <div className="no_confirm"></div>}
-    //   </>
-    //   )}
-    //   </div>
-  );
-};
-
 // Lobby screen component
 function Lobby({ onAddPlayer, nameVal }) {
   const queueUrl = "/api/lobby/queue/" + nameVal;

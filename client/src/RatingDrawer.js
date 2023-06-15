@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, ToggleButtonGroup, ToggleButton, Drawer, Box, Typography } from "@mui/material";
+import { SCORE_1_BEHAVIORS, SCORE_2_BEHAVIORS, SCORE_3_BEHAVIORS, SCORE_4_BEHAVIORS, SCORE_5_BEHAVIORS } from "./RatingTiers";
 import axios from "axios";
 import "./App.css";
 
@@ -24,7 +25,7 @@ export default function RatingDrawer({ratedPlayer}) {
   };
 
   const handleConfirmClick = async () => {
-    const ratingInfo = {player: ratedPlayer, rating: resp.score};
+    const ratingInfo = {player: ratedPlayer, rating: resp.score, feedback: resp.act, time: new Date().toDateString()};
     console.log("CONFIRM CLICK: rating info: <name> " + 
                   ratingInfo.player.name + " : <score> " +
                   ratingInfo.rating);
@@ -47,92 +48,100 @@ export default function RatingDrawer({ratedPlayer}) {
         onClose={()=>toggleDrawer(false)}
       >
         <Typography variant="h6" align="left">
-          <p className="username">username: {ratedPlayer.name}</p>
-          <p>game ID: {ratedPlayer.gameId}</p>
+          <p className="username"> How did {ratedPlayer.gameId} do? </p>
 
           <div>
               <Box className="drawer-content" width="35em" p={2} textAlign={"center"} role="presentation">
 
-              <p> Score 1</p>              
+              <p>Score 1:</p>              
               <ToggleButtonGroup
+                className="button-group"
                 value={selected}
                 exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 1)}
               >
-              {/* {act: "Threats", score: 1} */}
-                <ToggleButton value="Threats">
-                  Threats
-                </ToggleButton>
-
-                <ToggleButton value="Sexist">
-                  Sexist
-                </ToggleButton>
-
-                <ToggleButton value="Racist">
-                  Racist
-                </ToggleButton>
-
-                <ToggleButton value="Other discriminatory comments">
-                  Other discriminatory comments
-                </ToggleButton>
+                {
+                  SCORE_1_BEHAVIORS.map(b => (
+                    <ToggleButton value={b}>
+                      {b}
+                    </ToggleButton>
+                  ))
+                }
               </ToggleButtonGroup>
 
               <br className="rating-break"></br>
-              <p> Score 2</p>
+              <p>Score 2:</p>
 
               <ToggleButtonGroup
+                className="button-group"
                 value={selected}
                 exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 2)}
               >
-                <ToggleButton value="Leaving the game">
-                  Leaving the game 
-                </ToggleButton>
-                <ToggleButton value="Intentionally losing">
-                  Intentionally losing
-                </ToggleButton>
-                <ToggleButton value="Rude">
-                  Rude
-                </ToggleButton>
-                <ToggleButton value="Inappropriate comments">
-                  Inappropriate comments
-                </ToggleButton>
+                {
+                  SCORE_2_BEHAVIORS.map(b => (
+                    <ToggleButton value={b}>
+                      {b}
+                    </ToggleButton>
+                  ))
+                }
               </ToggleButtonGroup>
 
               <br className="rating-break"></br>
-              <p> Score 3</p>
+              <p> Score 3:</p>
 
               <ToggleButtonGroup
+                className="button-group"
                 value={selected}
                 exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 3)}
               >
-                <ToggleButton value="Average communication">
-                  Average communication 
-                </ToggleButton>
-                <ToggleButton value="No communication">
-                  No communication
-                </ToggleButton>
+                {
+                  SCORE_3_BEHAVIORS.map(b => (
+                    <ToggleButton value={b}>
+                      {b}
+                    </ToggleButton>
+                  ))
+                }
               </ToggleButtonGroup>
 
               <br className="rating-break"></br>
-              <p> Score 4</p>
+              <p> Score 4:</p>
 
               <ToggleButtonGroup
+                className="button-group"
                 value={selected}
                 exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 4)}
               >
-                <ToggleButton value="Friendly communication">
-                  Friendly communication 
-                </ToggleButton>
-                <ToggleButton value="Fun and lighthearted">
-                  Fun and lighthearted
-                </ToggleButton>
+                {
+                  SCORE_4_BEHAVIORS.map(b => (
+                    <ToggleButton value={b}>
+                      {b}
+                    </ToggleButton>
+                  ))
+                }
               </ToggleButtonGroup>
 
               <br className="rating-break"></br>
-              <p>.</p>
+              <p> Score 5:</p>
+
+              <ToggleButtonGroup
+                className="button-group"
+                value={selected}
+                exclusive={true}
+                onChange={(e, newVal) => handleOptionClick(e, newVal, 5)}
+              >
+                {
+                  SCORE_5_BEHAVIORS.map(b => (
+                    <ToggleButton value={b}>
+                      {b}
+                    </ToggleButton>
+                  ))
+                }
+              </ToggleButtonGroup>
+
+              <br className="rating-break"></br>
 
                 {/* disabled if no option is selected */}
               <Button 
