@@ -49,11 +49,24 @@ async function search() {
 function addToSearchQueue(lobby) {
     console.log("current queue (before adding): " + util.inspect(searchingQueue));
     return new Promise((resolve, reject) => {
-        searchingQueue.push({lobby: lobby, resolve: [resolve]});
+        const timeoutId = setTimeout(() => {
+            const index = searchingQueue.findIndex(item => item.lobby === lobby);
+            if (index !== -1) {
+                searchingQueue.splice(index, 1);
+                reject(new Error('Search timeout'));
+            }
+        }, 10000);
+
+        const resolveWrapper = (...args) => {
+            clearTimeout(timeoutId);
+            resolve(...args);
+        };
+
+        searchingQueue.push({ lobby: lobby, resolve: [resolveWrapper] });
+
         if (!isRunningSearch) {
             search();
         }
     });
 }
-
 module.exports = {addToSearchQueue}

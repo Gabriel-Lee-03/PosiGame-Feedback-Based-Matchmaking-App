@@ -36,8 +36,15 @@ router.post("/search", async(req, res) => {
     updatedPlayers.push(updatedPlayer);
   }
   const thisLobby = createLobby(updatedPlayers);
-  const newLobby = await addToSearchQueue(thisLobby);
-  res.send(newLobby.players);
+  try {
+    const newLobby = await addToSearchQueue(thisLobby);
+    const status = {players: newLobby.players, success: true};
+    res.send(status);
+  }catch (error) {
+    console.error("queue timeout");
+    const status = {players:[], success: false};
+    res.send(status);
+  }
 });
 
 //handles PUT request to route with confirmed rating 

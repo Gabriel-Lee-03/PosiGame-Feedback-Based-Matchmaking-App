@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-import ProfileDrawer from "./ProfileDawer";
 import RatingDrawer from "./RatingDrawer";
 import ProfileAppBar from "./ProfileAppBar";
+import SearchFailSnackBar from "./SearchFailSnackBar";
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 // Player Login screen
@@ -150,6 +150,8 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
   const queueUrl = "/api/lobby/queue/" + nameVal;	
   const lobbyUrl = "/api/lobby/search";
 
+  // snackbar state for when search for player fails
+  const [openSnackBar, toggleSnackBar] = useState(false);
   const [players, setPlayers] = useState([]);
   //info of the logged in user
   const [profile, setProfile] = useState({});
@@ -160,13 +162,24 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
     onAddPlayer();
   }
 
+  // open snackbar when search for player fails
+  function handleClose () {
+    const newState = !openSnackBar;
+    toggleSnackBar(newState);
+  }
+
   async function handleSearch() {
     setShowSearch(false);
     try {
       const response = await axios.post(lobbyUrl, {players: players});
       setShowSearch(true);
-      const newPlayers = response.data;
-      setPlayers(newPlayers);
+      const status = response.data;
+      if (status.success) {
+        setPlayers(status.players);
+      } else {
+        handleClose ()
+      }
+      
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -190,8 +203,8 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   return (
     <div className="lobby-page">
+      <SearchFailSnackBar open={openSnackBar} handleClose={toggleSnackBar}/>
       <ProfileAppBar player={profile}/>
-      {/* <ProfileDrawer player={profile}/> */}
       <div className="Lobby">
         <h1>Lobby</h1>
         <table className="lobby-table">
