@@ -34,13 +34,13 @@ export default function ProfileDrawer({player}) {
               <Typography variant="h6" align="left">
                 <img className="icon" src="https://picsum.photos/200"></img>
                 <div className="profile-div">
-                  <p className="page-label">profile</p>
+                  <p className="page-label">Profile</p>
                   <p className="username">{player.name}</p>
-                  <p className="gameId">game ID: {player.gameId}</p>
+                  <p className="gameId">Game ID: {player.gameId}</p>
                 </div>
                 {
                   (feedbackLog.length === 0)? 
-                    <FeedbackBox date="" feedback="play more games to see feedbacks from your fellow teammates!"></FeedbackBox> :
+                    <FeedbackBox date="" feedback="Play more games to see feedbacks from your fellow teammates!"></FeedbackBox> :
                     
                       feedbackLog.map((s) => (
                         <FeedbackBox key={s.id} date={s.date} feedback={commentBuilder(s.feedback)}></FeedbackBox>
