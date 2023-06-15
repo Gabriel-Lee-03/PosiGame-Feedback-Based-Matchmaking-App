@@ -1,7 +1,7 @@
-import {Snackbar} from '@mui/material';
+import {Snackbar, Button} from '@mui/material';
 
 export default function SearchFailSnackBar({open, handleClose}) {
-  return (
+    return (
     <Snackbar
       open={open}
       autoHideDuration={5000}

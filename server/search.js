@@ -13,9 +13,9 @@ const testLobbyObj2 = {lobby: testLobby2, resolve: []};
 const testLobbyObj3 = {lobby: testLobby3, resolve: []};
 let searchingQueue = [testLobbyObj1, testLobbyObj2, testLobbyObj3];
 
-async function search() { 
+async function search() {
     isRunningSearch = true;
-    
+
     while (searchingQueue.length > 0) {
         let objA = searchingQueue.shift();
         let lobbyA = objA.lobby;
@@ -25,9 +25,11 @@ async function search() {
             continue;
         }
         if (searchingQueue.length === 0) {
-            searchingQueue.push({lobby: lobbyA, resolve: resolveA});
+            searchingQueue.push({ lobby: lobbyA, resolve: resolveA });
             break;
         }
+
+        let foundMatch = false; // Track if a match is found for objA
         for (let i = 0; i < searchingQueue.length; i++) {
             let objB = searchingQueue[i];
             let lobbyB = objB.lobby;
@@ -38,11 +40,24 @@ async function search() {
                 searchingQueue.splice(i, 1);
                 let lobbyC = mergeLobbys(lobbyA, lobbyB);
                 let resolveC = resolveA.concat(resolveB);
-                searchingQueue.unshift({lobby: lobbyC, resolve: resolveC});
+                searchingQueue.unshift({ lobby: lobbyC, resolve: resolveC });
+                foundMatch = true;
                 break;
             }
         }
+
+        if (!foundMatch) {
+            // Handle timeout for incomplete lobby
+            const timeoutId = setTimeout(() => {
+                const index = searchingQueue.findIndex(obj => obj.lobby === lobbyA);
+                if (index !== -1) {
+                    searchingQueue.splice(index, 1);
+                    resolveA.forEach(res => res(new Error('Lobby timeout')));
+                }
+            }, 10000); // Timeout after 10 seconds
+        }
     }
+
     isRunningSearch = false;
 }
 

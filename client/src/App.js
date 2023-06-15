@@ -163,9 +163,8 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
   }
 
   // open snackbar when search for player fails
-  function handleClose () {
-    const newState = !openSnackBar;
-    toggleSnackBar(newState);
+  function handleOpen () {
+    toggleSnackBar(true);
   }
 
   async function handleSearch() {
@@ -177,7 +176,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
       if (status.success) {
         setPlayers(status.players);
       } else {
-        handleClose ()
+        handleOpen();
       }
       
     } catch (error) {
@@ -203,7 +202,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   return (
     <div className="lobby-page">
-      <SearchFailSnackBar open={openSnackBar} handleClose={toggleSnackBar}/>
+      <SearchFailSnackBar open={openSnackBar} handleClose={toggleSnackBar(false)}/>
       <ProfileAppBar player={profile}/>
       <div className="Lobby">
         <h1>Lobby</h1>
