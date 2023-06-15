@@ -45,108 +45,109 @@ export default function RatingDrawer({ratedPlayer}) {
         onClose={()=>toggleDrawer(false)}
       >
         <Typography variant="h6" align="left">
-        <div className="rating-div">
-          <p className="username"> How did {ratedPlayer.gameId} do? </p>
-        </div>
-
           <div>
               <Box className="drawer-content" width="35em" p={2} textAlign={"center"} role="presentation">
+              <div className="rating-div">
+                <p className="username"> How did {ratedPlayer.gameId} do? </p>
+              </div>
 
-              <p>Score 1:</p>              
-              <ToggleButtonGroup
-                className="button-group"
-                value={selected}
-                exclusive={true}
-                onChange={(e, newVal) => handleOptionClick(e, newVal, 1)}
-              >
-                {
-                  SCORE_1_BEHAVIORS.map(b => (
-                    <ToggleButton value={b}>
-                      {b}
-                    </ToggleButton>
-                  ))
-                }
-              </ToggleButtonGroup>
+              <div className="rating-buttons">
+                <p>Score 1:</p>              
+                  <ToggleButtonGroup
+                    className="button-group"
+                    value={selected}
+                    exclusive={true}
+                    onChange={(e, newVal) => handleOptionClick(e, newVal, 1)}
+                  >
+                    {
+                      SCORE_1_BEHAVIORS.map(b => (
+                        <ToggleButton value={b}>
+                          {b}
+                        </ToggleButton>
+                      ))
+                    }
+                  </ToggleButtonGroup>
 
-              <br className="rating-break"></br>
-              <p>Score 2:</p>
+                  <br className="rating-break"></br>
+                  <p>Score 2:</p>
 
-              <ToggleButtonGroup
-                className="button-group"
-                value={selected}
-                exclusive={true}
-                onChange={(e, newVal) => handleOptionClick(e, newVal, 2)}
-              >
-                {
-                  SCORE_2_BEHAVIORS.map(b => (
-                    <ToggleButton value={b}>
-                      {b}
-                    </ToggleButton>
-                  ))
-                }
-              </ToggleButtonGroup>
+                  <ToggleButtonGroup
+                    className="button-group"
+                    value={selected}
+                    exclusive={true}
+                    onChange={(e, newVal) => handleOptionClick(e, newVal, 2)}
+                  >
+                    {
+                      SCORE_2_BEHAVIORS.map(b => (
+                        <ToggleButton value={b}>
+                          {b}
+                        </ToggleButton>
+                      ))
+                    }
+                  </ToggleButtonGroup>
 
-              <br className="rating-break"></br>
-              <p> Score 3:</p>
+                  <br className="rating-break"></br>
+                  <p> Score 3:</p>
 
-              <ToggleButtonGroup
-                className="button-group"
-                value={selected}
-                exclusive={true}
-                onChange={(e, newVal) => handleOptionClick(e, newVal, 3)}
-              >
-                {
-                  SCORE_3_BEHAVIORS.map(b => (
-                    <ToggleButton value={b}>
-                      {b}
-                    </ToggleButton>
-                  ))
-                }
-              </ToggleButtonGroup>
+                  <ToggleButtonGroup
+                    className="button-group"
+                    value={selected}
+                    exclusive={true}
+                    onChange={(e, newVal) => handleOptionClick(e, newVal, 3)}
+                  >
+                    {
+                      SCORE_3_BEHAVIORS.map(b => (
+                        <ToggleButton value={b}>
+                          {b}
+                        </ToggleButton>
+                      ))
+                    }
+                  </ToggleButtonGroup>
 
-              <br className="rating-break"></br>
-              <p> Score 4:</p>
+                  <br className="rating-break"></br>
+                  <p> Score 4:</p>
 
-              <ToggleButtonGroup
-                className="button-group"
-                value={selected}
-                exclusive={true}
-                onChange={(e, newVal) => handleOptionClick(e, newVal, 4)}
-              >
-                {
-                  SCORE_4_BEHAVIORS.map(b => (
-                    <ToggleButton value={b}>
-                      {b}
-                    </ToggleButton>
-                  ))
-                }
-              </ToggleButtonGroup>
+                  <ToggleButtonGroup
+                    className="button-group"
+                    value={selected}
+                    exclusive={true}
+                    onChange={(e, newVal) => handleOptionClick(e, newVal, 4)}
+                  >
+                    {
+                      SCORE_4_BEHAVIORS.map(b => (
+                        <ToggleButton value={b}>
+                          {b}
+                        </ToggleButton>
+                      ))
+                    }
+                  </ToggleButtonGroup>
 
-              <br className="rating-break"></br>
-              <p> Score 5:</p>
+                  <br className="rating-break"></br>
+                  <p> Score 5:</p>
 
-              <ToggleButtonGroup
-                className="button-group"
-                value={selected}
-                exclusive={true}
-                onChange={(e, newVal) => handleOptionClick(e, newVal, 5)}
-              >
-                {
-                  SCORE_5_BEHAVIORS.map(b => (
-                    <ToggleButton value={b}>
-                      {b}
-                    </ToggleButton>
-                  ))
-                }
-              </ToggleButtonGroup>
+                  <ToggleButtonGroup
+                    className="button-group"
+                    value={selected}
+                    exclusive={true}
+                    onChange={(e, newVal) => handleOptionClick(e, newVal, 5)}
+                  >
+                    {
+                      SCORE_5_BEHAVIORS.map(b => (
+                        <ToggleButton value={b}>
+                          {b}
+                        </ToggleButton>
+                      ))
+                    }
+                  </ToggleButtonGroup>
 
-              <br className="rating-break"></br>
+                  <br className="rating-break"></br>
 
-                {/* disabled if no option is selected */}
-              <Button 
-                variant="outlined"
-                disabled={!showConfirm}
-                onClick={handleConfirmClick}>Confirm</Button>   
+                    {/* disabled if no option is selected */}
+                  <Button 
+                    variant="outlined"
+                    disabled={!showConfirm}
+                    onClick={handleConfirmClick}>Confirm</Button>          
+              </div>
               </Box>  
           </div>
         </Typography>
