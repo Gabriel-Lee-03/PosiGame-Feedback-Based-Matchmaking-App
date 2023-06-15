@@ -55,12 +55,11 @@ router.put("/rate", async (req, res) => {
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
     const feedbackLog = playerDB.feedbackLog;
-    console.log("old feedback log: " + util.inspect(feedbackLog));
+    // console.log("old feedback log: " + util.inspect(feedbackLog));
     const newTotalScore = totalScore + score;
-    // const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
     feedbackLog.unshift({date: date, feedback: feedback});
-    console.log("new feedback log: " + util.inspect(feedbackLog));
+    // console.log("new feedback log: " + util.inspect(feedbackLog));
     await Players.findOneAndUpdate(
       { name: player.name },
       { friendliness: (newTotalScore / newRatingCount), ratingCount: newRatingCount, totalScore: newTotalScore, feedbackLog: feedbackLog }
