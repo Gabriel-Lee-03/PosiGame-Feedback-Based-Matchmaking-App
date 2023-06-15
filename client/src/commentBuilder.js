@@ -1,5 +1,5 @@
 function commentBuilder(comments) {
-  return (`You were rated "${comments}" in your last match` );
+  return (`You were rated "${comments}"` );
 }
 
 module.exports = {commentBuilder}

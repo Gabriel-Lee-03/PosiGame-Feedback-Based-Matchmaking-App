@@ -14,8 +14,6 @@ export default function ProfileDrawer({player}) {
     const logUrl = "/api/lobby/feedback/" + player.name;
     const response = await axios.get(logUrl);
     const log = response.data.map((item, index) => ({...item, id: index + 1}));
-    console.log("feedback log response: " + response.data);
-    console.log("feedback log: " + log);
     setFeedbackLog(log);
     toggleDrawer(true);
   }
@@ -40,11 +38,13 @@ export default function ProfileDrawer({player}) {
                   <p className="username">{player.name}</p>
                   <p className="gameId">game ID: {player.gameId}</p>
                 </div>
-
                 {
-                  feedbackLog.map((s) => (
-                    <FeedbackBox key={s.id} date={s.date} feedback={commentBuilder(s.feedback)}></FeedbackBox>
-                  ))
+                  (feedbackLog.length === 0)? 
+                    <FeedbackBox date="" feedback="play more games to see feedbacks from your fellow teammates!"></FeedbackBox> :
+                    
+                      feedbackLog.map((s) => (
+                        <FeedbackBox key={s.id} date={s.date} feedback={commentBuilder(s.feedback)}></FeedbackBox>
+                      ))
                 }
               </Typography>
           </Box>
