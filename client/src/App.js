@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 import ProfileDrawer from "./ProfileDawer";
 import RatingDrawer from "./RatingDrawer";
+import ProfileAppBar from "./ProfileAppBar";
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 // Player Login screen
@@ -189,7 +190,8 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   return (
     <div className="lobby-page">
-      <ProfileDrawer player={profile}/>
+      <ProfileAppBar player={profile}/>
+      {/* <ProfileDrawer player={profile}/> */}
       <div className="Lobby">
         <h1>Lobby</h1>
         <table className="lobby-table">

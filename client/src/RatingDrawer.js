@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, ToggleButtonGroup, ToggleButton, Drawer, Box, Typography } from "@mui/material";
+import { Button, ToggleButtonGroup, IconButton, ToggleButton, Drawer, Box, Typography, Tooltip } from "@mui/material";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {  SCORE_1_BEHAVIORS, SCORE_2_BEHAVIORS, SCORE_3_BEHAVIORS,
           SCORE_4_BEHAVIORS, SCORE_5_BEHAVIORS, getScores, getFeedbacks} from "./RatingTiers";
 import axios from "axios";
@@ -9,7 +10,6 @@ export default function RatingDrawer({ratedPlayer}) {
   const ratingUrl = "/api/lobby/rate";
   
   // only a single response is recorded
-  const [resp, setResp] = useState({});
   const [selected, setSelected] = useState([]);
   const [isDrawerOpen, toggleDrawer] = useState(false);
   const [allowRating, toggleRatePermission] = useState(true);
@@ -19,7 +19,6 @@ export default function RatingDrawer({ratedPlayer}) {
     console.log("selected: " + updatedValue);
     setSelected(updatedValue);
     const newResp = {act: updatedValue, score: score};
-    setResp(newResp);
     setShowConfirm(true);
   };
 
@@ -49,6 +48,13 @@ export default function RatingDrawer({ratedPlayer}) {
       >
         <Typography variant="h6" align="left">
         <div className="rating-div">
+          <div className="rating-info">
+            <Tooltip title="Final score will be weighted" placement="left-start">
+              <IconButton>
+                <InfoOutlinedIcon/>
+              </IconButton>
+            </Tooltip>
+          </div>
           <p className="username"> How did {ratedPlayer.gameId} do? </p>
         </div>
 

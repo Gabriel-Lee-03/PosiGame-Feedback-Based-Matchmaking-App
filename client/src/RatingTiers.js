@@ -33,7 +33,6 @@ function getScores (choices) {
 function getFeedbacks (choices) {
   const feedbackString = choices.reduce((acc, curr) => acc + `, "` + curr + `"`, "");
   const ret = feedbackString.substring(1);
-  console.log("get feedback: " + ret);
   return (ret);
 }
 

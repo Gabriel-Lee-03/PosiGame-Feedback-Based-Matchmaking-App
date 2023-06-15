@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircle';
 import { IconButton, Drawer, Box, Typography } from "@mui/material";
 import FeedbackBox  from "./FeedbackBox";
 import { commentBuilder } from "./commentBuilder";
@@ -22,7 +22,7 @@ export default function ProfileDrawer({player}) {
     <div className="profile-drawer">
       <React.Fragment>
       <IconButton onClick={()=>getLogs()} size='large'>
-        <AccountCircleIcon className="profile-icon"/>
+        <AccountCircleOutlinedIcon className="profile-icon"/>
       </IconButton>
       <Drawer
         anchor={'left'}
