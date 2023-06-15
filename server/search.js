@@ -20,41 +20,42 @@ async function search() {
         let objA = searchingQueue.shift();
         let lobbyA = objA.lobby;
         let resolveA = objA.resolve;
+
         if (lobbyA.spaceLeft === 0) {
             resolveA.forEach(res => res(lobbyA));
             continue;
         }
+
         if (searchingQueue.length === 0) {
             searchingQueue.push({ lobby: lobbyA, resolve: resolveA });
             break;
         }
 
-        let foundMatch = false; // Track if a match is found for objA
+        const startTime = Date.now(); // Record the start time
+
         for (let i = 0; i < searchingQueue.length; i++) {
             let objB = searchingQueue[i];
             let lobbyB = objB.lobby;
             let resolveB = objB.resolve;
+
             const ratingA = lobbyA.averageRating;
             const ratingB = lobbyB.averageRating;
+
             if (Math.abs(ratingA - ratingB) <= maxRatingDifference) {
                 searchingQueue.splice(i, 1);
                 let lobbyC = mergeLobbys(lobbyA, lobbyB);
                 let resolveC = resolveA.concat(resolveB);
                 searchingQueue.unshift({ lobby: lobbyC, resolve: resolveC });
-                foundMatch = true;
                 break;
             }
-        }
 
-        if (!foundMatch) {
-            // Handle timeout for incomplete lobby
-            const timeoutId = setTimeout(() => {
-                const index = searchingQueue.findIndex(obj => obj.lobby === lobbyA);
-                if (index !== -1) {
-                    searchingQueue.splice(index, 1);
-                    resolveA.forEach(res => res(new Error('Lobby timeout')));
-                }
-            }, 10000); // Timeout after 10 seconds
+            // Check if 10 seconds have passed and spaceLeft is still not 0
+            const currentTime = Date.now();
+            if (currentTime - startTime >= 10000 && lobbyA.spaceLeft > 0) {
+                searchingQueue.splice(i, 1);
+                resolveA.forEach(res => res(lobbyA)); // Reject the promise
+                break;
+            }
         }
     }
 
@@ -70,7 +71,7 @@ function addToSearchQueue(lobby) {
                 searchingQueue.splice(index, 1);
                 reject(new Error('Search timeout'));
             }
-        }, 10000);
+        }, 10000); // Timeout after 10 seconds
 
         const resolveWrapper = (...args) => {
             clearTimeout(timeoutId);
