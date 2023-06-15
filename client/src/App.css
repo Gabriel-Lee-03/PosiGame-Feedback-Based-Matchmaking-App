@@ -192,7 +192,7 @@ button {
 
 .gameId {
   margin-top: 8px;
-  margin-bottom: 0px;
+  margin-bottom: 20px;
   font-size: 16px;
   line-height: 19px;
 }
@@ -225,4 +225,9 @@ button {
 .profile-div {
   margin-top: 25px;
   margin-left: 150px;
+}
+
+.rating-div {
+  margin-top: 20px;
+  margin-left: 50px;
 }

@@ -25,7 +25,7 @@ export default function RatingDrawer({ratedPlayer}) {
   };
 
   const handleConfirmClick = async () => {
-    const ratingInfo = {player: ratedPlayer, rating: resp.score, feedback: resp.act, date: new Date().toDateString()};
+    const ratingInfo = {player: ratedPlayer, rating: resp.score, feedback: resp.act, date: new Date().toUTCString()};
     await axios.put(ratingUrl,ratingInfo);
     setShowConfirm(false);
     toggleRatePermission(false);
@@ -45,7 +45,9 @@ export default function RatingDrawer({ratedPlayer}) {
         onClose={()=>toggleDrawer(false)}
       >
         <Typography variant="h6" align="left">
+        <div className="rating-div">
           <p className="username"> How did {ratedPlayer.gameId} do? </p>
+        </div>
 
           <div>
               <Box className="drawer-content" width="35em" p={2} textAlign={"center"} role="presentation">

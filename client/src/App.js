@@ -211,7 +211,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
                 <tr key={player._id}>
                   <td>{player.name}</td>
                   <td>{player.gameId}</td>
-                  <td>{player.friendliness}</td>
+                  <td>{player.friendliness.toFixed(2)}</td>
                   <td>
                   { player.name !== nameVal ? (<RatingDrawer ratedPlayer={player}/>) : '' }
                   </td>

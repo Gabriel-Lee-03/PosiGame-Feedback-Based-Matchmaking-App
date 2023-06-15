@@ -4,7 +4,6 @@ const util = require('util');
 
 const {createLobby} = require("../lobbys");
 const {addToSearchQueue} = require("../search");
-
 const Players = require("../models/player");
 
 // Handle GET requests to /queue/name route

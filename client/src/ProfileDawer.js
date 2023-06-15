@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton, Drawer, Box, Typography } from "@mui/material";
 import FeedbackBox  from "./FeedbackBox";
+import { commentBuilder } from "./commentBuilder";
 import "./App.css";
 import axios from "axios";
-
-const dummyStrings = []
 
 export default function ProfileDrawer({player}) {
   const [isDrawerOpen, toggleDrawer] = useState(false);
@@ -44,7 +43,7 @@ export default function ProfileDrawer({player}) {
 
                 {
                   feedbackLog.map((s) => (
-                    <FeedbackBox key={s.id} date={s.date} feedback={s.feedback}></FeedbackBox>
+                    <FeedbackBox key={s.id} date={s.date} feedback={commentBuilder(s.feedback)}></FeedbackBox>
                   ))
                 }
               </Typography>
