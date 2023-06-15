@@ -16,22 +16,26 @@ router.post("/", async (req, res) => {
     console.log("login info: " +  util.inspect(loginInfo));
     const playerList = await Players.find({name: loginInfo.name});
     let player = {};
-    if (playerList.length == 0) {
+    let found = false
+    if (playerList.length === 0 && loginInfo.gameId !== "") {
       console.log("register new player");
       player = {
         gameId: loginInfo.gameId,
         name: loginInfo.name,
         friendliness: defaultRating,
         ratingCount: defaultRatingCount,
-        totalScore: defaultTotalScore
+        totalScore: defaultTotalScore,
+        feedbackLog: []
       };
       await new Players(player).save();
-    } else {
+      found = true;
+    } else if (playerList.length !== 0) {
       console.log("get existing player");
       player = playerList[0];
+      found = true;
     }
     console.log("post ok");
-    res.send(player);
+    res.send({isFound: found});
   } catch (error) {
     res.send(error);
   }

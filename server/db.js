@@ -8,8 +8,8 @@ const USER = process.env.USER;
 
 const dbName = "players";
 
-// DEVELOPMENT
-// start mongod on seperate terminal
+// // DEVELOPMENT
+// // start mongod on seperate terminal
 //  const uri = "mongodb://localhost:27017/players";
 
 // DEPLOYMENT

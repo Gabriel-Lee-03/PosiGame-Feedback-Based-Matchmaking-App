@@ -25,10 +25,7 @@ export default function RatingDrawer({ratedPlayer}) {
   };
 
   const handleConfirmClick = async () => {
-    const ratingInfo = {player: ratedPlayer, rating: resp.score, feedback: resp.act, time: new Date().toDateString()};
-    console.log("CONFIRM CLICK: rating info: <name> " + 
-                  ratingInfo.player.name + " : <score> " +
-                  ratingInfo.rating);
+    const ratingInfo = {player: ratedPlayer, rating: resp.score, feedback: resp.act, date: new Date().toDateString()};
     await axios.put(ratingUrl,ratingInfo);
     setShowConfirm(false);
     toggleRatePermission(false);

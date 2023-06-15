@@ -3,15 +3,28 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton, Drawer, Box, Typography } from "@mui/material";
 import FeedbackBox  from "./FeedbackBox";
 import "./App.css";
+import axios from "axios";
 
 const dummyStrings = []
 
 export default function ProfileDrawer({player}) {
   const [isDrawerOpen, toggleDrawer] = useState(false);
+  const [feedbackLog, setFeedbackLog] = useState([]);
+
+  async function getLogs() {
+    const logUrl = "/api/lobby/feedback/" + player.name;
+    const response = await axios.get(logUrl);
+    const log = response.data.map((item, index) => ({...item, id: index + 1}));
+    console.log("feedback log response: " + response.data);
+    console.log("feedback log: " + log);
+    setFeedbackLog(log);
+    toggleDrawer(true);
+  }
+
   return(
     <div className="profile-drawer">
       <React.Fragment>
-      <IconButton onClick={()=>toggleDrawer(true)} size='large'>
+      <IconButton onClick={()=>getLogs()} size='large'>
         <AccountCircleIcon className="profile-icon"/>
       </IconButton>
       <Drawer
@@ -30,7 +43,7 @@ export default function ProfileDrawer({player}) {
                 </div>
 
                 {
-                  dummyStrings.map((s) => (
+                  feedbackLog.map((s) => (
                     <FeedbackBox key={s.id} date={s.date} feedback={s.feedback}></FeedbackBox>
                   ))
                 }

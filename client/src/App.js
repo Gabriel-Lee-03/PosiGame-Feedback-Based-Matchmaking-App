@@ -3,12 +3,14 @@ import "./App.css";
 import axios from "axios";
 import ProfileDrawer from "./ProfileDawer";
 import RatingDrawer from "./RatingDrawer";
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 // Player Login screen
-function LogIn({ onSubmit, nameVal, savedGameID }) {
+function LogIn({ onSubmit, nameVal}) {
   // State for Game ID and Name inputs
-  const [gameId, setGameId] = useState(savedGameID);
+  const [gameId, setGameId] = useState("");
   const [name, setName] = useState(nameVal);
+  const [errorMessage, setMessage] = useState("");
   const loginUrl = "/api/login"
 
   // Handle form submission
@@ -16,10 +18,14 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
     e.preventDefault();
     try {
       const info = { gameId: gameId, name: name };
-      await axios.post(loginUrl, {loginInfo: info});
-      setGameId("");
-      setName("");
-      onSubmit(name);
+      var res = await axios.post(loginUrl, {loginInfo: info});
+      if (res.data.isFound) {
+        setGameId("");
+        setName("");
+        onSubmit(name);
+      } else {
+        setMessage("Not registered user");
+      }
     } catch (error) {
       // Request was not successful
       console.error('An error occurred:', error);
@@ -28,7 +34,8 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
 
   return (
     <div className="Player">
-      <h1>Player</h1>
+      <h1>Player Login</h1>
+      <p>{errorMessage}</p>
       <div className="input-row">
         <label>Username: </label>
         <input
@@ -37,6 +44,7 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
+      <p>If you are a new user, please enter your Game ID (in-game name)</p>
       <div className="input-row">
         <label>Game ID: </label>
         <input
@@ -50,9 +58,95 @@ function LogIn({ onSubmit, nameVal, savedGameID }) {
   );
 }
 
+function RatingExplained({ onBack }) {
+
+  const [answersVisible, setAnswersVisible] = useState([]);
+
+  const toggleAnswerVisibility = (index) => {
+    setAnswersVisible((prevVisible) => {
+      const newVisible = [...prevVisible];
+      newVisible[index] = !newVisible[index];
+      return newVisible;
+    });
+  };
+  
+  async function handleBack() {
+    onBack();
+  }
+
+  return (
+    <div>
+      <h1 className="title">What is Rating?</h1>
+      <div className="qa-container">
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(0)}>
+            What should I rate? {answersVisible[0] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[0] && (
+            <div className="qa-answer">
+              After playing a game with your team, you may rate your teammates from various categories that best describe your experience during the game.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(1)}>
+            How does teammate matching work? {answersVisible[1] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[1] && (
+            <div className="qa-answer">
+              You will be matched with players who share a similar friendliness to those already in your lobby.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(2)}>
+            How is friendliness determined? {answersVisible[2] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[2] && (
+            <div className="qa-answer">
+              Friendliness is calculated by averaging the rating scores given by your teammates over the past 30 days.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(3)}>
+            How can I increase my friendliness? {answersVisible[3] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[3] && (
+            <div className="qa-answer">
+              Be nice and kind to your teammates! Communicate well, and try your best to provide help and support. When things don’t go well, be encouraging and motivate each other. You will be more likely to receive higher ratings and be matched with friendlier players.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(4)}>
+            What happens if I am rated poorly? {answersVisible[4] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[4] && (
+            <div className="qa-answer">
+              It’s likely that your teammates feel that you could do better. Avoid negativity, rudeness, or discriminatory behavior, as they harm the gaming environment and your teammates' experience. Until you improve your behavior, you will be matched with similar players.
+            </div>
+          )}
+        </div>
+        <div className="qa-item">
+          <button className="qa-question" onClick={() => toggleAnswerVisibility(5)}>
+            How should I improve? {answersVisible[5] ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </button>
+          {answersVisible[5] && (
+            <div className="qa-answer">
+              Click on your user icon to view the feedback and reasons behind the ratings you received. Try to improve the behavior that your teammates don’t like!
+            </div>
+          )}
+        </div>
+      </div>
+      <button className="back_button" onClick={handleBack}>Back</button>
+    </div>
+  );
+}
+
 // Lobby screen component
-function Lobby({ onAddPlayer, nameVal }) {
-  const queueUrl = "/api/lobby/queue/" + nameVal;
+function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
+  const queueUrl = "/api/lobby/queue/" + nameVal;	
   const lobbyUrl = "/api/lobby/search";
 
   const [players, setPlayers] = useState([]);
@@ -103,10 +197,12 @@ function Lobby({ onAddPlayer, nameVal }) {
             <tr>
               <th>Username</th>
               <th>Game ID</th>
-              <th>Friendliness</th>
-              <th>Rating
-                {/* info bx */}
-              </th>
+              <th>Friendliness Rating</th>
+              <th>Rate Your Teammates {
+              <div className="question__container">
+              <button className="question__button" onClick={onRatingExplained}>?</button>
+              </div> }
+            </th>
             </tr>
           </thead>
           <tbody>
@@ -124,7 +220,7 @@ function Lobby({ onAddPlayer, nameVal }) {
             }
           </tbody>
         </table>
-        {showSearch ? (<button onClick={handleSearch}>Search</button>) : <p className="searching__text">Searching ...</p>}
+        {showSearch ? (<button onClick={handleSearch}>Search for Teammates</button>) : <p className="searching__text">Searching ...</p>}
         <button onClick={handleAddPlayer}>Back</button>
       </div>
     </div>
@@ -152,13 +248,24 @@ function App() {
     setCurrentScreen("LogIn");
   }
 
+  function handleBack() {
+    setCurrentScreen("Lobby");
+  }
+
+  function handleRatingExplained() {
+    setCurrentScreen("RatingExplained");
+  }
+
   return (
     <div className="app">
       {/* Render LogIn if the current screen is LogIn */}
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName}/>}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName} onRatingExplained={handleRatingExplained}/>}
+
+      {/* Render RatingExplained if the current screen is RatingExplained */}
+      {currentScreen === "RatingExplained" && <RatingExplained onBack={handleBack}/>}
     </div>
   );
 }

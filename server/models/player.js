@@ -5,24 +5,28 @@ const playerSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     gameId: {
       type: String,
-      required: true,
+      required: true
     },
     friendliness: {
       type: Number,
-      required: true,
+      required: true
     },
     ratingCount: {
       type: Number,
-      default: true,
+      default: true
     },
     totalScore: {
       type: Number,
-      default: true,
+      default: true
     },
+    feedbackLog: [{
+      date: { type: String, required: true },
+      feedback: { type: String, required: true }
+    }]
   }, 
   { 
     collection : 'players' 
