@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { makeStyles } from '@material-ui/core/styles';
 import { Button, ToggleButtonGroup, IconButton, ToggleButton, Drawer, Box, Typography, Tooltip } from "@mui/material";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {  SCORE_1_BEHAVIORS, SCORE_2_BEHAVIORS, SCORE_3_BEHAVIORS,
@@ -49,13 +50,16 @@ export default function RatingDrawer({ratedPlayer}) {
         <Typography variant="h6" align="left">
         <div className="rating-div">
           <div className="rating-info">
-            <Tooltip title="Final score will be weighted" placement="left-start">
-              <IconButton>
-                <InfoOutlinedIcon/>
-              </IconButton>
-            </Tooltip>
+            <p className="rated-player"> How did {ratedPlayer.gameId} do? </p>
+            <div>
+              <Tooltip className="tooltip"
+                title="Each feedback will be assigned a specific weight based on its importance in evaluating the gaming experience." placement="left-start">
+                <IconButton>
+                  <InfoOutlinedIcon/>
+                </IconButton>
+              </Tooltip>
+            </div>
           </div>
-          <p className="username"> How did {ratedPlayer.gameId} do? </p>
         </div>
 
           <div>
