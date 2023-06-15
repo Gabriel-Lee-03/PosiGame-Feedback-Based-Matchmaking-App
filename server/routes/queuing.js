@@ -5,6 +5,7 @@ const util = require('util');
 const {createLobby} = require("../lobbys");
 const {addToSearchQueue} = require("../search");
 const Players = require("../models/player");
+const {calculateRating} = require("../ratingCalculator");
 
 // Handle GET requests to /queue/name route
 router.get("/queue/:name", async(req, res) => {
@@ -47,12 +48,15 @@ router.put("/rate", async (req, res) => {
     const date = req.body.date;
     const feedback = req.body.feedback;
     const rating = req.body.rating;
+    // const score = calculateRating(rating);
     console.log("rating info: " + util.inspect(req.body));
+    // console.log("calculated score: " + util.inspect(score));
     const playerDB = await Players.findOne({name: player.name});
     const totalScore = playerDB.totalScore;
     const ratingCount = playerDB.ratingCount;
     const feedbackLog = playerDB.feedbackLog;
     console.log("old feedback log: " + util.inspect(feedbackLog));
+    // const newTotalScore = totalScore + score;
     const newTotalScore = totalScore + rating;
     const newRatingCount = ratingCount + 1;
     feedbackLog.unshift({date: date, feedback: feedback});
