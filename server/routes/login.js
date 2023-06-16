@@ -24,7 +24,8 @@ router.post("/", async (req, res) => {
         name: loginInfo.name,
         friendliness: defaultRating,
         ratingCount: defaultRatingCount,
-        totalScore: defaultTotalScore
+        totalScore: defaultTotalScore,
+        feedbackLog: []
       };
       await new Players(player).save();
       found = true;
