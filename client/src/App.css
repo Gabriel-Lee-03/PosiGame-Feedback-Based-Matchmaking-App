@@ -132,8 +132,8 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: #ffddad;
-  color: #d334f3;
+  background-color: #f4cc3b;
+  color: #7a14f7;
   border: none;
   cursor: pointer;
   font-size: 21px;
@@ -141,8 +141,8 @@ button {
 
 .qa-answer {
   padding: 10px;
-  background-color: #ffffff;
-  color: #007bff;
+  background-color: #7a14f7;
+  color: #ffffff;
   font-size: 20px;
 }
 
@@ -163,9 +163,8 @@ body {
   background-image: url('../../PosiGame Background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  color: #ffffff;
 }
-
-
 
 .profile-icon {
   transform: scale(1.5);
