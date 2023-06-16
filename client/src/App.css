@@ -136,14 +136,14 @@ button {
   color: #d334f3;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 21px;
 }
 
 .qa-answer {
   padding: 10px;
   background-color: #ffffff;
   color: #007bff;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .container {
@@ -157,4 +157,10 @@ button {
 
 .back_button {
   margin: 20px;
+}
+
+body {
+  background-image: url('../../PosiGame Background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
