@@ -51,7 +51,7 @@ async function search() {
 
             // Check if 10 seconds have passed and spaceLeft is still not 0
             const currentTime = Date.now();
-            if (currentTime - startTime >= 10000 && lobbyA.spaceLeft > 0) {
+            if (currentTime - startTime >= 40000 && lobbyA.spaceLeft > 0) {
                 searchingQueue.splice(i, 1);
                 resolveA.forEach(res => res(lobbyA)); // Reject the promise
                 break;
@@ -71,7 +71,7 @@ function addToSearchQueue(lobby) {
                 searchingQueue.splice(index, 1);
                 reject(new Error('Search timeout'));
             }
-        }, 10000); // Timeout after 10 seconds
+        }, 40000); // Timeout after 10 seconds
 
         const resolveWrapper = (...args) => {
             clearTimeout(timeoutId);
