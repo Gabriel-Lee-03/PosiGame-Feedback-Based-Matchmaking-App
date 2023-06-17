@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Button, ToggleButtonGroup, ToggleButton, Drawer, Box, Typography } from "@mui/material";
-import { SCORE_1_BEHAVIORS, SCORE_2_BEHAVIORS, SCORE_3_BEHAVIORS, SCORE_4_BEHAVIORS, SCORE_5_BEHAVIORS } from "./RatingTiers";
+import { Button, ToggleButtonGroup, IconButton, ToggleButton, Drawer, Box, Typography, Tooltip } from "@mui/material";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import {  SCORE_1_BEHAVIORS, SCORE_2_BEHAVIORS, SCORE_3_BEHAVIORS,
+          SCORE_4_BEHAVIORS, SCORE_5_BEHAVIORS, getScores, getFeedbacks} from "./RatingTiers";
 import axios from "axios";
 import "./App.css";
 
@@ -8,24 +10,24 @@ export default function RatingDrawer({ratedPlayer}) {
   const ratingUrl = "/api/lobby/rate";
   
   // only a single response is recorded
-  const [resp, setResp] = useState({});
-  const [selected, setSelected] =useState([]);
+  const [selected, setSelected] = useState([]);
   const [isDrawerOpen, toggleDrawer] = useState(false);
   const [allowRating, toggleRatePermission] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleOptionClick = (e, updatedValue, score) => {
+    console.log("selected: " + updatedValue);
     setSelected(updatedValue);
     const newResp = {act: updatedValue, score: score};
-    setResp(newResp);
-    console.log("resp: " + resp);
     setShowConfirm(true);
-    console.log("act: " + updatedValue);
-    console.log("score: " + score);
   };
 
   const handleConfirmClick = async () => {
-    const ratingInfo = {player: ratedPlayer, rating: resp.score, feedback: resp.act, date: new Date().toUTCString()};
+    const scores = getScores(selected);
+    const feedbacks = getFeedbacks(selected);
+    console.log("confirm scores: " + scores);
+    console.log("confirm feedbacks: " + feedbacks);
+    const ratingInfo = {player: ratedPlayer, rating: scores, feedback: feedbacks, date: new Date().toUTCString()};
     await axios.put(ratingUrl,ratingInfo);
     setShowConfirm(false);
     toggleRatePermission(false);
@@ -46,7 +48,17 @@ export default function RatingDrawer({ratedPlayer}) {
       >
         <Typography variant="h6" align="left">
         <div className="rating-div">
-          <p className="username"> How did {ratedPlayer.gameId} do? </p>
+          <div className="rating-info">
+            <p className="rated-player"> How did {ratedPlayer.gameId} do? </p>
+            <div>
+              <Tooltip className="tooltip"
+                title="Each feedback will be assigned a specific weight based on its importance in evaluating the gaming experience." placement="left-start">
+                <IconButton>
+                  <InfoOutlinedIcon/>
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
         </div>
 
           <div>
@@ -56,7 +68,7 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                exclusive={true}
+                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 1)}
               >
                 {
@@ -74,7 +86,7 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                exclusive={true}
+                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 2)}
               >
                 {
@@ -92,7 +104,7 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                exclusive={true}
+                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 3)}
               >
                 {
@@ -110,7 +122,7 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                exclusive={true}
+                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 4)}
               >
                 {
@@ -128,7 +140,7 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                exclusive={true}
+                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 5)}
               >
                 {

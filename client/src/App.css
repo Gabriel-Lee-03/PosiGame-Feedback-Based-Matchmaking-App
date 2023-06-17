@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Days+One');
 .Player {
   text-align: center;
   margin: 50px;
@@ -61,7 +62,7 @@ button {
   margin: 10px;
   background-color: rgba(255, 231, 19, 0.2);
   border: 2px solid #ffc400;
-  color: #000000;
+  color: #ffffff;
   border: none;
 }
 
@@ -252,4 +253,32 @@ body {
 .rating-div {
   margin-top: 20px;
   margin-left: 50px;
+}
+
+.rating-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.app-title {
+  font-family: "Days One", sans-serif;
+  text-align: center;
+  font-size: 35px;
+  color: rgb(255, 255, 255);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 35px;
+}
+
+.title-div {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.profile-button {
+  position: absolute;
+}
+
+.rated-player {
+  width: 90%;
 }
