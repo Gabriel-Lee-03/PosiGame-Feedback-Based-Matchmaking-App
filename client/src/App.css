@@ -1,8 +1,9 @@
 .Player {
   text-align: center;
   margin: 50px;
-  border: 2px solid #4b4a4a;
+  border: 2px solid #ffffff;
   border-radius: 4px;
+  background-color: rgba(24,3,78, 0.6);
 }
 
 .input-row {
@@ -13,8 +14,12 @@
 .Lobby {
   text-align: center;
   margin: 50px;
-  border: 2px solid #4b4a4a;
+  border: 2px solid #ffffff;
   border-radius: 4px;
+  width: 95%;
+  margin-left:auto;
+  margin-right:auto;
+  background-color: rgba(24,3,78, 0.6);
 }
 
 .lobby-table {
@@ -27,11 +32,10 @@
 .lobby-table th,
 .lobby-table td {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
 }
 
 .lobby-table th {
-  background-color: #f1f1f1;
   font-weight: bold;
 }
 
@@ -42,12 +46,23 @@ h1 {
 }
 
 button {
+  font-size: 25px;
   padding: 10px 20px;
   margin: 10px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #ffc400;
+  color: #420d84;
   border: none;
   cursor: pointer;
+}
+
+.disabled {
+  font-size: 25px;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: rgba(255, 231, 19, 0.2);
+  border: 2px solid #ffc400;
+  color: #000000;
+  border: none;
 }
 
 .dropdown {
@@ -57,7 +72,7 @@ button {
 
 .dropdown__button {
   padding: 10px;
-  background-color: #f8c10c;
+  background-color: #ffc400;
   border: 1px solid #ccc;
   cursor: pointer;
 }
@@ -111,8 +126,8 @@ button {
 .question__button {
   padding: 5px 10px;
   border: none;
-  background-color: #1875d8;
-  color: #ffea00;
+  background-color: #ffc400;
+  color: #420d84;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
@@ -132,8 +147,8 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: #f4cc3b;
-  color: #7a14f7;
+  background-color: #ffc400;
+  color: #420d84;
   border: none;
   cursor: pointer;
   font-size: 21px;
@@ -141,7 +156,7 @@ button {
 
 .qa-answer {
   padding: 10px;
-  background-color: #7a14f7;
+  background-color: #420d84;
   color: #ffffff;
   font-size: 20px;
 }
@@ -163,6 +178,7 @@ body {
   background-image: url('../../PosiGame Background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: #4e2cb4;;
   color: #ffffff;
 }
 
