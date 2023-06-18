@@ -146,7 +146,7 @@ function RatingExplained({ onBack }) {
 }
 
 // Lobby screen component
-function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFetchedPlayers }) {
+function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFetchedPlayers, currentPlayer, setCurrentPlayer}) {
   const queueUrl = "/api/lobby/queue/" + nameVal;	
   const lobbyUrl = "/api/lobby/search";
 
@@ -154,7 +154,6 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFet
   const [openSnackBar, toggleSnackBar] = useState(false);
   const [players, setPlayers] = useState([]);
   //info of the logged in user
-  const [profile, setProfile] = useState({});
   const [showSearch, setShowSearch] = useState(true);
    // Handle add player button click
   function handleAddPlayer() {
@@ -167,7 +166,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFet
   }
 
   function resetLobby() {
-    setPlayers([profile]);
+    setPlayers([currentPlayer]);
     handleSearch();
   }
 
@@ -175,7 +174,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFet
     setFetchedPlayers([]);
     setShowSearch(false);
     try {
-      const response = await axios.post(lobbyUrl, {players: [profile]});
+      const response = await axios.post(lobbyUrl, {players: [currentPlayer]});
       setShowSearch(true);
       const status = response.data;
       if (status.success) {
@@ -199,7 +198,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFet
       .then(res => {
         const players = res.data;
         setPlayers(players);
-        setProfile(players.at(0));
+        setCurrentPlayer(players.at(0));
         console.log(`component mounted`);
       });
       } else {
@@ -213,7 +212,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFet
   return (
     <div className="lobby-page">
       <SearchFailSnackBar open={openSnackBar} handleClose={handleClose}/>
-      <ProfileAppBar player={profile}/>
+      <ProfileAppBar player={currentPlayer}/>
       <div className="Lobby">
         <h1>Lobby</h1>
         <table className="lobby-table">
@@ -257,6 +256,7 @@ function App() {
   const [userName, setUserName] = useState("");
   const [userGameID, setUserGameID] = useState("");
   const [fetchedPlayers, setFetchedPlayers] = useState([]);
+  const [currentPlayer, setCurrentPlayer] = useState({});
 
   // Handle screen change from LogIn to Lobby
   function handleScreenChange(name, gameId) {
@@ -288,8 +288,10 @@ function App() {
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} fetchedPlayers={fetchedPlayers} setFetchedPlayers={setFetchedPlayers}
-                                           nameVal={userName} onRatingExplained={handleRatingExplained}/>}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer}
+                                            fetchedPlayers={fetchedPlayers} setFetchedPlayers={setFetchedPlayers}
+                                            currentPlayer={currentPlayer} setCurrentPlayer={setCurrentPlayer}
+                                            nameVal={userName} onRatingExplained={handleRatingExplained}/>}
 
       {/* Render RatingExplained if the current screen is RatingExplained */}
       {currentScreen === "RatingExplained" && <RatingExplained onBack={handleBack}/>}
