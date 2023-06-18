@@ -1,4 +1,4 @@
-import {Snackbar, Button} from '@mui/material';
+import {Snackbar} from '@mui/material';
 
 export default function SearchFailSnackBar({open, handleClose}) {
     return (

@@ -146,7 +146,7 @@ function RatingExplained({ onBack }) {
 }
 
 // Lobby screen component
-function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
+function Lobby({ onAddPlayer, nameVal, onRatingExplained, fetchedPlayers, setFetchedPlayers }) {
   const queueUrl = "/api/lobby/queue/" + nameVal;	
   const lobbyUrl = "/api/lobby/search";
 
@@ -156,7 +156,6 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
   //info of the logged in user
   const [profile, setProfile] = useState({});
   const [showSearch, setShowSearch] = useState(true);
-
    // Handle add player button click
   function handleAddPlayer() {
     onAddPlayer();
@@ -167,15 +166,23 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
     toggleSnackBar(false);
   }
 
+  function resetLobby() {
+    setPlayers([profile]);
+    handleSearch();
+  }
+
   async function handleSearch() {
+    setFetchedPlayers([]);
     setShowSearch(false);
     try {
-      const response = await axios.post(lobbyUrl, {players: players});
+      const response = await axios.post(lobbyUrl, {players: [profile]});
       setShowSearch(true);
       const status = response.data;
       if (status.success) {
         setPlayers(status.players);
+        setFetchedPlayers(status.players);
       } else {
+        setPlayers(status.players);
         toggleSnackBar(true);
       }
       
@@ -187,14 +194,17 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
 
   useEffect(() => {
     try {
-      axios.get(queueUrl)
+      if (fetchedPlayers.length === 0) {
+        axios.get(queueUrl)
       .then(res => {
         const players = res.data;
         setPlayers(players);
-        console.log("players > " + players);
         setProfile(players.at(0));
         console.log(`component mounted`);
       });
+      } else {
+        setPlayers(fetchedPlayers);
+      }
     }catch(error) {
       console.log(error);
     }
@@ -234,7 +244,7 @@ function Lobby({ onAddPlayer, nameVal, onRatingExplained }) {
             }
           </tbody>
         </table>
-        {showSearch ? (<button onClick={handleSearch}>Search for Teammates</button>) : <p className="searching__text">Searching ...</p>}
+        {showSearch ? (<button onClick={resetLobby}>Search for Teammates</button>) : <p className="searching__text">Searching ...</p>}
         <button onClick={handleAddPlayer}>Back</button>
       </div>
     </div>
@@ -246,6 +256,7 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState("LogIn");
   const [userName, setUserName] = useState("");
   const [userGameID, setUserGameID] = useState("");
+  const [fetchedPlayers, setFetchedPlayers] = useState([]);
 
   // Handle screen change from LogIn to Lobby
   function handleScreenChange(name, gameId) {
@@ -260,6 +271,7 @@ function App() {
   function handleAddPlayer() {
     // Set the current screen to LogIn
     setCurrentScreen("LogIn");
+    setFetchedPlayers([]);
   }
 
   function handleBack() {
@@ -276,7 +288,8 @@ function App() {
       {currentScreen === "LogIn" && <LogIn onSubmit={handleScreenChange} nameVal={userName} savedGameID={userGameID}/>}
 
       {/* Render Lobby if the current screen is Lobby */}
-      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} nameVal={userName} onRatingExplained={handleRatingExplained}/>}
+      {currentScreen === "Lobby" && <Lobby onAddPlayer={handleAddPlayer} fetchedPlayers={fetchedPlayers} setFetchedPlayers={setFetchedPlayers}
+                                           nameVal={userName} onRatingExplained={handleRatingExplained}/>}
 
       {/* Render RatingExplained if the current screen is RatingExplained */}
       {currentScreen === "RatingExplained" && <RatingExplained onBack={handleBack}/>}

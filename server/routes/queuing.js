@@ -42,7 +42,7 @@ router.post("/search", async(req, res) => {
     res.send(status);
   }catch (error) {
     console.error("queue timeout");
-    const status = {players:[], success: false};
+    const status = {players:players, success: false};
     res.send(status);
   }
 });

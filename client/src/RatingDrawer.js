@@ -62,13 +62,12 @@ export default function RatingDrawer({ratedPlayer}) {
         </div>
 
           <div>
-              <Box className="drawer-content" width="35em" p={2} textAlign={"center"} role="presentation">
+              <Box className="drawer-content" width={{ xs:"80vw", sm: "75vw", ml: "40vw"}} p={2} textAlign={"center"} role="presentation">
 
               <p>Score 1:</p>              
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 1)}
               >
                 {
@@ -86,7 +85,6 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 2)}
               >
                 {
@@ -104,7 +102,6 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 3)}
               >
                 {
@@ -122,7 +119,6 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 4)}
               >
                 {
@@ -140,7 +136,6 @@ export default function RatingDrawer({ratedPlayer}) {
               <ToggleButtonGroup
                 className="button-group"
                 value={selected}
-                // exclusive={true}
                 onChange={(e, newVal) => handleOptionClick(e, newVal, 5)}
               >
                 {

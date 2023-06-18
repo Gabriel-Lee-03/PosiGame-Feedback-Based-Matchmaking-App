@@ -45,4 +45,4 @@ function mergeLobbys(lobbyA, lobbyB) {
           averageRating: ratingSum / newPlayersList.length};
 }
 
-module.exports = {createLobby, mergeLobbys, testPlayer1, testPlayer2, testPlayer3}
+module.exports = {createLobby, mergeLobbys, maxLobbySize, testPlayer1, testPlayer2, testPlayer3}

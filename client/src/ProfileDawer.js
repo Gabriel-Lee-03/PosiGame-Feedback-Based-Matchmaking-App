@@ -25,12 +25,13 @@ export default function ProfileDrawer({player}) {
         <AccountCircleOutlinedIcon className="profile-icon"/>
       </IconButton>
       <Drawer
-        anchor={'left'}
+        anchor="left"
         open={isDrawerOpen}
         onClose={()=>toggleDrawer(false)}
       >
       <div className="logs">
-          <Box className="drawer-content" width="40em" p={2} textAlign={"center"} role="presentation">
+          <Box width={{ xs:"80vw", sm: "75vw", ml: "40vw"}}
+            className="drawer-content" p={2} textAlign={"center"} role="presentation">
               <Typography variant="h6" align="left">
                 <img className="icon" src="https://picsum.photos/200"></img>
                 <div className="profile-div">
