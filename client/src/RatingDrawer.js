@@ -62,7 +62,7 @@ export default function RatingDrawer({ratedPlayer}) {
         </div>
 
           <div>
-              <Box className="drawer-content" width={{ xs:"80vw", sm: "75vw", ml: "40vw"}} p={2} textAlign={"center"} role="presentation">
+              <Box className="rating-drawer-content" width={{ xs:"80vw", sm: "75vw", ml: "40vw"}} p={2} textAlign={"center"} role="presentation">
 
               <p>Score 1:</p>              
               <ToggleButtonGroup

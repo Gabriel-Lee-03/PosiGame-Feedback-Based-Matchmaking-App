@@ -147,6 +147,16 @@ body {
 }
 
 .drawer-content {
+  background-color: #4e2cb4;
+  color: #ffffff;
+  margin-bottom: 5em;
+  height: 100vh;
+  overflow: 'auto';
+}
+
+.rating-drawer-content {
+  background-color: #4e2cb4;
+  
   margin-bottom: 5em;
   height: 100vh;
   overflow: 'auto';
