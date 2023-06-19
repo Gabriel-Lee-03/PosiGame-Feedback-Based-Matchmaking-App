@@ -60,7 +60,7 @@ button {
   font-size: 25px;
   padding: 10px 20px;
   margin: 10px;
-  background-color: #420d84;
+  background-color: transparent;
   /* background-color: rgba(255, 231, 19, 0.2); */
   /* border: 2px solid #ffc400; */
   color: #ffc400;
@@ -147,8 +147,7 @@ body {
 }
 
 .drawer-content {
-  background-color: #d6c7ff;
-  margin-bottom: 5em #d6c7ff;
+  margin-bottom: 5em;
   height: 100vh;
   overflow: 'auto';
 }
@@ -194,7 +193,6 @@ body {
 }
 
 .button-group {
-  background-color: #d6c7ff;
   padding: 1em;
 }
 
@@ -215,7 +213,6 @@ body {
 }
 
 .rating-div {
-  background-color: #d6c7ff;
   margin-top: 20px;
   margin-left: 50px;
 }
