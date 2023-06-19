@@ -147,9 +147,8 @@ body {
 }
 
 .drawer-content {
-  background-color: #4e2cb4;
-  color: #ffffff;
-  margin-bottom: 5em;
+  background-color: #d6c7ff;
+  margin-bottom: 5em #d6c7ff;
   height: 100vh;
   overflow: 'auto';
 }
@@ -195,8 +194,7 @@ body {
 }
 
 .button-group {
-  background-color: #4e2cb4;
-  color: #ffffff;
+  background-color: #d6c7ff;
   padding: 1em;
 }
 
@@ -217,8 +215,7 @@ body {
 }
 
 .rating-div {
-  background-color: #4e2cb4;
-  color: #ffffff;
+  background-color: #d6c7ff;
   margin-top: 20px;
   margin-left: 50px;
 }
