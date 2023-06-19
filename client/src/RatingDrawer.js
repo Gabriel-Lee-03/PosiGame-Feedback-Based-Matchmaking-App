@@ -39,7 +39,7 @@ export default function RatingDrawer({ratedPlayer}) {
       <React.Fragment>
       {/* disabled if option is submitted */}
       <button disabled={!allowRating} className={allowRating? "enabled" : "disabled"} onClick={()=>toggleDrawer(true)} size='large'>
-        {allowRating? "Rate" : "feedback received"}
+        {allowRating? "Rate" : "Feedback sent!"}
       </button>
       <Drawer
         anchor={'right'}

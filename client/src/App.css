@@ -60,9 +60,9 @@ button {
   font-size: 25px;
   padding: 10px 20px;
   margin: 10px;
-  background-color: rgba(255, 231, 19, 0.2);
-  border: 2px solid #ffc400;
-  color: #ffffff;
+  /* background-color: rgba(255, 231, 19, 0.2); */
+  /* border: 2px solid #ffc400; */
+  color: #ffc400;
   border: none;
 }
 
@@ -179,36 +179,42 @@ body {
   background-image: url('../../PosiGame Background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #4e2cb4;;
+  background-color: #4e2cb4;
   color: #ffffff;
 }
 
 .profile-icon {
   transform: scale(1.5);
+  background-color: #ffc400;
 }
 
 .drawer-content {
+  background-color: #4e2cb4;
+  color: #ffffff;
   margin-bottom: 5em;
   height: 100vh;
   overflow: 'auto';
 }
 
 .feedback-box {
-  padding: 2px;
-  margin-top: 5px;
+  background-color: #4e2cb4;
+  color: #ffffff;
+  border: 2px solid #ffc400;
+  margin-top: 5px #4e2cb4;
 }
 
 .page-label {
+  font-weight: bold;
   margin-top: 5px;
   margin-bottom: 0px;
-  font-size: 12px;
+  font-size: 24px;
   line-height: 19px;
-
 }
 
 .username {
+  color: #ffc400;
   margin-top: 15px;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
   font-size: 32px;
   line-height: 35px;
 }
@@ -216,7 +222,7 @@ body {
 .gameId {
   margin-top: 8px;
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 19px;
 }
 
@@ -276,6 +282,7 @@ body {
 }
 
 .profile-button {
+  color: #ffc400;
   position: absolute;
 }
 
